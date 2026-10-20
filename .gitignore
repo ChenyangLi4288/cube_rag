@@ -1,0 +1,11 @@
+# Data and model outputs stay local
+data/
+*.parquet
+*.jsonl.gz
+*.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
