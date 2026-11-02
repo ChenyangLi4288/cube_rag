@@ -113,7 +113,7 @@ Generation."*
 
 | Weeks | Dates | Theory and writing | Data and systems | Done when |
 |---|---|---|---|---|
-| 1–2 | Oct 20 – Nov 2 | Write exact statements of Props 1–5. Define the ⊗ rule for 𝔼₂. | Get MAUDE, VAERS, ASRS. Build the lattices. Get exposure data (CDC doses, FAA/BTS flights). | Data, lattices and manifests are frozen. |
+| 1–2 | Oct 20 – Nov 2 | Write exact statements of Props 1–5. Define the annotation semiring. | Get MAUDE, VAERS, ASRS. Build the lattices. Get exposure data (CDC doses, FAA/BTS flights). | Data, lattices and manifests are frozen. |
 | 3–5 | Nov 3 – Nov 23 | Prove Props 1 and 3. Develop trend intervals for errors that change with time. | Extract facts: 8B model on all data, 70B model on about 10%. Build the cube. Make CubeQA and check a sample by hand. | Cube exists for all 3 datasets. CubeQA v1 is frozen. |
 | 6–8 | Nov 24 – Dec 14 | Prove Prop 2 (validity) and Prop 5 (cost). | Add correction and reconciliation. Run core baselines: vanilla RAG, long-context, GraphRAG, LightRAG, HippoRAG2, HyperGraphRAG, TG-RAG, LOTUS, UQE, extract-then-SQL. | Main results table (X1, X2, X3) is complete. |
 | 9–10 | Dec 15 – Dec 28 | Write the method and theory sections. | Run ablations, X4 (cost), X5 (robustness), X6 (exposure). | All figures are complete. |

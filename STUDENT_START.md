@@ -39,7 +39,7 @@ Do these tasks in this order. Each task has a "done when" condition.
 | 3 | For each dataset, write a table of fields: text fields, filter fields, hidden fields. | Table is in `data/README.md`. |
 | 4 | Build the concept hierarchy for each dataset: FDA problem codes for MAUDE, the ASRS anomaly taxonomy, and MedDRA for VAERS. Check the MedDRA licence first. If we cannot use it, use clusters of VAERS symptom terms. | Each hierarchy is a file of (child, parent) pairs. |
 | 5 | Get the exposure data: CDC vaccine doses and FAA/BTS flight operations, by month. | One CSV per dataset with columns `period, value, source`. |
-| 6 | Write exact statements of Propositions 1–5 in ALGEBRA.md. Define the ⊗ (multiply) rule for the 𝔼₂ component. | Chenyang reviews and agrees. |
+| 6 | Write exact statements of Propositions 1–5 in ALGEBRA.md. Define the annotation semiring (now `PosBool[X]` with evaluation; see ALGEBRA.md, Section 2). | Chenyang reviews and agrees. |
 | 7 | Make a toy cube by hand: 20 reports, 5 concepts, 4 time bins. Calculate counts, a roll-up and a slope on paper. | The toy example is in `ALGEBRA.md`. Later, you use it as the first unit test. |
 
 ## 5. Papers to read first (must read)

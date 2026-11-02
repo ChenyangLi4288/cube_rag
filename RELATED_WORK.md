@@ -92,7 +92,7 @@ No benchmark tests counts and trends together over 10⁵–10⁶ documents, with
 |---|---|---|---|---|---|
 | Looks at all reports | ✗ | ✗ | ✓ | ✓ (if tables exist) | ✓ |
 | Exact distinct counts when one report has many labels | ✗ | ✗ | partial | ✗ | ✓ (bitmap) |
-| Uncertainty kept through roll-up | ✗ | ✗ | for each query | ✗ | ✓ (𝔼₂ and correction) |
+| Uncertainty kept through roll-up | ✗ | ✗ | for each query | ✗ | ✓ (audit correction; joint covariance) |
 | Answers agree with the hierarchy | ✗ | ✗ | ✗ | ✗ | ✓ (reconciliation) |
 | Slopes, change-points, rates | ✗ | ✗ | ✗ | with SQL | ✓ (operators) |
 | Uses the index again for new queries | ✓ | ✓ | filters only (SemReuse) | ✓ | ✓ |

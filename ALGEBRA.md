@@ -39,6 +39,10 @@ the semiring operation, for every poset `L`, and it does not depend on the proba
    `ev₁(φ_r(ℓ)) = 1` iff r has a fact under ℓ. The set of reports with `ev₁ = 1` is the bitmap of Proposition 1.
    Because `ev₁` is a homomorphism, it commutes with roll-up and with ∧, ∨ (the bitmap algebra is the
    image of the formula algebra).
+   **Negation.** `PosBool[X]` has no ¬. Roll-up needs only ⊕, so the cube stores `PosBool` formulas. A query
+   predicate with ¬ is evaluated in the Boolean algebra `Bool[X]` of all Boolean functions over `X`, which contains
+   `PosBool[X]`. The map `ev₁ : Bool[X] → 𝔹` is a Boolean-algebra homomorphism (it also commutes with ¬), so
+   `p ∧ ¬q` maps to the set difference of the bitmaps.
 2. **Probability.** `π_r = P(φ_r = 1)` under independent `x_f`. This map is a valuation, not a homomorphism:
    `P(a ∨ b) = P(a) + P(b) − P(a ∧ b)`. For a disjunction of single facts, `P(φ) = 1 − ∏_{f ∈ S}(1 − q_f)`, where `S`
    is its fact set. For a conjunction of two such formulas with fact sets `S_A`, `S_B`:
@@ -51,14 +55,22 @@ the semiring operation, for every poset `L`, and it does not depend on the proba
    variances add, so prefix arrays of this triple give any time range. This triple is written 𝔼₂ in other parts of
    these documents. It is the evaluation of the cell, not a second semiring component. It is similar in spirit
    to the second-order expectation semiring of Li and Eisner (2009), but we do not use their ⊗ rule.
+   **What the moments do and do not measure.** A variable `x_f` exists only for an extracted fact. A concept that
+   the extractor missed has no variable. Thus `Σπ − Σπ²` is the variance from false positives only, given the
+   extractions and calibrated scores. It ignores missed facts (recall) and calibration error. A cell with `q = 1`
+   for all facts has variance 0 (Section 9), which is not a real uncertainty. Use these moments only for the
+   uncorrected cube (the ablation "no correction"). Every answer that we report with an interval uses the
+   corrected estimator of Section 5 and the variance of Proposition 2, which comes from the audit set and
+   covers both error types. `Σπ` is the `Σ f_r` term of that estimator. `Σπ²` is not used by it.
 4. **Provenance.** The polynomial semiring `ℕ[X]` of Green et al. maps onto `S` by a homomorphism. If we want
    citations with multiplicity, we use `ℕ[X]` where we now use `S`. Each fact variable has a source span, so
    the formula gives citations and audit samples.
 
 **Assumptions.** (i) The events `x_f` of different facts are independent, including facts of one report.
 (ii) The scores `q_f` are calibrated. These are modelling assumptions about the extractor, not properties of the
-algebra. The audit set corrects the cell totals in Section 5 and does not depend on (i) and (ii)
-for its unbiasedness (Proposition 2(a)).
+algebra. They matter only for the uncorrected moments and for the scores `f_r = π_r`. The corrected estimator of
+Section 5 does not depend on (i) and (ii) for its unbiasedness or its intervals (Proposition 2(a), (c)). If (i) or
+(ii) is false, the corrected intervals stay valid, but they can get wider.
 
 **Why this design.** Roll-up uses ⊕ exactly, so a report with two child concepts is one report in the parent
 (its formula is `x_f ∨ x_g`, and `P = 1 − (1−q_f)(1−q_g)`, not `q_f + q_g`). A plain counting semiring cannot do this.
@@ -80,7 +92,8 @@ report. `K = S^R` is the cell value space, with ⊕ and ⊗ pointwise.
 - **Roll-up on T.** The reports of different time bins are different reports, so their moments add and subtract
   exactly. Prefix arrays `P[τ]` (Fenwick tree) of the evaluated moments `(n, Σπ, Σπ²)` give a range aggregate in
   O(log |T|). We do not need prefix sums of the formulas.
-- **Boolean predicates.** `p ∨ q` is ⊕ and `p ∧ q` is ⊗ on the per-report formulas. The probability of the result
+- **Boolean predicates.** `p ∨ q` is ⊕ and `p ∧ q` is ⊗ on the per-report formulas. `¬p` is evaluated in
+  `Bool[X]` (Section 2). The probability of the result
   comes from the exact formulas in Section 2 (evaluation). The only assumption is that the facts of one report
   are independent events (Section 2). We do not need an independence assumption between predicates.
 
@@ -113,8 +126,11 @@ Pred   := Concept | Pred ∧ Pred | Pred ∨ Pred | ¬Pred
 - **Audit set** `U ⊂ R`, with |U| = n (100 to 500). We take U with a known sample design, stratified on cube cells.
   The oracle labels come from the agency-coded fields (or from a person).
 - **Correction in the cube.** For each concept ℓ, we estimate sensitivity Se and specificity Sp on U
-  (or a PPI rectifier). The corrected cell is `θ̂ = (θ_raw − (1 − Sp)) / (Se + Sp − 1)` (Rogan–Gladen),
-  or the PPI++ form. The variance includes the uncertainty from the audit.
+  (or a PPI rectifier). Rogan–Gladen works on proportions. Let `N` be the number of reports in the slice
+  `(τ, a)` and `p_raw = θ_raw / N`. The corrected proportion is `p̂ = (p_raw − (1 − Sp)) / (Se + Sp − 1)`, clipped to
+  `[0, 1]`, and the corrected count is `θ̂ = N·p̂`. The other option is the PPI form (Proposition 2(a)). PPI++ tunes a
+  weight λ on the same data. This lowers the variance, but the estimator is then only asymptotically unbiased.
+  The variance includes the uncertainty from the audit.
 - **Reconciliation.** Let `y` be the vector of corrected cells over the lattice. Let 𝒦 be the set of
   consistent vectors. A report can have facts under more than one child, so the children of a concept do not
   partition its reports. For a concept ℓ with children c₁…c_k, the distinct counts satisfy
@@ -125,13 +141,22 @@ Pred   := Concept | Pred ∧ Pred | Pred ∨ Pred | ¬Pred
   We solve `min_x (x − y)ᵀ W⁻¹ (x − y)` subject to `x ∈ 𝒦`.
   This is a weighted projection (MinT-type), a quadratic program. MinT itself assumes summing equalities, so we
   use it only for the time and attribute axes, and the concept axis needs the inequality version.
-- **Intervals after reconciliation.** Let `y ~ N(x*, Σ)` asymptotically, with `Σ̂` from Proposition 2, and let
-  `c = χ²_{d,1−α}`. For a target `w·x`, the interval is `[min, max]` of `w·x` over
-  `{x ∈ 𝒦 : (x − y)ᵀ Σ̂⁻¹ (x − y) ≤ c}`. Because the region contains `x*` whenever the unconstrained ellipsoid does,
-  and `x* ∈ 𝒦`, the coverage is at least `1 − α` asymptotically. It is conservative (it uses d degrees of freedom
-  and ignores that the constraints cut the region). The point estimate is the projection of Section 5 and the
-  interval does not have to be centred on it. Report the width and the empirical coverage.
-  A simpler fallback is to clip each Proposition 2 interval to the range allowed by 𝒦.
+- **Intervals after reconciliation.** For a target `w·x`, choose a small set `J` of cells: the target cells, and
+  their parents and children in the same time and attribute bin. Let `𝒦_J` be the constraints of 𝒦 that use only
+  cells in `J`, and `d = |J|`. Let `y_J ~ N(x*_J, Σ_J)` asymptotically, and `c = χ²_{d,1−α}`.
+  The interval is `[min, max]` of `w·x` over `R_J = {x ∈ 𝒦_J : (x − y_J)ᵀ Σ̂_J⁻¹ (x − y_J) ≤ c}`.
+  Because `x*_J ∈ 𝒦_J` and the ellipsoid contains `x*_J` with probability `1 − α`, the coverage is at least
+  `1 − α` asymptotically. A smaller `J` keeps this true (fewer constraints only make `𝒦_J` larger) and gives a
+  smaller `c`, so the interval is tighter. Keep `d` small (about 3 to 10).
+  - **Covariance.** `Σ_J` is the joint covariance of the cells in `J`. A parent cell and a child cell share reports,
+    so they are correlated. Proposition 2 must give the joint covariance (the audit residuals of a report enter
+    each cell that contains it), not only the variance of each cell.
+  - **Empty region.** If `R_J` is empty, then the ellipsoid misses 𝒦, which has probability at most α under
+    the model. Report the clipped interval below, and count the event in the diagnostics.
+  - It is conservative (it uses d degrees of freedom and ignores that the constraints cut the region).
+    The point estimate is the projection of Section 5 and the interval does not have to be centred on it.
+    Report the width and the empirical coverage.
+  - A simpler fallback is to clip each Proposition 2 interval to the range allowed by 𝒦.
 - **Drift test.** We test if the extractor error rates change with time τ. For this test, we stratify the audit
   by time. If the rates change, we correct each time block separately.
 
@@ -147,7 +172,7 @@ one time and one attribute value, so the cells of `T × A` partition the reports
    For Boolean predicates, `p ∧ q`, `p ∧ ¬q` and `p ∨ q` map to `∩`, `∖` and `∪` of the bitmaps, and the cardinality
    of the result is the number of distinct reports that satisfy the predicate (when each fact is correct).
    In the semiring of Section 2, the bitmap is the image of the cell value under the homomorphism `ev₁`.
-   Hence this proposition is the statement that `ev₁` commutes with ⊕ and ⊗.
+   Hence this proposition is the statement that `ev₁` commutes with ⊕ and ⊗ (and with ¬ in `Bool[X]`).
    The sum of the child counts is not equal to this number when a report has facts under more than one child:
    it is larger by `Σ_r (m_r − 1)`, where `m_r ≥ 1` is the number of children of ℓ under which r has a fact
    (if no fact is at ℓ itself; the toy cube in Section 9 has an example).
@@ -156,12 +181,16 @@ one time and one attribute value, so the cells of `T × A` partition the reports
    inclusion probabilities `p_r > 0` (stratified on cells, without replacement).
    - **(a) PPI form.** `θ̂ = Σ_{r∈R} f_r + Σ_{r∈U} (y_r − f_r)/p_r` is exactly design-unbiased for θ. This needs no
      assumption on the extractor.
+     With an estimated PPI++ weight λ̂, the estimator is only asymptotically unbiased.
    - **(b) Rogan–Gladen form.** Suppose Se and Sp are constant within the stratum and `Se + Sp > 1`. Then the
-     estimator is asymptotically unbiased as the audit size in the stratum goes to infinity.
+     estimator `N·p̂` (Section 5) is asymptotically unbiased as the audit size in the stratum goes to infinity.
    - **(c) Intervals.** In both forms, `θ̂ ± z_{1−α/2} · SE` has asymptotic coverage `1 − α`. The SE includes the
      audit variance. This is true for each linear function `w·θ` (this includes OLS slopes with fixed time points)
      and, by the delta method, for each smooth `g(w·θ)` with `∇g ≠ 0` (this includes ratios and rates).
      It is not claimed for Theil–Sen slopes or change-points.
+   - **(c′) Joint covariance.** The same result holds jointly for a vector of cells, with the covariance matrix
+     estimated from the audit residuals. Cells that share reports (a parent and its child) have a covariance term.
+     Section 5 needs this for the intervals after reconciliation.
    - **(d) Drift.** If Se or Sp change with time, (b) and (c) are true only when we stratify the audit and the
      correction by time block.
    - These are asymptotic results. We expect the intervals to fail for rare concepts with few audited positives.
@@ -179,7 +208,8 @@ one time and one attribute value, so the cells of `T × A` partition the reports
    - **Build:** O(F·h) time to compute `π_r(ℓ)` for each report and each ancestor ℓ.
    - **Size:** O(F·h) for the sparse cells and bitmaps, plus O(|L|·|T|·|A_ne|) for the prefix arrays (worst case).
    - **Range count** over a time range, for one concept and one attribute value: O(1) with static prefix arrays,
-     O(log|T|) with a Fenwick tree (this is needed if we add data). This is valid because each report is in one
+     O(log|T|) with a Fenwick tree (this is needed if we add data). An attribute range (for example ages 12–29)
+     costs this times the number of attribute values in the range. This is valid because each report is in one
      time bin. Thus, the numeric components `(n, Σπ, Σπ²)` of different bins add and subtract exactly.
      We do not need prefix sums of bitmaps, and union has no inverse.
    - **Slope** over k bins: O(k) for the weighted sum and its variance (O(k log|T|) with a Fenwick tree).
@@ -227,9 +257,11 @@ until a source or a proof is checked.
 4. **Toy example.** Decided: counts, roll-up, slope, Boolean predicate and reconciliation are in Section 9. Correction (Se, Sp)
    and change-points are added when the code exists, as part of the unit tests, not by hand.
 5. **Intervals after reconciliation.** Decided: constrained-region intervals (Section 5), with the clipped
-   Proposition 2 intervals as a fallback. Open: tightness. The width may be large for large d. The hypothesis H3
-   (92–97% coverage) may not hold for these intervals, because they are conservative and can cover more than 97%.
-   Report coverage and width together.
+   Proposition 2 intervals as a fallback. Use a local cell set `J` to keep `d` small. Open: tightness, and the joint
+   covariance estimator (Proposition 2(c′)). H3 now asks for at least 95% coverage and a report of the width.
+6. **Uncertainty from the moments.** Decided: the stored moments `(n, Σπ, Σπ²)` give an uncertainty for the
+   uncorrected cube only (Section 2). Reported intervals come from Proposition 2. Do not describe the cube as
+   carrying the full uncertainty through roll-up without the audit correction.
 
 ## 9. Toy cube (hand calculation, first unit test)
 
@@ -246,6 +278,7 @@ Facts have `q = 1` unless the table says otherwise. A report with no `q` shown h
 | Q4 | r16 Occ; r17 Occ; r18 Occ; r19 Occ; r20 Elec (q=⅘) |
 
 **Cells.** `n` is the number of distinct reports, `S₁ = Σπ`, `S₂ = Σπ²`, and `Var = S₁ − S₂`.
+`Var` is the uncorrected, false-positive-only variance (Section 2). The zeros do not mean that the counts are certain.
 The columns are Q1, Q2, Q3, Q4.
 
 | Concept | n | S₁ | S₂ | Var |

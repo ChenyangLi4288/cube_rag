@@ -73,7 +73,7 @@ on a subset.
 Remove or change one part at a time:
 
 - No bitmap (add counts, which gives double counts)
-- No 𝔼₂ (point estimates only)
+- No moments (point estimates only, no intervals for the uncorrected cube)
 - No correction
 - No reconciliation
 - Reconciliation with only the time and attribute sum equalities (no concept-axis inequalities)
