@@ -1,4 +1,4 @@
-# CubeRAG: Semiring-Annotated Fact Cubes for Counting and Trend Question Answering
+# CubeRAG: Lineage-Annotated Fact Cubes for Counting and Trend Question Answering
 
 Draft research proposal, 2026-10-20. Target: ICML 2027.
 
@@ -25,8 +25,8 @@ We found four causes of failure. RELATED_WORK.md gives the evidence.
 | **C4 No uncertainty.** The method does not carry extraction errors into the answer. | LOTUS, Palimpzest, DocETL, KAG, TableRAG | Answers look certain but are incorrect. Errors increase with roll-up. |
 
 Database theory already has the necessary tools: provenance semirings (K-relations), aggregation semimodules,
-expectation semirings, OLAP cubes, prefix-sum indexes, and hierarchical reconciliation. But no RAG index
-uses them together. Some query engines (UQE, ABae) give guarantees for one aggregate query. But they sample
+expectation semirings, OLAP cubes, prefix-sum indexes, and hierarchical reconciliation. To our knowledge, no RAG
+index uses them together (the student must re-check this against recent work; see RELATED_WORK.md). Some query engines (UQE, ABae) give guarantees for one aggregate query. But they sample
 again for each new query. SemReuse (2026) uses certified filters again, but it does not do counts or trends.
 
 ## 2. Method: the Annotated Fact Cube
@@ -80,14 +80,16 @@ again for each new query. SemReuse (2026) uses certified filters again, but it d
   than TG-RAG and long-context baselines. For ASRS, division by flight operations changes at least one
   conclusion (because flights decreased during COVID).
 - **RQ3 Calibration.** H3: with correction and reconciliation, 95% confidence intervals contain the true value
-  92–97% of the time. Without these steps, coverage is much lower for rare concepts.
+  at least 95% of the time (the intervals after reconciliation are conservative, so we also report their width).
+  Without these steps, coverage is much lower for rare concepts.
 - **RQ4 Cost over many queries.** H4: for 300 questions, CubeRAG uses 10 times fewer LLM calls than UQE or LOTUS,
   at equal accuracy, because it uses the same index again.
 - **RQ5 Robustness.** H5: reconciliation decreases the accuracy gap between an 8B and a 70B extractor by 50% or more.
 
 ## 4. Contributions
 
-1. A formal data structure (the Annotated Fact Cube) and a query algebra for RAG. We prove:
+1. A formal data structure (the Annotated Fact Cube) and a query language for RAG. The annotations are an
+   application of known lineage semirings (Green et al., 2007), not a new algebra. We prove:
    correct distinct counts, valid confidence intervals after correction, no increase in MSE after reconciliation,
    and bounds on query time.
 2. A pipeline to build the index, with new concept nodes on demand.
@@ -101,10 +103,10 @@ Deadline: Jan 16–22, 2027 (AoE). Confirm the date on icml.cc. Internal freeze:
 
 **How we present the paper.** ICML reviewers expect a contribution to ML or statistics, not a systems paper.
 Thus, the main claim is *valid statistical inference for count and trend queries over LLM-extracted facts*.
-The parts of this claim are: the annotation semiring, the correction in the cube, reconciliation as a projection
+The parts of this claim are: lineage annotations that make distinct counts and Boolean predicates exact, the correction in the cube, reconciliation as a projection
 that decreases variance, and confidence intervals for slopes when the extractor error changes with time.
 The data structure is how we do the inference. CubeQA is the evidence.
-Working title: *"Algebraic Fact Cubes: Valid Inference for Counting and Trend Questions in Retrieval-Augmented
+Working title: *"Fact Cubes with Lineage: Valid Inference for Counting and Trend Questions in Retrieval-Augmented
 Generation."*
 
 **Critical path.** Two tracks run at the same time.

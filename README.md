@@ -1,4 +1,4 @@
-# CubeRAG: an algebraic fact cube for counting and trend questions
+# CubeRAG: an annotated fact cube for counting and trend questions
 
 Status: proposal, 2026-10-20. Target: ICML 2027 (deadline Jan 16–22, 2027, AoE).
 New to the project? Read [STUDENT_START.md](STUDENT_START.md) first.
