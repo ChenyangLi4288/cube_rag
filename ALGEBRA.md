@@ -17,31 +17,53 @@ Section 8 lists the open items.
 
 ## 2. The annotation semiring
 
-`K = 𝔹ᴿ × 𝔼₂ × ℕ[S]`. Each operation applies to each component separately.
+**Idea.** Annotate each report in a cell with the *event* "the report really states a concept in this cell".
+Events form a semiring, and roll-up is the semiring sum. Moments of the count are read from the events by
+a separate evaluation step. (This is the lineage construction for probabilistic databases: Green, Karvounarakis
+and Tannen, 2007, for the semirings, and the possible-worlds semantics for the probabilities. Check both.)
 
-1. **Distinct bitmap** `𝔹ᴿ = (2^R, ∪, ∩, ∅, R)`. The annotation of a fact from report r is `{r}`.
-2. **Second-order expectation semiring** `𝔼₂` (Li and Eisner, 2009).
-   - The value for one report with calibrated probability π is `(1, π, π²)`.
-   - ⊕ adds the components: a cell holds `(n, Σπ, Σπ²)`.
-   - The expected count of a cell is `Σπ`. The variance (independent Bernoulli reports) is `Σπ − Σπ²`.
-   - We count distinct reports. Thus, we first make one value for each report:
-     `π_r(ℓ)` = P(report r states at least one concept in ↓ℓ). Then we add the reports (Proposition 1).
-   - **The ⊗ rule (draft, to check against Li and Eisner).** ⊗ applies only to the values of one report, to
-     combine independent facts of that report (for example the predicate `p ∧ q`). It is componentwise:
-     `(n₁, a₁, b₁) ⊗ (n₂, a₂, b₂) = (n₁n₂, a₁a₂, b₁b₂)`. For single-report values `(1, π, π²)`, the result is
-     `(1, π₁π₂, (π₁π₂)²)`, which is the encoding of a report with probability π₁π₂. The unit is `(1,1,1)` and the
-     zero is `(0,0,0)`. This is the product ring `ℕ × ℝ × ℝ`, so ⊕ and ⊗ satisfy the semiring laws
-     (including distributivity). We never multiply two aggregated cells: ⊗ happens before ⊕ over reports.
-     Li and Eisner (2009) define a different ⊗ for tuples `(p, r, s, t)` (with cross terms such as `r₁s₂ + r₂s₁`).
-     Ours does not need those terms because we track only the first two moments of an indicator.
-     A union of concepts inside one report is not ⊕ of the 𝔼₂ values. We compute it as
-     `π_r(ℓ) = 1 − ∏_f (1 − q_f)` over the facts f of r under ↓ℓ, which assumes that the facts of one report are
-     independent.
-3. **Provenance** `ℕ[S]`. These are polynomials over span IDs. ⊕ is +, and ⊗ is ×.
-   We use this component only for citations and audit samples.
+**Annotations.** Each fact `f` has an independent Bernoulli variable `x_f` with `P(x_f = 1) = q_f` (the fact is
+correct). Let `X` be the set of all fact variables, and let `S = PosBool[X]` be the monotone Boolean functions
+over `X`, with `∨` as ⊕, `∧` as ⊗, `0 = false` and `1 = true`. This is a commutative semiring (a distributive
+lattice). The annotation of a report r in the cell of concept ℓ is the formula
+`φ_r(ℓ) = ⋁ { x_f : f is a fact of r with concept ≤ ℓ }`.
+A cell value is the vector `(φ_r)_{r ∈ cell}`, in `S^R` (reports of different cells are different reports).
+In practice we store the set of fact IDs of each report, which is the formula.
 
-**Why this design.** The bitmap component uses union. Thus, a report with two child concepts counts one time
-in the parent. The 𝔼₂ component adds only over distinct reports. A plain counting semiring cannot do both.
+**Roll-up is a semiring sum.** Union of fact sets is ⊕ in `S`. Thus the concept roll-up uses only
+the semiring operation, for every poset `L`, and it does not depend on the probabilities.
+
+**Evaluation (not a semiring component).** From a cell value we read:
+
+1. **Distinct bitmap.** The map `ev₁ : S → 𝔹` (set all `x_f = 1`) is a semiring homomorphism. Thus,
+   `ev₁(φ_r(ℓ)) = 1` iff r has a fact under ℓ. The set of reports with `ev₁ = 1` is the bitmap of Proposition 1.
+   Because `ev₁` is a homomorphism, it commutes with roll-up and with ∧, ∨ (the bitmap algebra is the
+   image of the formula algebra).
+2. **Probability.** `π_r = P(φ_r = 1)` under independent `x_f`. This map is a valuation, not a homomorphism:
+   `P(a ∨ b) = P(a) + P(b) − P(a ∧ b)`. For a disjunction of single facts, `P(φ) = 1 − ∏_{f ∈ S}(1 − q_f)`, where `S`
+   is its fact set. For a conjunction of two such formulas with fact sets `S_A`, `S_B`:
+   `P(A ∧ B) = 1 − N(S_A) − N(S_B) + N(S_A ∪ S_B)`, with `N(S) = ∏_{f∈S}(1 − q_f)`.
+   Also `P(A ∧ ¬B) = P(A) − P(A ∧ B)`. For a conjunction of k predicates, inclusion–exclusion has `2^k` terms,
+   which is fine for the small k we expect.
+3. **Moments.** For a cell, `N_cell = Σ_r 1[φ_r]`. If different reports are independent,
+   `E[N_cell] = Σ_r π_r` and `Var[N_cell] = Σ_r π_r(1 − π_r) = Σπ − Σπ²`. We store `(n, Σπ, Σπ²)` for each
+   base cell (`n` is the number of reports with `π_r > 0`). Over disjoint time bins the means and the
+   variances add, so prefix arrays of this triple give any time range. This triple is written 𝔼₂ in other parts of
+   these documents. It is the evaluation of the cell, not a second semiring component. It is similar in spirit
+   to the second-order expectation semiring of Li and Eisner (2009), but we do not use their ⊗ rule.
+4. **Provenance.** The polynomial semiring `ℕ[X]` of Green et al. maps onto `S` by a homomorphism. If we want
+   citations with multiplicity, we use `ℕ[X]` where we now use `S`. Each fact variable has a source span, so
+   the formula gives citations and audit samples.
+
+**Assumptions.** (i) The events `x_f` of different facts are independent, including facts of one report.
+(ii) The scores `q_f` are calibrated. These are modelling assumptions about the extractor, not properties of the
+algebra. The audit set corrects the cell totals in Section 5 and does not depend on (i) and (ii)
+for its unbiasedness (Proposition 2(a)).
+
+**Why this design.** Roll-up uses ⊕ exactly, so a report with two child concepts is one report in the parent
+(its formula is `x_f ∨ x_g`, and `P = 1 − (1−q_f)(1−q_g)`, not `q_f + q_g`). A plain counting semiring cannot do this.
+The probability is not a homomorphism. The natural semiring on `[0,1]`, `a ⊕ b = a + b − ab` with
+`a ⊗ b = ab`, is not distributive. Keeping formulas, and evaluating at the end, avoids this.
 
 ## 3. The cube
 
@@ -49,14 +71,18 @@ in the parent. The 𝔼₂ component adds only over distinct reports. A plain co
 
 `𝒞[ℓ,τ,a] = ⨁ { ann_r(↓ℓ) : t(r) ∈ τ, a(r) ∈ a }`
 
-`ann_r(↓ℓ)` combines all facts of report r under ↓ℓ into one value for the report.
+`ann_r(↓ℓ) = φ_r(ℓ)` is the formula of Section 2: it combines all facts of report r under ↓ℓ into one value for the
+report. `K = S^R` is the cell value space, with ⊕ and ⊗ pointwise.
 
-- **Roll-up on L (zeta transform).** The bitmap of ℓ is the union of the bitmaps of all ℓ' ≤ ℓ.
-  We calculate the 𝔼₂ value again from this union. We do not add the 𝔼₂ values of the children.
-- **Roll-up on T.** Prefix arrays `P[τ] = ⨁_{τ' ≤ τ} 𝒞[τ']` (Fenwick tree). A range aggregate takes O(log |T|).
-- **Boolean predicates.** We calculate `p ∧ q`, `p ∧ ¬q` and `p ∨ q` on the bitmaps first.
-  Then we combine the report probabilities. We must state the assumption (independence or a copula).
-  We test both assumptions (ablation).
+- **Roll-up on L (zeta transform).** `𝒞[ℓ,τ,a] = ⨁_{ℓ' ≤ ℓ} 𝒞₀[ℓ',τ,a]`, where ⊕ is the semiring sum of Section 2.
+  This is an exact fold in the semiring. We do not recompute anything: the moments are read from the result
+  (Section 2, evaluation).
+- **Roll-up on T.** The reports of different time bins are different reports, so their moments add and subtract
+  exactly. Prefix arrays `P[τ]` (Fenwick tree) of the evaluated moments `(n, Σπ, Σπ²)` give a range aggregate in
+  O(log |T|). We do not need prefix sums of the formulas.
+- **Boolean predicates.** `p ∨ q` is ⊕ and `p ∧ q` is ⊗ on the per-report formulas. The probability of the result
+  comes from the exact formulas in Section 2 (evaluation). The only assumption is that the facts of one report
+  are independent events (Section 2). We do not need an independence assumption between predicates.
 
 ## 4. Query algebra `Q`
 
@@ -113,6 +139,8 @@ one time and one attribute value, so the cells of `T × A` partition the reports
    `B[ℓ,τ,a] = ⋃_{ℓ' ≤ ℓ} B₀[ℓ',τ,a]`. Then `|B[ℓ,τ,a]| = |{r : t(r) ∈ τ, a(r) ∈ a, ∃ fact (r,ℓ',…) with ℓ' ≤ ℓ}|`.
    For Boolean predicates, `p ∧ q`, `p ∧ ¬q` and `p ∨ q` map to `∩`, `∖` and `∪` of the bitmaps, and the cardinality
    of the result is the number of distinct reports that satisfy the predicate (when each fact is correct).
+   In the semiring of Section 2, the bitmap is the image of the cell value under the homomorphism `ev₁`.
+   Hence this proposition is the statement that `ev₁` commutes with ⊕ and ⊗.
    The sum of the child counts is not equal to this number when a report has facts under more than one child:
    it is larger by `Σ_r (m_r − 1)`, where `m_r ≥ 1` is the number of children of ℓ under which r has a fact
    (if no fact is at ℓ itself; the toy cube in Section 9 has an example).
@@ -171,10 +199,13 @@ one time and one attribute value, so the cells of `T × A` partition the reports
 
 ## 8. Open items
 
-1. The ⊗ rule for the 𝔼₂ component is drafted in Section 2. It still needs a check against Li and Eisner (2009)
-   and Chenyang's agreement.
-2. Decide the assumption for Boolean combinations (independence or a copula). The default is independence
-   (STUDENT_START.md, Section 7).
+1. The annotation semiring is now `PosBool[X]` with evaluation (Section 2). The earlier product-ring version with a
+   componentwise ⊗ is replaced. Check the construction against Green, Karvounarakis and Tannen (2007), and
+   check the relation to Li and Eisner (2009). Needs Chenyang's agreement.
+2. Boolean combinations are now exact given that the facts of a report are independent (Section 2). A copula or
+   another dependence model is needed only for dependence between the facts of one report. STUDENT_START.md,
+   Section 7 (item 4) and the EXPERIMENTS.md ablation still describe the older question (independence between
+   predicates). Update them after Chenyang decides.
 3. Decide if the same event_type field can be a filter attribute and a hidden field at the same time (Section 7).
 4. Toy example: done (Section 9). It has counts, roll-up and slope. It does not yet have reconciliation, correction
    or change-points.
@@ -211,7 +242,13 @@ The columns are Q1, Q2, Q3, Q4.
 `{r11..r14} ∪ {r14}`, so `n = 4`, but the child sum is 5. In Q2 and Q4 the children do not overlap, so both numbers agree.
 This is why Section 5 uses `max(children) ≤ parent ≤ sum(children)` and not an equality: in Q1,
 `max(2, 2) = 2 ≤ 3 ≤ 4 = 2 + 2`.
-For r2, the Mechanical probability is `1 − (1−1)(1−½) = 1`, not `1 + ½`.
+For r2, the Mechanical formula is `x_{Occ} ∨ x_{Leak}` with `q = 1` and `q = ½`, so `π = 1 − (1−1)(1−½) = 1`, not `1 + ½`.
+
+**Boolean predicate (Section 2).** Q1, `Leak ∧ Mechanical` for r2: `S_A = {x_Leak}`, `S_B = {x_Occ, x_Leak}`.
+`N(S_A) = ½`, `N(S_B) = 0`, `N(S_A ∪ S_B) = 0`, so `P = 1 − ½ − 0 + 0 = ½`. This is equal to `P(Leak)`, as it must be,
+because Leak is under Mechanical. `Occlusion ∧ Leak` for r2: `S_A` and `S_B` are disjoint, so
+`P = 1·½ = ½`. We checked the formula against enumeration of all worlds, for these cases and for an overlapping
+case with `q = (0.3, 0.5, 0.7)`.
 
 **Roll-up on the time axis.** Occlusion for Q2–Q4 is `3 + 4 + 4 = 11`. With prefix sums
 `P = (2, 5, 9, 13)`, this is `P[4] − P[1] = 13 − 2 = 11`.

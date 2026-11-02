@@ -36,12 +36,15 @@ again for each new query. SemReuse (2026) uses certified filters again, but it d
 1. **Extract** facts from each report: `(concept ℓ, time t, attributes a, source span s)`.
    The concepts come from a public taxonomy. We make the taxonomy into a lattice (a partial order with joins).
    We use the FDA device-problem codes for MAUDE, MedDRA for VAERS, and the ASRS anomaly taxonomy for ASRS.
-2. **Annotate** each fact with a value from the product semiring `K = 𝔹ᴿ × 𝔼₂ × ℕ[S]`:
-   - `𝔹ᴿ`: a bitmap of report IDs. With this bitmap, we count each report only one time.
-   - `𝔼₂`: a second-order expectation semiring value. It keeps the sums that we need for a mean and a variance.
-   - `ℕ[S]`: a provenance polynomial of source spans. We use it for citations and audits.
+2. **Annotate** each report in a cell with the event that its facts are correct. Events are monotone Boolean
+   formulas over fact variables (the semiring `PosBool[X]`; ALGEBRA.md, Section 2). Then:
+   - The set of reports that have a fact in the cell is the image of the formulas under a semiring homomorphism.
+     With this set, we count each report only one time.
+   - The probability of each formula gives the sums that we need for a mean and a variance, `(n, Σπ, Σπ²)`.
+     This is an evaluation of the cell, not a second semiring.
+   - Each fact variable has a source span. We use the spans for citations and audits.
 3. **Build** the cube `𝒞[ℓ, τ, a]`. Each cell combines the annotations of its facts.
-   - Roll-up on the concept axis uses the union of bitmaps (zeta transform).
+   - Roll-up on the concept axis is the semiring sum, that is, the union of fact sets (zeta transform).
    - Roll-up on the time axis uses prefix sums (Fenwick tree).
 
 ### 2.2 Answer a query
