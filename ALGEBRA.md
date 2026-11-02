@@ -125,6 +125,13 @@ Pred   := Concept | Pred ∧ Pred | Pred ∨ Pred | ¬Pred
   We solve `min_x (x − y)ᵀ W⁻¹ (x − y)` subject to `x ∈ 𝒦`.
   This is a weighted projection (MinT-type), a quadratic program. MinT itself assumes summing equalities, so we
   use it only for the time and attribute axes, and the concept axis needs the inequality version.
+- **Intervals after reconciliation.** Let `y ~ N(x*, Σ)` asymptotically, with `Σ̂` from Proposition 2, and let
+  `c = χ²_{d,1−α}`. For a target `w·x`, the interval is `[min, max]` of `w·x` over
+  `{x ∈ 𝒦 : (x − y)ᵀ Σ̂⁻¹ (x − y) ≤ c}`. Because the region contains `x*` whenever the unconstrained ellipsoid does,
+  and `x* ∈ 𝒦`, the coverage is at least `1 − α` asymptotically. It is conservative (it uses d degrees of freedom
+  and ignores that the constraints cut the region). The point estimate is the projection of Section 5 and the
+  interval does not have to be centred on it. Report the width and the empirical coverage.
+  A simpler fallback is to clip each Proposition 2 interval to the range allowed by 𝒦.
 - **Drift test.** We test if the extractor error rates change with time τ. For this test, we stratify the audit
   by time. If the rates change, we correct each time block separately.
 
@@ -165,7 +172,8 @@ one time and one attribute value, so the cells of `T × A` partition the reports
    `‖P(y) − x*‖_{W⁻¹} ≤ ‖y − x*‖_{W⁻¹}`. Thus, `E‖P(y) − x*‖²_{W⁻¹} ≤ E‖y − x*‖²_{W⁻¹}` for any distribution of y.
    Remarks: the guarantee holds for the loss with the same W. It is not claimed for other losses, or for the case
    where W is estimated from the same y. P is not linear when 𝒦 has inequalities, so P(y) is biased.
-   Thus, the intervals of Proposition 2 do not carry over to the reconciled values. Open item 5 below.
+   Thus, the intervals of Proposition 2 do not carry over to the reconciled point values. For intervals, use the
+   constrained-region intervals of Section 5 (valid, and conservative).
 4. **Complexity.** Let `F` be the number of facts, `h` the largest number of ancestors of one concept, and
    `A_ne` the set of non-empty attribute values.
    - **Build:** O(F·h) time to compute `π_r(ℓ)` for each report and each ancestor ℓ.
@@ -189,8 +197,10 @@ one time and one attribute value, so the cells of `T × A` partition the reports
 ## 7. Examples
 
 - **MAUDE (FRN infusion pumps).** "How many 2025 reports describe an occlusion alarm with injury?"
-  → `γ_count(σ_{year=2025, event_type=Injury}(↓Occlusion))`.
-  Note: `event_type` is hidden for evaluation of extraction. Here we use it as a filter attribute.
+  → `γ_count(σ_{year=2025}(↓Occlusion ∧ Injury))`.
+  `Injury` is a concept extracted from the text, so the Boolean rule of Section 2 gives its uncertainty.
+  The ground truth comes from the hidden field `event_type`. A field is a filter attribute or a hidden field,
+  never both (Section 8, item 3).
 - **VAERS.** "What is the trend of myocarditis reports per million doses, 2021 Q1 to 2023 Q4, ages 12–29?"
   → `∇(Agg(↓Myocarditis, σ_{age∈[12,29]}) BY quarter ÷E doses)`. Lattice: MedDRA. Exposure: CDC doses.
 - **ASRS.** "Did runway-incursion reports change from 2018 to 2023, when we include the change in traffic?"
@@ -199,18 +209,27 @@ one time and one attribute value, so the cells of `T × A` partition the reports
 
 ## 8. Open items
 
-1. The annotation semiring is now `PosBool[X]` with evaluation (Section 2). The earlier product-ring version with a
-   componentwise ⊗ is replaced. Check the construction against Green, Karvounarakis and Tannen (2007), and
-   check the relation to Li and Eisner (2009). Needs Chenyang's agreement.
-2. Boolean combinations are now exact given that the facts of a report are independent (Section 2). A copula or
-   another dependence model is needed only for dependence between the facts of one report. STUDENT_START.md,
-   Section 7 (item 4) and the EXPERIMENTS.md ablation still describe the older question (independence between
-   predicates). Update them after Chenyang decides.
-3. Decide if the same event_type field can be a filter attribute and a hidden field at the same time (Section 7).
-4. Toy example: done (Section 9). It has counts, roll-up and slope. It does not yet have reconciliation, correction
-   or change-points.
-5. Intervals after reconciliation (Proposition 3 remark): find a result, or report only the pre-reconciliation
-   intervals.
+Decisions below are the working defaults. Chenyang can overrule them. A decision marked *check* is not complete
+until a source or a proof is checked.
+
+1. **Semiring.** Decided: use `PosBool[X]` with evaluation (Section 2). The earlier product ring is dropped.
+   *Check:* the construction against Green, Karvounarakis and Tannen (2007), and the relation to Li and Eisner (2009),
+   from the original papers. The student does this when they verify citations. Describe the method as an
+   application of lineage semirings, not as a new algebra.
+2. **Boolean combinations.** Decided: exact given independent facts within a report (Section 2). No independence
+   assumption between predicates. A Gaussian copula is an ablation for dependence between the facts of one
+   report, with the audit set correcting the combined cell. The Fréchet–Hoeffding bounds are a check on the
+   combined probability of a conjunction.
+3. **`event_type` as filter and hidden field.** Decided: no. Each field is exactly one of text, filter or hidden
+   (STUDENT_START.md, task 3). In MAUDE, `event_type` stays hidden. A question about injury uses an extracted
+   `Injury` concept, and the answer is checked against `event_type`. A question that filters on a structured
+   field uses only fields that the method may see. Do not write a question template that uses one field both ways.
+4. **Toy example.** Decided: counts, roll-up, slope, Boolean predicate and reconciliation are in Section 9. Correction (Se, Sp)
+   and change-points are added when the code exists, as part of the unit tests, not by hand.
+5. **Intervals after reconciliation.** Decided: constrained-region intervals (Section 5), with the clipped
+   Proposition 2 intervals as a fallback. Open: tightness. The width may be large for large d. The hypothesis H3
+   (92–97% coverage) may not hold for these intervals, because they are conservative and can cover more than 97%.
+   Report coverage and width together.
 
 ## 9. Toy cube (hand calculation, first unit test)
 
@@ -268,4 +287,12 @@ Check for Electrical: slope `= −0.3·2 − 0.1·1.5 + 0.1·1 + 0.3·0.8 = −0
 variance `= 0.09·(4/25) + 0.01·(1/4) = 0.0144 + 0.0025 = 0.0169`. Problem in Q4 has `S₁ = 24/5` because r20 has
 `π = 4/5`, so its slope is `−3/50 = −0.06` with variance `9/625`.
 
-**Not covered yet:** correction (Se, Sp), reconciliation, and change-points. Add them to this example later.
+**Reconciliation (Section 5, concept axis, Q1, identity weights).** Suppose the corrected cells are
+`y = (Occ, Leak, Mech) = (2, 2, 1.5)`. The constraints are `Occ ≤ Mech`, `Leak ≤ Mech` and `Mech ≤ Occ + Leak`.
+Mechanical is below both children, so the first two are active. Set `Occ = Leak = Mech = t`.
+Then `min (t−2)² + (t−2)² + (t−1.5)²` gives `t = (2 + 2 + 1.5)/3 = 11/6`, and `Mech ≤ Occ + Leak` holds
+(`11/6 ≤ 11/3`). Both multipliers are positive, so this is the projection. We checked it with a numeric solver.
+With weights `W = diag(1, 1, 1/4)` (Mechanical is four times less variable), the same steps give
+`t = (2 + 2 + 1.5·4)/(1 + 1 + 4) = 10/6 = 5/3`. The more certain cell moves less (`1.5 → 5/3`, and the children move `2 → 5/3`).
+
+**Not covered yet:** correction (Se, Sp) and change-points. Add them as unit tests when the code exists.

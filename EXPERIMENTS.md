@@ -78,7 +78,7 @@ Remove or change one part at a time:
 - No reconciliation
 - Reconciliation with only the time and attribute sum equalities (no concept-axis inequalities)
 - No exposure
-- Independence against copula for Boolean predicates
+- Independent facts within a report against a Gaussian copula for Boolean predicates
 - Grammar-limited parsing against free-form parsing
 
 ## 7. Compute (estimate)

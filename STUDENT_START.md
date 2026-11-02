@@ -75,7 +75,8 @@ Use these default answers. If you find a problem with a default, tell Chenyang.
    - Use MAUDE for counts, raw trends and change-points.
    - For a second measure, divide by all reports for the same product code (proportional reporting).
    - Use exposure data only for VAERS (doses) and ASRS (flight operations).
-4. **Boolean predicates: use independence, then correct the combined cell with the audit set.**
-   - A copula needs a correlation for each pair of concepts. The audit set is too small to estimate them.
+4. **Boolean predicates: use the exact formulas in ALGEBRA.md, Section 2, then correct the combined cell with the audit set.**
+   - The formulas assume that the facts of one report are independent. They do not assume independence between predicates.
+   - A copula needs a correlation for each pair of facts. The audit set is too small to estimate them.
    - Use a Gaussian copula only as an ablation.
    - Also calculate the Fréchet–Hoeffding bounds as a check.
