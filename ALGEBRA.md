@@ -90,9 +90,15 @@ Pred   := Concept | Pred ∧ Pred | Pred ∨ Pred | ¬Pred
   (or a PPI rectifier). The corrected cell is `θ̂ = (θ_raw − (1 − Sp)) / (Se + Sp − 1)` (Rogan–Gladen),
   or the PPI++ form. The variance includes the uncertainty from the audit.
 - **Reconciliation.** Let `y` be the vector of corrected cells over the lattice. Let 𝒦 be the set of
-  consistent vectors: parts of a partition add up to the total (equalities), and a child is not more than its
-  parent (inequalities). We solve `min_x (x − y)ᵀ W⁻¹ (x − y)` subject to `x ∈ 𝒦`.
-  This is a weighted projection (MinT-type), a quadratic program with inequalities.
+  consistent vectors. A report can have facts under more than one child, so the children of a concept do not
+  partition its reports. For a concept ℓ with children c₁…c_k, the distinct counts satisfy
+  `max_i x[c_i] ≤ x[ℓ] ≤ Σ_i x[c_i]` (inequalities). If ℓ has facts of its own, the upper bound adds `x[ℓ-own]`.
+  Equalities (`x[ℓ] = Σ_i x[c_i]`) hold only for a single-label partition, for example when each report has
+  exactly one child label, or for the cells of the time and attribute axes (each report is in one bin).
+  Use equalities on those axes and inequalities on the concept axis.
+  We solve `min_x (x − y)ᵀ W⁻¹ (x − y)` subject to `x ∈ 𝒦`.
+  This is a weighted projection (MinT-type), a quadratic program. MinT itself assumes summing equalities, so we
+  use it only for the time and attribute axes, and the concept axis needs the inequality version.
 - **Drift test.** We test if the extractor error rates change with time τ. For this test, we stratify the audit
   by time. If the rates change, we correct each time block separately.
 
@@ -144,8 +150,9 @@ one time and one attribute value, so the cells of `T × A` partition the reports
    - A Boolean predicate costs O(size of the compressed bitmaps), not O(log|T|).
 5. **Cost over many queries.** Measure cost in LLM calls (or tokens). Let `C_index`, `C_audit` be the fixed costs.
    Assume each query has a parse cost at most `c_p`, and a probability ρ of a new concept that costs `c_new`.
-   Assume a per-query sampling method needs at least `c_s` calls for each query. For a Hoeffding-type guarantee
-   (error ε, failure δ) on a proportion, `c_s ≥ ln(2/δ) / (2ε²)`. If `c_s > c_p + ρ·c_new`, the expected
+   Assume a per-query sampling method uses `c_s` calls for each query. We set `c_s` from the baseline's own
+   settings (measured). For a Hoeffding-based design (error ε, failure δ) on a proportion, a sufficient sample
+   size is `ln(2/δ) / (2ε²)`. This is not a lower bound on what any method needs. If `c_s > c_p + ρ·c_new`, the expected
    cost of CubeRAG is lower for all `m ≥ m*`, where
    `m* = (C_index + C_audit) / (c_s − c_p − ρ·c_new)`.
    For H4, we need the ratio `(C_index + C_audit + m(c_p + ρ·c_new)) / (m·c_s) ≤ 0.1` at `m = 300`.
@@ -202,6 +209,8 @@ The columns are Q1, Q2, Q3, Q4.
 **Roll-up on the concept axis (Proposition 1).** Mechanical in Q1 is `{r1, r2} ∪ {r2, r4} = {r1, r2, r4}`, so
 `n = 3`. The sum of the child counts is `2 + 2 = 4`, which counts r2 two times. In Q3, Mechanical is
 `{r11..r14} ∪ {r14}`, so `n = 4`, but the child sum is 5. In Q2 and Q4 the children do not overlap, so both numbers agree.
+This is why Section 5 uses `max(children) ≤ parent ≤ sum(children)` and not an equality: in Q1,
+`max(2, 2) = 2 ≤ 3 ≤ 4 = 2 + 2`.
 For r2, the Mechanical probability is `1 − (1−1)(1−½) = 1`, not `1 + ½`.
 
 **Roll-up on the time axis.** Occlusion for Q2–Q4 is `3 + 4 + 4 = 11`. With prefix sums

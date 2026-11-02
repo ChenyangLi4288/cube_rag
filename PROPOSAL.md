@@ -54,8 +54,9 @@ again for each new query. SemReuse (2026) uses certified filters again, but it d
 6. **Correct.** A small audit set gives the error rates of the extractor for each concept. We correct the cells
    with these rates (Rogan–Gladen or prediction-powered correction).
 7. **Reconcile.** We project the corrected cells onto the set of consistent values. In this set, a child count is
-   not more than its parent count, and the parts of a partition add up to the total. This step comes from
-   hierarchical forecasting (MinT). No RAG method uses it yet.
+   not more than its parent count, and a parent count is not more than the sum of its children (a report can have
+   facts under several children). Counts over time bins and attributes add up exactly, because each report is in one
+   bin. This step comes from hierarchical forecasting (MinT), with inequality constraints on the concept axis. No RAG method uses it yet.
 8. **Generate.** The LLM writes the answer. It gives the numbers and the confidence interval from the cube.
    It also cites example reports from the provenance links.
 9. **New concepts.** If a question uses a concept that is not in the lattice, we add a new node.

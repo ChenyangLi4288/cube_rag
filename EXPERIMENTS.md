@@ -76,7 +76,7 @@ Remove or change one part at a time:
 - No 𝔼₂ (point estimates only)
 - No correction
 - No reconciliation
-- Reconciliation with equalities only (no inequalities)
+- Reconciliation with only the time and attribute sum equalities (no concept-axis inequalities)
 - No exposure
 - Independence against copula for Boolean predicates
 - Grammar-limited parsing against free-form parsing
