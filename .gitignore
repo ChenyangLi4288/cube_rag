@@ -1,5 +1,6 @@
 # Data and model outputs stay local
-data/
+data/*
+!data/README.md
 *.parquet
 *.jsonl.gz
 *.csv
