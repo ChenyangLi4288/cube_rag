@@ -329,3 +329,234 @@ With weights `W = diag(1, 1, 1/4)` (Mechanical is four times less variable), the
 `t = (2 + 2 + 1.5·4)/(1 + 1 + 4) = 10/6 = 5/3`. The more certain cell moves less (`1.5 → 5/3`, and the children move `2 → 5/3`).
 
 **Not covered yet:** correction (Se, Sp) and change-points. Add them as unit tests when the code exists.
+
+## 10. Finalized specification (v1.0, 2026-11-19)
+
+Sections 1–9 stay as the derivation and the record of earlier decisions. This section is the normative version:
+where it is more precise than Sections 1–9, this section wins. The reference implementation (`cuberag/`) and the
+law tests (`tests/test_laws.py`, `tests/test_toy.py`) follow this section. Items marked **[user]** need Chenyang's
+judgment (Section 10.7).
+
+### 10.1 Objects
+
+| Object | Definition |
+|---|---|
+| Reports `R` | Each `r` has one base time bin `t(r) ∈ T₀` and one value `a_d(r)` per attribute dimension `d` (a missing value is the explicit value `NA`). |
+| Concepts `(L, ≤)` | A finite poset with top ⊤, given as (child, parent) pairs. **Multiple parents are allowed (DAG).** It need not be a lattice: no join is used anywhere. `↓ℓ` is the down-set. |
+| Calendar `(T₀, ≤)` | Base bins `0..|T₀|−1` in a total order. A level is a monotone map `λ : T₀ → T_λ`, so each coarse bin is an interval of base bins. A time slice is an interval `[lo, hi]` of base bins. |
+| Fact | `f = (r, ℓ, q, s)`: report, concept, score `q ∈ [0,1]`, source span. Its time and attributes are those of r. **One variable per (report, concept)**: duplicates merge, `q = max`, all spans are kept as provenance (D3). |
+| Lineage semiring `S` | `PosBool[X]`, `X` = one Bernoulli variable `x_f` per merged fact. Canonical form: an antichain of monomials (minimal monotone DNF). This form is unique, so equality of formulas is equality of functions. `⊕ = ∨`, `⊗ = ∧`, `0 = false`, `1 = true`. |
+| Predicate algebra | `Bool[X] ⊇ PosBool[X]`, used only to evaluate predicates with `¬`. No canonical form is stored. |
+| Cube value | `K = S^R` (finitely supported maps report → formula), ⊕ and ⊗ pointwise. |
+
+### 10.2 The cube
+
+- Base cell: `C₀[ℓ](r) = ⋁ { x_f : f fact of r with concept exactly ℓ }`.
+- Concept roll-up (zeta transform): `C[ℓ] = ⨁_{ℓ' ∈ ↓ℓ} C₀[ℓ']`.
+- A cell `(ℓ, σ)` for a slice σ is the restriction `C[ℓ]|_σ`. Because each report has one time bin and one value per
+  dimension, slicing is a restriction of the support and needs no recomputation.
+- Evaluations of a cell value `v ∈ K`, all read at the end:
+  - `ev_w : S → 𝔹` for a world `w ⊆ X`: a semiring homomorphism. `ev₁ = ev_X` gives the distinct bitmap.
+  - `π_r = P(v(r))` under independent `x_f ~ Bernoulli(q_f)` (exact: Shannon expansion over the report's variables).
+  - Moments `(n, Σπ, Σπ²)` per base cell, stored as prefix arrays over `T₀` for each attribute combination.
+  - Provenance: the variables of `v(r)` and their spans.
+
+### 10.3 Operations (complete list)
+
+| Operator | Type | Definition |
+|---|---|---|
+| Slice / dice `σ_θ` | `K → K` | `θ = (time interval, value set per dimension)`. Dice is a slice on several dimensions. `σ_θ ∘ σ_θ' = σ_{θ∧θ'}` (meet = interval and set intersection). |
+| Concept roll-up `ρ_ℓ` | read `C[ℓ]` | Zeta transform above. Drill-down reads the stored `C[c]` of a child. Roll-up has no inverse; we never need one. |
+| Time roll-up `ρ_λ` | vector → vector | Sum of the base-bin counts in each coarse bin of level λ. |
+| Predicate `⟦p⟧` | `K` (or `Bool[X]^R`) | Homomorphic extension: `⟦ℓ⟧ = C[ℓ]`, `⟦p∧q⟧ = ⟦p⟧ ⊗ ⟦q⟧`, `⟦p∨q⟧ = ⟦p⟧ ⊕ ⟦q⟧`, `⟦¬p⟧ = ¬⟦p⟧` in `Bool[X]`. |
+| Count `γ_count(p, σ)` | random variable | `N = Σ_{r ∈ σ} 1[⟦p⟧(r)]`. Point value `Σπ`, bitmap `{r : ev₁(⟦p⟧(r))}`. |
+| Sum / mean `γ_sum(v)`, `γ_mean(v)` | random variable | `Σ_r v(r) 1[⟦p⟧(r)]` for a numeric attribute v; mean = sum ÷ count (delta method). *Specified, not yet implemented.* |
+| Series `BY λ` / group-by `BY d` | vector of counts | One count per coarse time bin / per listed value of dimension d. |
+| `Δ(x, y)`, `x ÷ y`, `∇`, `÷E` | normal form | See 10.5. `÷E` divides bin k by a fixed exposure `E_k`. `∇` is the OLS slope with fixed x. |
+| `κ` (change-point) | outside the normal form | Point locations only; no interval claim (Prop 2(c) excludes it). *Not implemented.* |
+
+Composition is the grammar of Section 4. A group-by over a concept's children is allowed but is **not** a partition
+(a report can be under several children); it returns a vector with its full covariance.
+
+### 10.4 Laws (each one is a test)
+
+| # | Law | Test |
+|---|---|---|
+| L1 | `(S, ⊕, ⊗, 0, 1)` is a commutative semiring and a bounded distributive lattice: associativity, commutativity, identities, annihilation by 0, **idempotence** of ⊕ and ⊗, both distributive laws, absorption, `a ⊕ 1 = 1`. | `test_L1_*` |
+| L2 | Every `ev_w` (and `ev₁`) is a semiring homomorphism to 𝔹. Formulas are equal iff they agree on every world (canonical form). `φ.implies(ψ)` is the pointwise order. | `test_L2_*` |
+| L3 | `P` is a valuation, not a homomorphism: `P(0)=0`, `P(1)=1`, monotone, modular `P(a∨b)+P(a∧b)=P(a)+P(b)`. `P(a∧¬b)=P(a)−P(a∧b)`. The closed forms of Section 2 agree with enumeration. | `test_L3_*` |
+| L4 | Zeta = recursive roll-up: `C[ℓ] = C₀[ℓ] ⊕ ⨁_{c child of ℓ} C[c]`, for any DAG. This needs idempotence of ⊕ (a descendant reachable by two paths is added twice). Roll-up is monotone: `ℓ ≤ ℓ' ⇒ (C[ℓ](r) ⇒ C[ℓ'](r))`, so bitmaps and `π` grow. | `test_L4_*` |
+| L5 | Proposition 1: `|ev₁(C[ℓ]|_σ)|` equals the brute-force number of distinct reports in σ with a fact under ℓ, and `max_c n_c ≤ n_ℓ ≤ Σ_c n_c + n_{ℓ-own}`. | `test_L5_*` |
+| L6 | Predicates are homomorphic (`⟦p∧q⟧ = ⟦p⟧⊗⟦q⟧`, `⟦p∨q⟧ = ⟦p⟧⊕⟦q⟧`). Bitmaps of `∧, ∨, ∧¬` are `∩, ∪, ∖`. Expected counts are modular (`E N(p∨q) + E N(p∧q) = E N(p) + E N(q)`) and complementary (`E N(p) + E N(¬p) = |σ|`). | `test_L6_*` |
+| L7 | Slices: `σ∘σ' = σ'∘σ = σ_{θ∧θ'}`, `σ∘σ = σ`. Slicing commutes with predicate formation and roll-up (it is a restriction). Counts are additive over any partition of the time or attribute axis. Prefix-array range moments equal the direct sums. | `test_L7_*` |
+| L8 | Time roll-ups compose: `ρ_{q→y} ∘ ρ_{m→q} = ρ_{m→y}`, and totals are preserved. | `test_L8_*` |
+| L9 | Linear operators: OLS weights satisfy `Σw = 0` and `Σ w x = 1`; the slope ignores an added constant and scales linearly. The variance of a linear query is `wᵀΣw` with the **exact** covariance `Cov(N, N') = Σ_r [P(e_r ∧ e'_r) − π_r π'_r]`. This equals the variance over all possible worlds. | `test_L9_*` |
+| L10 | Proposition 2(a): the PPI estimator is exactly design-unbiased (checked by enumeration of every SRSWOR sample). | `test_L10_*` |
+| L11 | Proposition 3: the projection is in 𝒦, is idempotent, and is non-expansive in the `W⁻¹` norm toward any `x* ∈ 𝒦`. | `test_L11_*` |
+
+**Non-laws (stated so that nobody relies on them).**
+- `n_ℓ ≠ Σ_c n_c` in general (multi-label reports). The gap is `Σ_r (m_r − 1)`.
+- `P` does not commute with ⊕ and ⊗: `P(a ∨ b) = P(a) + P(b) − P(a)P(b)` only if a and b have disjoint variables.
+- ⊕ has no inverse, so there are no prefix sums of formulas. Only the evaluated moments have prefix arrays.
+- Negation does not commute with roll-up: `⟦¬ℓ⟧ ≠ ⨁_{ℓ'≤ℓ} ⟦¬ℓ'⟧`. Negation is applied after roll-up and is never stored.
+- The projection is not linear, and the reconciled values are biased (Proposition 3, remark).
+- Raw-moment variances are false-positive-only. They are **not** valid intervals (confirmed in the pilot,
+  EXPERIMENTS.md Section 8).
+
+### 10.5 How a query is evaluated
+
+1. **Parse** (LLM, later): question → expression of the grammar. An unknown concept goes to the "new concept" path
+   (not in the reference code).
+2. **Compile** to the normal form `(N, g)`: a vector of component counts `N_i = γ_count(p_i, σ_i)` and a map g.
+   Count, series, group-by, Δ, ∇ and ÷E give a linear g (`g(θ) = Aθ`). A ratio gives a smooth g.
+3. **Cells**: for each component, restrict `⟦p_i⟧` to the reports of `σ_i`. The support comes from the bitmaps;
+   for `¬` it is the whole slice.
+4. **Estimate** θ and Σ with one of two estimators:
+   - *raw*: `θ_i = Σ_r π_ir`, `Σ_ij` exact from the formulas (L9). For diagnostics only.
+   - *ppi* (the default for every reported interval): `θ̂_i = Σ_r f_ir + Σ_h (N_h/n_h) Σ_{r∈U_h} (y_ir − f_ir)`, with
+     `f_ir = π_ir 1[r ∈ σ_i]`, and joint covariance `Σ̂ = Σ_h N_h²(1 − n_h/N_h)/n_h · S_h`. Here `S_h` is the sample
+     covariance of the residual vectors `e_r = y_r − f_r` in audit stratum h. This is the estimator of Prop 2(c′)
+     and closes the open estimator of item 8.5. `y_ir` is the oracle label of the **combined** predicate `p_i`,
+     not a combination of atom labels.
+5. **Reconcile** (optional): project the component vector onto 𝒦 with `W = Σ̂` (fixed after estimation). Intervals
+   come from the constrained-region rule of Section 5, not from the projected point.
+6. **Answer**: `g(θ̂)` with covariance `J Σ̂ Jᵀ` (J = A for a linear g, a numerical Jacobian otherwise), and a normal
+   95% interval.
+7. **Cite**: the provenance spans of the variables of the reports with the highest π in each component.
+
+### 10.6 Decisions (resolved here)
+
+| # | Decision | Rationale |
+|---|---|---|
+| D1 | Store formulas in the canonical antichain form. | Equality and the order are syntactic (L2). The size stays small because atom cells are disjunctions of single variables. |
+| D2 | Exact probabilities by Shannon expansion over the variables of a report. | Exact for any Bool[X] expression. A report has few variables (at most the number of concepts that the extractor emits for it). The closed forms of Section 2 are special cases (tested). |
+| D3 | One variable per (report, concept). Duplicates merge with `q = max`. | Two spans that state the same concept are not independent evidence. If we treat them as independent, π is too large. **[user]** |
+| D4 | The concept poset can be a DAG. No joins are needed. | Taxonomies (MedDRA, FDA codes) have terms with several parents. L4 holds for any poset because ⊕ is idempotent. |
+| D5 | Time: one base bin per report. Levels are monotone maps. Slices are intervals. | Time roll-up is then exactly additive, and prefix arrays are valid. A time set that is not an interval is a union of slices (additive, L7). |
+| D6 | Attributes: one value per dimension per report, with an explicit `NA`. A slice that does not list `NA` excludes it. | The cells stay a partition (L7). A multi-valued attribute (for example several devices in one report) must be a concept, not an attribute. |
+| D7 | Δ, ratio and group-by use the exact covariance (raw) or the joint audit covariance (ppi), never an independence assumption. | Overlapping slices share reports. The formulas give the covariance exactly (L9). |
+| D8 | PPI is the default correction. Rogan–Gladen is an ablation. | PPI is exactly unbiased with no assumption on the extractor (L10, Prop 2(a)). Rogan–Gladen needs constant Se and Sp in each stratum. **[user]** |
+| D9 | The correction is applied to the combined predicate cell, with oracle labels for the combined predicate. | Se and Sp of `A ∧ ¬B` are not functions of the atom Se and Sp without independence. Item 8.2 already says to correct the combined cell. |
+| D10 | Change-points (κ), `γ_sum`, `γ_mean` and Rogan–Gladen are specified but not in the reference code. | This follows the scope-cut order of PROPOSAL.md Section 5. |
+
+### 10.7 Questions for Chenyang
+
+1. D3: merge duplicate facts with `q = max`, or use noisy-or over spans? Noisy-or assumes that the spans are independent.
+2. D8: is PPI the headline estimator, with Rogan–Gladen only as an ablation?
+3. The pilot (EXPERIMENTS.md Section 8) shows that a top-k reader is a weak count baseline by construction.
+   Should the paper also include a "retrieve all above a threshold" dense baseline, which has no fixed k?
+4. Should the audit be stratified by extractor score (more efficient for rare concepts) instead of by cell?
+   The estimator in 10.5 supports any strata.
+
+### 10.8 Reference implementation
+
+- Code: `cuberag/posbool.py` (S, Bool[X], probabilities), `cuberag/lattice.py`, `cuberag/cube.py` (cube, slices,
+  predicates, counts), `cuberag/query.py` (normal form, raw and PPI estimators), `cuberag/reconcile.py`.
+- Tests: `python -m pytest tests` (the Section 9 toy cube, and hypothesis tests of L1–L11).
+- Pilot on public MAUDE data: `python scripts/fetch_maude.py`, then `python scripts/run_small_eval.py`.
+  The results are in EXPERIMENTS.md, Section 8.
+
+## 11. Addendum (2026-11-19): audit designs for the PPI estimator
+
+This section adds to Section 10 and changes nothing in it. It answers question 4 of Section 10.7 (stratify
+the audit by extractor score instead of by cell). The estimator of 10.5 already supports any strata. This section
+gives the conditions under which a score-dependent design stays exactly unbiased, adds a Poisson (IPW) design,
+says how to allocate the audit, and says what a design cannot fix. Code: `cuberag/audit.py` and the Poisson branch
+of `cuberag/query.py::ppi_moments`. Tests: `tests/test_audit_design.py` (laws L12, L13).
+
+### 11.1 Setup
+
+The frame is the set of reports `R` (size N) that the cube was built on. A query in normal form has components
+`i = 1..m`. For report r, `f_ir = π_ir 1[r ∈ σ_i]` (known for every report), `y_ir` is the oracle label of the
+combined predicate `p_i` (known only for audited reports, D9), and `e_r = y_r − f_r ∈ ℝ^m`. The target is
+`θ = Σ_r y_r = Σ_r f_r + Σ_r e_r`. The only random thing is the audit sample U. The extractor scores, and
+everything computed from them, are fixed before the audit, so they are constants under the design.
+
+**Design rule.** Strata, allocations and inclusion probabilities may depend on anything known before the audit:
+extractor scores of the frame, concept rarity estimated from scores, time and attribute cells, and labels of a
+*different* split (for example the train split). They must not depend on oracle labels of the frame. If they
+did, the inclusion probabilities would be random, and 11.2 and 11.3 would not hold.
+
+### 11.2 Stratified SRSWOR with arbitrary strata (score, rarity, or cell)
+
+Strata `h` partition R (`N_h` reports), and `n_h` reports are drawn without replacement in each stratum.
+The inclusion probability is `n_h/N_h`, so the design weight (inverse probability) is `N_h/n_h`. The estimator
+is that of 10.5:
+
+`θ̂ = Σ_r f_r + Σ_h (N_h/n_h) Σ_{r∈U_h} e_r`,  `Σ̂ = Σ_h N_h² (1 − n_h/N_h)/n_h · S_h(U)`,
+
+where `S_h(U)` is the sample covariance (divisor `n_h − 1`) of the residual vectors in `U_h`.
+
+**Proposition 5.** For any strata that satisfy the design rule, and any allocation with `n_h ≥ 2` or `n_h = N_h`:
+(a) `E θ̂ = θ` (exactly, for every component);
+(b) `Cov θ̂ = V := Σ_h N_h² (1 − n_h/N_h)/n_h · S_h^pop`, where `S_h^pop` is the covariance of `{e_r : r ∈ h}`
+with divisor `N_h − 1`;
+(c) `E Σ̂ = V`.
+For a linear query `g(θ) = Aθ` (count, series, group-by, Δ, ∇, ÷E), the answer `Aθ̂` is unbiased with variance
+`A V Aᵀ`, and `A Σ̂ Aᵀ` is unbiased for it. The joint covariance stays exact in the sense of Section 10 (D7):
+no independence between components is assumed. Overlapping slices and Boolean combinations are handled because
+`e_r` is a vector for the same report.
+
+*Proof.* In each stratum, SRSWOR makes `(N_h/n_h) Σ_{U_h} e_r` unbiased for `Σ_{r∈h} e_r`. It has covariance
+`N_h²(1 − n_h/N_h)/n_h · S_h^pop`, and `S_h(U)` is unbiased for `S_h^pop`. These are the standard results,
+applied to each coordinate and each pair of coordinates. Strata are sampled independently, so the means and the
+covariances add over h. The `Σ_r f_r` term is a constant. ∎
+
+Proposition 2(a) of Section 10 (L10) is the special case of one stratum. A score-stratified audit is this same
+estimator with strata defined by the extractor score. **No new estimator is needed, only a new design.**
+
+### 11.3 Poisson sampling (inverse-probability weighting)
+
+Each report is audited independently with a known probability `p_r ∈ (0, 1]`. Then
+
+`θ̂ = Σ_r f_r + Σ_{r∈U} e_r/p_r`,  `Σ̂ = Σ_{r∈U} (1 − p_r)/p_r² · e_r e_rᵀ`.
+
+**Proposition 6.** (a) `E θ̂ = θ`; (b) `Cov θ̂ = V := Σ_{r∈R} (1 − p_r)/p_r · e_r e_rᵀ`; (c) `E Σ̂ = V`.
+*Proof.* The inclusion indicators `I_r` are independent Bernoulli(`p_r`). Then `E[I_r/p_r] = 1`,
+`Var(I_r/p_r) = (1 − p_r)/p_r` and `E[I_r (1 − p_r)/p_r²] = (1 − p_r)/p_r`. ∎
+
+A report with `p_r = 1` is a take-all unit and adds no variance. The sample size is random, with mean `Σ p_r`.
+This design is the Horvitz–Thompson form of the residual (difference) estimator.
+
+### 11.4 Allocation (efficiency only; unbiasedness never depends on it)
+
+Let the objective be a weighted sum of component variances `Σ_ℓ w_ℓ Var(N̂_ℓ)` over the concept cells that the
+cube will be asked about. With `w_ℓ = 1/N_ℓ²`, this is the summed *relative* variance, so rare concepts count as
+much as common ones (the "concept rarity" option). Define the predicted squared residual of a report,
+`d_r = Σ_ℓ w_ℓ ê²_rℓ`.
+
+- Stratified: the strata are quantiles of `d_r`. The Neyman allocation is `n_h ∝ N_h S_h` with
+  `S_h² = Σ_ℓ w_ℓ S²_hℓ ≈ mean_{r∈h} d_r`, with the bounds `2 ≤ n_h ≤ N_h`. The implementation solves
+  `n_h = clip(λ N_h S_h, 2, N_h)`, `Σ n_h = n` for λ by bisection, then rounds by largest remainders.
+- Poisson: minimizing `Σ_r (1/p_r − 1) d_r` subject to `Σ p_r = n` gives `p_r ∝ √d_r`, capped at 1.
+  We mix in a uniform floor (20% of n). This bounds every weight `1/p_r` by `5N/n`, so a badly predicted `d_r`
+  cannot produce a huge weight.
+- `ê²_rℓ` must be computed before the audit. In the pilot it comes from the isotonic calibration
+  `ĝ_ℓ(π) ≈ P(y = 1 | π)`, fitted on cross-fitted scores of the **train** split. Then
+  `ê² = ĝ(1 − π)² + (1 − ĝ)π²`. If an extractor has no train-split run, a proxy `π(1 − π) + ε` is used
+  (`ε = 0.005`). A wrong `ê²` costs efficiency, never bias (Propositions 5 and 6 hold for any fixed design).
+
+### 11.5 What no design can fix (rare cells)
+
+Normal intervals need the sampled residual sum to be close to Gaussian. Take a cell with K positives that the
+extractor misses (`π ≈ 0`), spread over a stratum of size `N_h`. Under SRSWOR with `n_h` draws, the probability
+that the audit sees none of them is about `(1 − K/N_h)^{n_h}`. In that event, `S_h(U)` has no contribution from
+them, the interval is too narrow (often of zero width), and it misses the truth. In the pilot, `K ≈ 10`,
+`N_h = 3000` and `n = 150` give `(1 − 1/300)^150 ≈ 0.61`. This is the 0.41 coverage for counts under 20 in
+Section 8. Score strata help only if the missed positives are concentrated in strata that can be oversampled,
+that is, if the score ranks them above the true negatives. Otherwise the remedies are fewer missed positives
+(a better extractor), a larger audit, or an interval that does not rely on the CLT (future work). The design
+bounds this failure but does not remove it. EXPERIMENTS.md Section 9 measures it.
+
+### 11.6 Laws (each one is a test)
+
+| # | Law | Test |
+|---|---|---|
+| L12 | Proposition 5: with two strata and unequal sampling fractions, enumerate every stratified sample of a 3-component query (two slices, one `A ∧ ¬B`, arbitrary 0/1 oracle labels). The mean of `θ̂` equals θ, the covariance of `θ̂` equals `V`, and the mean of `Σ̂` equals `V`. All three are exact. | `test_L12_stratified_unbiased_and_exact_covariance` |
+| L13 | Proposition 6: the same three identities for Poisson sampling with unequal `p_r`, by enumeration of every subset weighted by its probability. | `test_L13_poisson_ipw_unbiased_and_exact_covariance` |
+| L12–13 (simulation) | A yearly-slope query on a 400-report synthetic cube with missed positives, score strata with Neyman allocation, and Poisson with `p ∝ √d`. Over 3,000 replicate audits, the mean slope estimate is within 4 Monte Carlo SE of the truth, the Monte Carlo variance is within 8% of `wᵀVw`, and the mean of the estimated variances is within 6% of it. | `test_L12_L13_slope_covariance_by_simulation` |
+| — | The allocation sums to n and respects `min(2, N_h) ≤ n_h ≤ N_h`. Poisson probabilities sum to n and are ≤ 1. Score strata keep a separate zero-score stratum. | `test_neyman_allocation_bounds`, `test_allocation_strata_and_probs` |
+
+**Non-law.** A design chosen after looking at frame labels (for example, re-stratifying after a pilot audit of
+the same frame and reusing those labels) is outside Propositions 5 and 6. A two-phase design needs its own
+derivation and is not implemented.

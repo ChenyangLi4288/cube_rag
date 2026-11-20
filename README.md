@@ -47,7 +47,22 @@ We hide these fields from the method. We use them only as the correct answers (g
 | [PROPOSAL.md](PROPOSAL.md) | Motivation, research questions, method, contributions, timeline, risks |
 | [ALGEBRA.md](ALGEBRA.md) | Formal definitions, operators, propositions to prove, examples |
 | [RELATED_WORK.md](RELATED_WORK.md) | Literature table (2024–2026) and how CubeRAG is different |
-| [EXPERIMENTS.md](EXPERIMENTS.md) | Benchmark, baselines, metrics, ablations, compute |
+| [EXPERIMENTS.md](EXPERIMENTS.md) | Benchmark, baselines, metrics, ablations, compute. Section 8: small-scale pilot results |
+| `cuberag/` | Reference implementation of ALGEBRA.md Section 10 (pure Python) |
+| `tests/` | Toy cube (ALGEBRA.md Section 9) and property-based tests of the laws L1–L11. Run `python -m pytest tests` |
+| `scripts/` | `fetch_maude.py` (public openFDA sample), `run_small_eval.py` (pilot against BM25 and dense baselines) |
 
 This project is separate from `mcic_rag_test`. That project studies sampling estimators for one query at a time.
 This project studies a data structure that we build one time and use again for many queries.
+
+### Additions, 2026-11-19 (round 2 of the pilot)
+
+| File | Contents |
+|---|---|
+| `cuberag/audit.py` | Audit designs for PPI: score/rarity strata, Neyman allocation, Poisson (IPW) sampling, exact design covariances (ALGEBRA.md Section 11) |
+| `cuberag/extract/` | Pluggable LLM extractor: output contract (`base.py`), prompt and strict JSON schema (`prompt.py`), OpenAI backend (`openai_backend.py`, key from the file named by `CUBERAG_KEY_FILE`), local Hugging Face backend (`hf_backend.py`) |
+| `scripts/extract_llm.py` | Runs an extractor over the pilot split with per-report cache, run manifest, `--dry-run` and `--limit N` |
+| `scripts/run_audit_eval.py` | Audit-design comparison (replicate audits), score-threshold retrieval baselines, LLM facts input (`--facts`) |
+| `tests/test_audit_design.py`, `tests/test_extract.py` | Laws L12–L13 (stratified and Poisson PPI: unbiasedness and exact covariance) and extractor contract tests |
+
+Results: EXPERIMENTS.md Section 9.
