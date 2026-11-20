@@ -287,6 +287,8 @@ extractor predicts them badly.
 
 ### 9.4 What round 2 shows
 
+> Follow-up work: rerun on v1 data [#9](https://github.com/ChenyangLi4288/cube_rag/issues/9), LLM extraction [#10](https://github.com/ChenyangLi4288/cube_rag/issues/10), rare-cell intervals [#11](https://github.com/ChenyangLi4288/cube_rag/issues/11).
+
 1. **Score-stratified PPI works as the theory says, but the gain is modest.** It is exactly unbiased (L12, L13
    and the replicate means), and its intervals are as valid as uniform. With a train-calibrated design and the
    stand-in extractor, the exact design SE falls by 9% (variance −17%, about a 20% larger audit for free), the

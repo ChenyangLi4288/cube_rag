@@ -239,6 +239,8 @@ one time and one attribute value, so the cells of `T × A` partition the reports
 
 ## 8. Open items
 
+> Remaining checks are tracked in GitHub Issues: citations in [#7](https://github.com/ChenyangLi4288/cube_rag/issues/7), reconciliation-interval tightness with the rare-cell work in [#11](https://github.com/ChenyangLi4288/cube_rag/issues/11).
+
 Decisions below are the working defaults. Chenyang can overrule them. A decision marked *check* is not complete
 until a source or a proof is checked.
 
@@ -440,6 +442,8 @@ Composition is the grammar of Section 4. A group-by over a concept's children is
 | D10 | Change-points (κ), `γ_sum`, `γ_mean` and Rogan–Gladen are specified but not in the reference code. | This follows the scope-cut order of PROPOSAL.md Section 5. |
 
 ### 10.7 Questions for Chenyang
+
+> Tracked in [issue #12](https://github.com/ChenyangLi4288/cube_rag/issues/12) (2026-11-20).
 
 1. D3: merge duplicate facts with `q = max`, or use noisy-or over spans? Noisy-or assumes that the spans are independent.
 2. D8: is PPI the headline estimator, with Rogan–Gladen only as an ablation?
