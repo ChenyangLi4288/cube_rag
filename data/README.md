@@ -16,16 +16,27 @@ data/<ds>/
   field_profile.csv, leakage_checks.json   per-column profile (scripts/profile_fields.py)
 ```
 
-Built by `scripts/build_tables.py` (version **v0-draft**, not frozen). Parquet, zstd.
+Built by `scripts/build_tables.py`, version **v1** (decisions of 2026-11-20 applied, issue #2; rules and counts in
+each `PROCESSED_MANIFEST.json`). Parquet, zstd.
 
 | Dataset | processed/ | hidden/ |
 |---|---|---|
-| VAERS | `reports.parquet` (1 row per primary report; `vax_types` list), `vaccines.parquet` (1 row per vaccine) | `labels.parquet` (outcome flags), `symptoms.parquet` (MedDRA PTs, long) |
-| ASRS | `reports.parquet` (1 row per ACN; `narrative_1`, `narrative_2`, filters; flags `outside_query_year`, `before_2018`) | `labels.parquet` (anomaly list, primary problem, synopsis, analyst-coded fields) |
-| MAUDE | `reports/part-00..15.parquet` (1 row per report; `text_event_description`, `text_mfr_narrative`, filters; flags `has_embedded_codes`, `summary_report`, `noe_summarized`) | `labels.parquet` (event type, flags, patient outcome), `device_problems.parquet`, `patient_problems.parquet` (code + term, long) |
+| VAERS | `reports.parquet` (1 row per primary report; `vax_types` list), `vaccines.parquet` (1 row per vaccine) | `labels.parquet` (outcome flags from the primary row, plus `<flag>_any_order` sensitivity labels), `symptoms.parquet` (MedDRA PTs, long), `lattice_vaers_clusters_support.csv` |
+| ASRS | `reports.parquet` (1 row per ACN, 2018–2023 by incident month; `narrative_1`, `narrative_2`, filters; `outside_query_year` = moved to its incident year) | `labels.parquet` (anomaly list, primary problem, synopsis, analyst-coded fields), `anomaly_nodes.parquet` |
+| MAUDE | `reports/part-00..15.parquet` (1 row per report; `text_event_description`, `text_mfr_narrative` with embedded code blocks stripped; filters; `sample_rate`; `has_embedded_codes`) | `labels.parquet` (event type, flags, patient outcome), `device_problems.parquet`, `patient_problems.parquet` (code + term, long), lattice support/coverage files, `crosswalk_trend_check.csv` |
 
-Open decisions are kept as columns (MAUDE `product_code` for M2, `has_embedded_codes` for M5, `summary_report` for
-M6; ASRS flags for A3), so a decision is a filter, not a rebuild. The only rule applied is VAERS primary-only (V1).
+Rules applied in v1 (STATE.md):
+
+- **MAUDE M2:** 12 product codes, received 2018–2025, sampled with one fixed rate per product code, the same every
+  year (seeded hash of `MDR_REPORT_KEY`). LWS, NIK, MDS and QLG are kept whole; the other 8 codes share one rate,
+  chosen so the expected total is 10⁶. `sample_rate` is stored per report: weight = 1 / `sample_rate`.
+- **MAUDE M5:** embedded code blocks (IMDRF codes with terms, `ANNEX A: …` lists, `PROBLEM CODE - 3191`,
+  `TYPE OF REPORTABLE EVENT: …`, FDA codes in brackets) are removed from both text fields; `has_embedded_codes`
+  marks changed reports, so "drop these reports" is one filter. The build fails if any report still contains one of
+  its own hidden codes; `ERROR CODE 1260`-style device messages are kept (signal). Tests: `tests/test_build_tables.py`.
+- **MAUDE M6:** the 496 summary reports are dropped; candidates without a master row are dropped too.
+- **VAERS V1:** `ORDER = 1` only; `<flag>_any_order` = true if any row of the VAERS_ID (in the four year files) says so.
+- **ASRS A3:** year = incident month; the 2 reports dated 2002 and 2012 are dropped.
 
 ## Roles
 
@@ -75,7 +86,7 @@ Rule of thumb: a field that a coder or analyst filled in *about the outcome* is 
 | `SEQUENCE_NUMBER_OUTCOME` | patient | hidden (leak) | 7.5 | patient outcome codes (death, life-threatening, hospitalised, …) |
 | `SEQUENCE_NUMBER_TREATMENT` | patient | hidden (leak) | 9.1 | treatment given |
 | `REMEDIAL_ACTION`, `REMOVAL_CORRECTION_NUMBER` | master | excluded | 21 | recall / correction codes; possible source for change-point dates (STATE.md M2 follow-up) |
-| `SUMMARY_REPORT`, `NOE_SUMMARIZED` | master | excluded | 100 | 496 summary reports that bundle several events; drop them or count `NOE_SUMMARIZED` (to decide) |
+| `SUMMARY_REPORT`, `NOE_SUMMARIZED` | master | excluded | 100 | 496 summary reports that bundle several events; dropped in v1 (M6) |
 | `MANUFACTURER_CONTACT_*` (19 fields) | master | excluded | | names, phone numbers, addresses of manufacturer staff |
 | `MANUFACTURER_G1_*`, `MANUFACTURER_D_ADDRESS*`, `…_CITY`, `…_ZIP*`, `…_COUNTRY_CODE` | master, device | excluded | | addresses |
 | `DISTRIBUTOR_*`, `MANUFACTURER_NAME/ADDRESS…` (master), `EVENT_KEY`, `NUMBER_*_IN_EVENT`, `DEVICE_EVENT_KEY`, `IMPLANT_FLAG`, `DATE_REMOVED_FLAG`, `DATE_REPORT` (text) | | excluded | 0 | empty in this subset |

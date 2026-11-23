@@ -14,7 +14,7 @@ fda_code,fda_term,node_id,method,proposed_node
 1436,Overcorrection,FDA-PAT:1436,unmapped_fda_leaf,
 1510,Radiation Overdose,FDA-PAT:1510,unmapped_fda_leaf,
 1551,Rupture due to stress from capsular contracture,FDA-PAT:1551,unmapped_fda_leaf,
-1610,Syncope,FDA-PAT:1610,unmapped_fda_leaf,E011903
+1610,Syncope,E011903,manual_crosswalk,
 1684,"AIDS, Acquired Immunodeficiency Syndrome",FDA-PAT:1684,unmapped_fda_leaf,
 1698,"Airflow, restricted",FDA-PAT:1698,unmapped_fda_leaf,
 1701,Allergic reaction,FDA-PAT:1701,unmapped_fda_leaf,
@@ -47,7 +47,7 @@ fda_code,fda_term,node_id,method,proposed_node
 1774,Cesarean section (c-section),FDA-PAT:1774,unmapped_fda_leaf,
 1778,Coagulation,FDA-PAT:1778,unmapped_fda_leaf,
 1781,Comatose,FDA-PAT:1781,unmapped_fda_leaf,
-1783,Congestive Heart Failure,FDA-PAT:1783,unmapped_fda_leaf,E0611
+1783,Congestive Heart Failure,E0611,manual_crosswalk,
 1785,"Conjunctivitis, giant papillary",FDA-PAT:1785,unmapped_fda_leaf,
 1787,Contusion,FDA-PAT:1787,unmapped_fda_leaf,
 1788,Core temperature rise,FDA-PAT:1788,unmapped_fda_leaf,
@@ -60,14 +60,14 @@ fda_code,fda_term,node_id,method,proposed_node
 1806,Degeneration,FDA-PAT:1806,unmapped_fda_leaf,
 1808,Dementia,E010702,name_match,
 1810,Device induced,FDA-PAT:1810,unmapped_fda_leaf,
-1820,Edema,FDA-PAT:1820,unmapped_fda_leaf,E2338
+1820,Edema,E2338,manual_crosswalk,
 1826,Electro-Mechanical Dissociation,FDA-PAT:1826,unmapped_fda_leaf,
 1827,Electrocution,FDA-PAT:1827,unmapped_fda_leaf,
 1829,Embolism,FDA-PAT:1829,unmapped_fda_leaf,
 1830,Embolus,FDA-PAT:1830,unmapped_fda_leaf,
 1844,Extrusion,FDA-PAT:1844,unmapped_fda_leaf,
 1846,Facial Nerve Paralysis,FDA-PAT:1846,unmapped_fda_leaf,
-1847,Fainting,FDA-PAT:1847,unmapped_fda_leaf,E011903
+1847,Fainting,E011903,manual_crosswalk,
 1851,Asphyxia,FDA-PAT:1851,unmapped_fda_leaf,
 1854,Fetal core temperature rise,FDA-PAT:1854,unmapped_fda_leaf,
 1855,"Death, Intrauterine Fetal",FDA-PAT:1855,unmapped_fda_leaf,
@@ -111,7 +111,7 @@ fda_code,fda_term,node_id,method,proposed_node
 1976,Neonatal Hearing Loss,FDA-PAT:1976,unmapped_fda_leaf,
 1981,Neural tissue damage,FDA-PAT:1981,unmapped_fda_leaf,
 1982,Neurological Deficit/Dysfunction,FDA-PAT:1982,unmapped_fda_leaf,
-1984,Occlusion,FDA-PAT:1984,unmapped_fda_leaf,E2328
+1984,Occlusion,E2328,manual_crosswalk,
 1985,Reocclusion,FDA-PAT:1985,unmapped_fda_leaf,
 1988,Overdose,FDA-PAT:1988,unmapped_fda_leaf,
 1989,Overmedicated,FDA-PAT:1989,unmapped_fda_leaf,
@@ -140,14 +140,14 @@ fda_code,fda_term,node_id,method,proposed_node
 2059,ST Segment Elevation,FDA-PAT:2059,unmapped_fda_leaf,
 2061,Scarring,FDA-PAT:2061,unmapped_fda_leaf,E171501
 2062,Scleroderma,FDA-PAT:2062,unmapped_fda_leaf,
-2063,Seizures,FDA-PAT:2063,unmapped_fda_leaf,E0109
+2063,Seizures,E0109,manual_crosswalk,
 2064,"Seizures, Focal Motor",FDA-PAT:2064,unmapped_fda_leaf,
 2065,Increased Sensitivity,FDA-PAT:2065,unmapped_fda_leaf,
 2066,Sensitization,FDA-PAT:2066,unmapped_fda_leaf,
 2070,"Severed digit(s), (finger or toe)",FDA-PAT:2070,unmapped_fda_leaf,
 2071,Venereal Disease,FDA-PAT:2071,unmapped_fda_leaf,
 2073,Sjogren's Syndrome,FDA-PAT:2073,unmapped_fda_leaf,
-2076,Skin Irritation,FDA-PAT:2076,unmapped_fda_leaf,E1720
+2076,Skin Irritation,E1720,manual_crosswalk,
 2078,"Ventricle, Abnormality Of",FDA-PAT:2078,unmapped_fda_leaf,
 2079,Soreness,FDA-PAT:2079,unmapped_fda_leaf,
 2082,Spotting,FDA-PAT:2082,unmapped_fda_leaf,
@@ -157,13 +157,13 @@ fda_code,fda_term,node_id,method,proposed_node
 2087,Subepithelial infiltration,FDA-PAT:2087,unmapped_fda_leaf,
 2088,Suffocation,FDA-PAT:2088,unmapped_fda_leaf,
 2089,Sunset Syndrome,FDA-PAT:2089,unmapped_fda_leaf,
-2091,Swelling,FDA-PAT:2091,unmapped_fda_leaf,E2338
+2091,Swelling,E2338,manual_crosswalk,
 2092,Swollen Glands,FDA-PAT:2092,unmapped_fda_leaf,
 2093,Swollen Lymph Nodes,FDA-PAT:2093,unmapped_fda_leaf,
 2096,"Body temperature, elevated",FDA-PAT:2096,unmapped_fda_leaf,
 2097,Tentorial Tears,FDA-PAT:2097,unmapped_fda_leaf,
 2099,"Therapeutic Effects, Unexpected",FDA-PAT:2099,unmapped_fda_leaf,
-2100,Thrombosis,FDA-PAT:2100,unmapped_fda_leaf,E0514
+2100,Thrombosis,E0514,manual_crosswalk,
 2101,Thrombus,FDA-PAT:2101,unmapped_fda_leaf,
 2102,Thyroid Problems,FDA-PAT:2102,unmapped_fda_leaf,
 2104,Tissue Damage,FDA-PAT:2104,unmapped_fda_leaf,
@@ -205,7 +205,7 @@ fda_code,fda_term,node_id,method,proposed_node
 2200,Other (for use when an appropriate patient code cannot be identified),E2402,manual_crosswalk,
 2201,"Leak(s), perivalvular",FDA-PAT:2201,unmapped_fda_leaf,
 2202,Unknown (for use when the patient's condition is not known),E2401,manual_crosswalk,
-2206,Heart Failure,FDA-PAT:2206,unmapped_fda_leaf,E0611
+2206,Heart Failure,E0611,manual_crosswalk,
 2209,"Asphyxia, fetal",FDA-PAT:2209,unmapped_fda_leaf,
 2211,"Abortion, artificial",FDA-PAT:2211,unmapped_fda_leaf,
 2216,"Abortion, therapeutic",FDA-PAT:2216,unmapped_fda_leaf,
@@ -229,7 +229,7 @@ fda_code,fda_term,node_id,method,proposed_node
 2259,Regurgitation,FDA-PAT:2259,unmapped_fda_leaf,
 2260,"Seizures, Focal",FDA-PAT:2260,unmapped_fda_leaf,
 2261,"Seizures, Absence",FDA-PAT:2261,unmapped_fda_leaf,
-2264,"Shock, Insulin",FDA-PAT:2264,unmapped_fda_leaf,E233602
+2264,"Shock, Insulin",E233602,manual_crosswalk,
 2266,"Shock, Postoperative",FDA-PAT:2266,unmapped_fda_leaf,
 2267,"Shock, Surgical",FDA-PAT:2267,unmapped_fda_leaf,
 2268,"Shock, Traumatic",FDA-PAT:2268,unmapped_fda_leaf,
@@ -274,8 +274,8 @@ fda_code,fda_term,node_id,method,proposed_node
 2414,Reaction,FDA-PAT:2414,unmapped_fda_leaf,
 2416,Collapse,FDA-PAT:2416,unmapped_fda_leaf,
 2438,Breast Neoplasm,FDA-PAT:2438,unmapped_fda_leaf,
-2442,"Reaction, Injection Site",FDA-PAT:2442,unmapped_fda_leaf,E2111
-2443,Skin Inflammation,FDA-PAT:2443,unmapped_fda_leaf,E1720
+2442,"Reaction, Injection Site",E2111,manual_crosswalk,
+2443,Skin Inflammation,E1720,manual_crosswalk,
 2444,Sweating,FDA-PAT:2444,unmapped_fda_leaf,
 2450,"Blood glucose, low",FDA-PAT:2450,unmapped_fda_leaf,
 2451,"Blood glucose, high",FDA-PAT:2451,unmapped_fda_leaf,
@@ -335,7 +335,7 @@ fda_code,fda_term,node_id,method,proposed_node
 2572,"Vascular System (Circulation), Impaired",FDA-PAT:2572,unmapped_fda_leaf,
 2573,Manual ventilation required,FDA-PAT:2573,unmapped_fda_leaf,
 2580,Hospitalization required,FDA-PAT:2580,unmapped_fda_leaf,
-2597,Blood Loss,FDA-PAT:2597,unmapped_fda_leaf,E0506
+2597,Blood Loss,E0506,manual_crosswalk,
 2600,Clotting,FDA-PAT:2600,unmapped_fda_leaf,
 2602,Drainage,FDA-PAT:2602,unmapped_fda_leaf,
 2603,"Hemorrhage, Subgaleal",FDA-PAT:2603,unmapped_fda_leaf,

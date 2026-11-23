@@ -1,17 +1,20 @@
-"""Build processed tables from the raw downloads (version v0, draft — not frozen).
+"""Build processed tables from the raw downloads (version v1, decisions of 2026-11-20 applied; issue #2).
 
 For each dataset:
   data/<ds>/processed/   what the method may read: key + text + filter fields
   data/<ds>/hidden/      ground truth (core + leak fields) — never give these to the method
-  data/<ds>/PROCESSED_MANIFEST.json   row counts, rules applied, git commit, raw-file integrity checks
+  data/<ds>/PROCESSED_MANIFEST.json   rules applied, row counts, git commit, integrity checks
 
-Field roles follow data/README.md. Decisions still open are kept as flag columns, not applied:
-  MAUDE  product codes (M2)  -> column product_code (all 12 candidates kept)
-         embedded codes (M5) -> has_embedded_codes
-         summary reports (M6)-> summary_report, noe_summarized
-  ASRS   year rule (A3)      -> outside_query_year, before_2018
-Applied rule:
-  VAERS  primary reports only, ORDER = 1 (V1, proposed)
+Field roles follow data/README.md. Rules (STATE.md):
+  MAUDE  M2  12 product codes, 2018-2025, one fixed sampling rate per product code (same every year), ~1M reports
+         M4  EVENT_TYPE, problem codes and leak fields in hidden/
+         M5  embedded code blocks stripped from the text; flag has_embedded_codes; build fails if a report's own
+             code survives in its text
+         M6  summary reports dropped
+  VAERS  V1  primary reports only (ORDER = 1); sensitivity labels <flag>_any_order
+         V3  leak fields in hidden/
+  ASRS   A3  year = incident month; incident months outside 2018-2023 dropped
+         A4  Synopsis, Callbacks and analyst-coded fields in hidden/
 
 Usage: python scripts/build_tables.py [vaers|asrs|maude ...]
 """
@@ -30,16 +33,18 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-DATA = Path("data")
-VERSION = "v0-draft"
+ROOT = Path(__file__).resolve().parents[1]
+DATA = ROOT / "data"
+VERSION = "v1"
 STR = "string[pyarrow]"
 
 
 def git_commit() -> str:
     try:
-        sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True).stdout.strip()
+        sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True,
+                             cwd=ROOT).stdout.strip()
         dirty = subprocess.run(["git", "status", "--porcelain", "scripts/build_tables.py"], capture_output=True,
-                               text=True).stdout.strip()
+                               text=True, cwd=ROOT).stdout.strip()
         return sha + ("+uncommitted-script" if dirty else "")
     except OSError:
         return "unknown"
@@ -101,12 +106,14 @@ VAERS_FLAGS = ["DIED", "HOSPITAL", "ER_ED_VISIT", "X_STAY", "L_THREAT", "DISABLE
 
 def vaers() -> None:
     proc, hid = fresh_dirs("vaers")
-    data, symp, vax = [], [], []
+    data, symp, vax, any_order = [], [], [], []
     for y in VAERS_YEARS:
         with zipfile.ZipFile(DATA / "vaers/raw" / f"{y}VAERSData.zip") as z:
             rd = lambda k: pd.read_csv(z.open(f"{y}{k}.csv"), dtype=str, encoding="latin-1",  # noqa: E731
                                        keep_default_na=False)
             d = rd("VAERSDATA")
+            # V1 sensitivity check: outcome flags over all rows (primary and secondary) of a VAERS_ID
+            any_order.append(d[["VAERS_ID"]].assign(**{c: yflag(d[c]) for c in VAERS_FLAGS}))
             d = d[d["ORDER"] == "1"].assign(source_file=y)
             s, v = rd("VAERSSYMPTOMS"), rd("VAERSVAX")
             data.append(d)
@@ -114,6 +121,7 @@ def vaers() -> None:
             vax.append(v[v["ORDER"] == "1"])
     d, s, v = pd.concat(data), pd.concat(symp), pd.concat(vax)
     assert d["VAERS_ID"].is_unique, "VAERS_ID not unique after ORDER=1 filter"
+    any_order = pd.concat(any_order).groupby("VAERS_ID")[VAERS_FLAGS].any()
 
     date = lambda c: pd.to_datetime(d[c], format="%m/%d/%Y", errors="coerce").dt.date  # noqa: E731
     vax_long = pd.DataFrame({
@@ -145,6 +153,10 @@ def vaers() -> None:
     labels["date_died"] = date("DATEDIED").to_numpy()
     labels["hosp_days"] = pd.to_numeric(d["HOSPDAYS"], errors="coerce").to_numpy()
     labels["recovd"] = blank_to_na(d["RECOVD"]).to_numpy()
+    # sensitivity labels (V1): true if any row of this VAERS_ID, in any of the four year files, says so
+    ao = any_order.reindex(d["VAERS_ID"]).fillna(False)
+    for c in VAERS_FLAGS:
+        labels[f"{c.lower()}_any_order"] = ao[c].to_numpy(dtype=bool)
 
     terms = []
     for i in range(1, 6):
@@ -164,8 +176,14 @@ def vaers() -> None:
         "reports_without_symptom_terms": int((~reports["VAERS_ID"].isin(terms["VAERS_ID"])).sum()),
         "recv_date_unparsed": int(reports["recv_date"].isna().sum()),
         "distinct_pt": int(terms["pt"].nunique()),
+        "flag_true_primary_vs_any_order": {c.lower(): {"primary": int(labels[c.lower()].sum()),
+                                                       "any_order": int(labels[f"{c.lower()}_any_order"].sum())}
+                                           for c in VAERS_FLAGS},
     }
-    write_manifest("vaers", {"V1": "primary reports only (ORDER = 1)", "V2": "domestic yearly files only"},
+    write_manifest("vaers", {"V1": "primary reports only (ORDER = 1); text, filters and labels from that row; "
+                                   "sensitivity labels <flag>_any_order = true if any row of the VAERS_ID says so",
+                             "V2": "domestic yearly files only",
+                             "V3": "leak fields (DATEDIED, HOSPDAYS, other outcome flags, RECOVD) in hidden/"},
                    outputs, checks)
 
 
@@ -203,6 +221,7 @@ ASRS_HIDDEN = {
     "Component|Aircraft Component": "component",
     "Component|Problem": "component_problem",
 }
+ASRS_YEARS = range(2018, 2024)
 ASRS_MULTI = {"flight_phase", "anomaly", "result", "detector", "contributing_factors", "human_factors_1",
               "human_factors_2"}
 
@@ -214,7 +233,7 @@ def split_multi(s: pd.Series) -> pd.Series:
 def asrs() -> None:
     proc, hid = fresh_dirs("asrs")
     parts = []
-    for y in range(2018, 2024):
+    for y in ASRS_YEARS:
         df = pd.read_csv(DATA / "asrs/raw" / f"ASRS_{y}.csv", header=[0, 1], dtype=str, encoding="latin-1",
                          keep_default_na=False)
         df.columns = ["|".join(p for p in c if p.strip() and not p.startswith("Unnamed")) for c in df.columns]
@@ -222,7 +241,11 @@ def asrs() -> None:
     d = pd.concat(parts)
     assert d["ACN"].is_unique, "duplicate ACN across files"
 
+    # A3: report year = incident month; drop reports whose incident month is outside 2018-2023 (2 ACNs: 2002, 2012)
     month = pd.to_datetime(d["Time|Date"], format="%Y%m", errors="coerce")
+    in_range = month.dt.year.between(ASRS_YEARS[0], ASRS_YEARS[-1])
+    dropped = d.loc[~in_range, ["ACN", "Time|Date"]].astype(str).values.tolist()
+    d, month = d[in_range], month[in_range]
     reports = pd.DataFrame({
         "ACN": d["ACN"].astype(STR),
         "month": month.dt.date,
@@ -235,7 +258,6 @@ def asrs() -> None:
     reports["flight_phase"] = split_multi(reports["flight_phase"])
     reports["query_year"] = d["query_year"].astype("int16").to_numpy()
     reports["outside_query_year"] = (reports["year"] != reports["query_year"]).to_numpy()
-    reports["before_2018"] = (reports["year"] < 2018).to_numpy()
 
     labels = pd.DataFrame({"ACN": d["ACN"].astype(STR)})
     for src, name in ASRS_HIDDEN.items():
@@ -248,12 +270,14 @@ def asrs() -> None:
     }
     checks = {
         "reports_by_incident_year": reports["year"].value_counts().sort_index().to_dict(),
-        "outside_query_year": int(reports["outside_query_year"].sum()),
-        "before_2018": int(reports["before_2018"].sum()),
+        "outside_query_year_moved_to_incident_year": int(reports["outside_query_year"].sum()),
+        "dropped_incident_outside_2018_2023": dropped,
         "with_second_narrative": int(reports["narrative_2"].notna().sum()),
         "distinct_anomaly_values": int(labels["anomaly"].explode().nunique()),
     }
-    write_manifest("asrs", {"A3": "not applied; flags outside_query_year and before_2018 (2 ACNs dated 2002, 2012)",
+    assert reports["year"].between(ASRS_YEARS[0], ASRS_YEARS[-1]).all()
+    write_manifest("asrs", {"A3": "year = incident month (Time|Date); reports with incident month outside 2018-2023 "
+                                  "dropped (listed in checks)",
                             "A4": "Synopsis, Callbacks and analyst-coded fields are in hidden/"}, outputs, checks)
 
 
@@ -262,8 +286,146 @@ MAUDE_CODES = ["FRN", "LZG", "QFG", "OYC", "OZP", "OZO", "MDS", "PQF", "QBJ", "Q
 MAUDE_YEARS = range(2018, 2026)
 NPART = 16
 CHUNK = 500_000
-EMBEDDED = re.compile(r"Device Problem Code|Health Effect|Patient Problem Code|Type of Reportable Event|IMDRF",
-                      re.IGNORECASE)
+IMDRF_XLSX = DATA / "maude/docs/imdrf/imdrf-tech-ae-terminologies-n43-ReleaseNumber2026-Annexes-revisedJune.xlsx"
+
+# ---- M5: embedded code blocks in MAUDE text ------------------------------------------------------------------
+# Manufacturers paste coded fields into the narrative, e.g. "OMIT : A1301 - FAILURE TO READ INPUT SIGNAL (1581),
+# B21 - ...", "ANNEX A: A1801. ANNEX G: G02005", "H6 MEDICAL DEVICE PROBLEM CODE - 3191 - ...",
+# "TYPE OF REPORTABLE EVENT: MALFUNCTION". These reveal hidden labels, so they are removed. Codes:
+# long IMDRF codes (A/C/E/F + 4 or 6 digits, G + 5 or 7 digits, D + 4 digits) anywhere; short level-1 codes
+# (letter + 2 digits) only in code context (before " - <term>" or in an "ANNEX X:" list).
+LONG_CODE = r"(?:[ACEF]\d{4}(?:\d{2})?|G\d{5}(?:\d{2})?|D\d{4})"
+SHORT_CODE = r"[A-G]\d{2}"
+PREFILTER = re.compile(r"\b[A-G]\d{4}|\b[A-G]\d{2}\s*[-:]|\(\d{4}\)|CODES?\W{0,5}\d{4}|REPORTABLE\s+EVENT|ANNEX\s+[A-G]",
+                       re.I)
+EVENT_TYPES = r"(?:DEATH|SERIOUS\s+INJURY|INJURY|MALFUNCTION|OTHER|NO\s+ANSWER\s+PROVIDED)"
+
+
+def term_alternation(terms) -> str:
+    """Regex alternation of code terms (longest first); spaces match any whitespace, '/' may have spaces."""
+    ts = sorted({t.strip() for t in terms if isinstance(t, str) and len(t.strip()) >= 3}, key=len, reverse=True)
+    return "(?:" + "|".join(re.escape(t).replace(r"\ ", r"\s+").replace("/", r"\s*/\s*") for t in ts) + ")"
+
+
+# "CODE NNNN" is a hidden FDA code unless the word before it marks a device message (ERROR CODE 1110, ALERT CODE ...).
+KEEP_BEFORE_CODE = {"ERROR", "ALERT", "ALARM", "FAULT", "A", "AN", "THE", "OF", "IN", "METHOD", "BIOMED", "FINDINGS",
+                    "CONCLUSION", "RESULT", "RESULTS", "EXHIBITED", "DECLARED", "RECORDED", "DISPLAYED", "DISPLAY",
+                    "SERVICE", "SYSTEM", "PUMP", "STATUS", "WARNING", "MESSAGE", "ZIP", "POSTAL"}
+
+
+class CodeStripper:
+    """M5: removes embedded code items from MAUDE text (see the comment above LONG_CODE)."""
+
+    def __init__(self, terms=(), fda_codes=()):
+        self.fda_codes = {str(c).strip() for c in fda_codes if str(c).strip().isdigit()}
+        term = term_alternation(terms) if len(terms) else r"(?!)"
+        sep = r"\s*[-:]\s*"
+        fda = r"\d{4}(?:\s*[,;/&]\s*\d{4})*"
+        any_item = rf"\b(?:{LONG_CODE}|{SHORT_CODE})\b(?:{sep}{term}\b)?(?:\s*\(\d{{4}}\))?"
+        self.patterns = [re.compile(p, re.I) for p in (
+            rf"ANNEX\s+[A-G]\s*[:\-]\s*{any_item}(?:\s*,\s*{any_item})*",          # ANNEX A: A1801, A0601
+            rf"TYPE\s+OF\s+REPORTABLE\s+EVENT\s*[:\-]?\s*{EVENT_TYPES}\b",
+            rf"\bH6\s*\(\s*{fda}\s*\)",                                                  # SECTION H6 (2978)
+            rf"\b{LONG_CODE}\b(?:{sep}{term}\b)?(?:\s*\(\d{{4}}\))?",                # A1301 - TERM (1581)
+            rf"\b{SHORT_CODE}\b{sep}{term}\b(?:\s*\(\d{{4}}\))?",                    # B21 - TERM
+        )]
+        self.code_word = re.compile(rf"(?:\b(\w+)(\W{{0,6}}))?\bCODE[DS]?[^\w\n]{{0,8}}{fda}\b\)?(?:{sep}{term}\b)?\"?",
+                                    re.I)
+        # "<FDA or IMDRF term> (NNNN)": suffix lookup instead of a 3,000-way alternation at every position
+        self.terms = {" ".join(t.upper().split()) for t in terms if isinstance(t, str) and len(t.strip()) >= 3}
+        self.lens = sorted({len(t) for t in self.terms}, reverse=True)
+
+    def _term_paren(self, t: str) -> str:
+        for m in reversed(list(re.finditer(r"\(\d{4}\)", t))):
+            head = t[:m.start()].rstrip()
+            up = " ".join(head[-200:].upper().split())
+            for n in self.lens:
+                if len(up) >= n and up[-n:] in self.terms and (len(up) == n or not up[-n - 1].isalnum()):
+                    hit = re.search(re.escape(up[-n:]).replace(r"\ ", r"\s+") + r"\s*$", head, re.I)
+                    if hit:
+                        t = t[:hit.start()] + " " + t[m.end():]
+                    break
+        return t
+
+    def __call__(self, text: str) -> str:
+        t = text
+        for p in self.patterns:
+            t = p.sub(" ", t)
+        t = self.code_word.sub(lambda m: m.group(0) if (m.group(1) or "").upper() in KEEP_BEFORE_CODE
+                               else (m.group(1) or "") + (m.group(2) or ""), t)
+        if self.terms:
+            t = self._term_paren(t)
+        if self.fda_codes:  # bare "(2978)" / "[4014]" holding a valid FDA problem code (years left alone)
+            t = re.sub(r"[(\[]\s*(\d{4})\s*[)\]]", lambda m: " " if m.group(1) in self.fda_codes
+                       and not 1990 <= int(m.group(1)) <= 2030 else m.group(0), t)
+        if t != text:
+            t = re.sub(r"\b(OMIT|ANNEX\s+[A-G])\s*:\s*(?=[,.;]|$)", " ", t, flags=re.I | re.M)
+            t = re.sub(r"\s*[,;](?:\s*[,;])+", ",", t)       # ", ," left by removed list items
+            t = re.sub(r"(?m)^[ \t]*[,;.][ \t]*", "", t)
+            t = re.sub(r"[ \t]{2,}", " ", t).strip()
+        return t
+
+
+def strip_codes(s: pd.Series, stripper: CodeStripper | None = None) -> tuple[pd.Series, np.ndarray]:
+    """Remove embedded code items; return the cleaned text and a mask of changed rows."""
+    stripper = stripper or CodeStripper()
+    out = s.copy()
+    cand = s.fillna("").str.contains(PREFILTER)
+    changed = np.zeros(len(s), dtype=bool)
+    for i in np.flatnonzero(cand.to_numpy()):
+        t = stripper(s.iat[i])
+        if t != s.iat[i]:
+            out.iat[i] = t if t else None
+            changed[i] = True
+    return out, changed
+
+
+def code_leftovers(out: pd.DataFrame, dp_codes: pd.DataFrame, pp_codes: pd.DataFrame) -> int:
+    """Number of reports whose text still contains one of their own hidden codes: an IMDRF code as a token, an FDA
+    code as '(NNNN)' / '[NNNN]', or 'CODE NNNN' not preceded by a device-message word (ERROR CODE 1260 is signal)."""
+    text = out["text_event_description"].fillna("") + "\n" + out["text_mfr_narrative"].fillna("")
+    pat = re.compile(r"\b([AE]\d{4,6})\b|[(\[](\d{4})[)\]]|(?:\b(\w+)\W{0,6})?\bCODE[DS]?\W{0,6}(\d{4})\b", re.I)
+    n = 0
+    for key, s in zip(out["MDR_REPORT_KEY"], text):
+        toks = set()
+        for m in pat.finditer(s):
+            imdrf, paren, word, num = m.groups()
+            if num and (word or "").upper() in KEEP_BEFORE_CODE:
+                continue
+            toks.add((imdrf or "").upper() or paren or num)
+        if not toks:
+            continue
+        own = set()
+        for tab in (dp_codes, pp_codes):
+            if key in tab.index:
+                own |= {c for c in tab.at[key, "fda"] | tab.at[key, "imdrf"] if isinstance(c, str) and len(c) >= 4}
+        n += bool(own & toks)
+    return n
+
+
+SAMPLE_SEED = 20261120
+SAMPLE_TARGET = 1_000_000
+KEEP_WHOLE = {"LWS", "NIK"}  # decided (issue #2)
+WHOLE_MAX = 150_000          # codes with at most this many reports are also kept whole (MDS, QLG)
+
+
+def unit_hash(keys: np.ndarray, seed: int) -> np.ndarray:
+    """Deterministic uniform [0, 1) per report key (splitmix64), so the sample does not depend on row order."""
+    with np.errstate(over="ignore"):
+        x = keys.astype(np.uint64) + np.uint64(seed) * np.uint64(0x9E3779B97F4A7C15)
+        x = (x ^ (x >> np.uint64(30))) * np.uint64(0xBF58476D1CE4E5B9)
+        x = (x ^ (x >> np.uint64(27))) * np.uint64(0x94D049BB133111EB)
+        x = x ^ (x >> np.uint64(31))
+    return (x >> np.uint64(11)).astype(np.float64) / float(2 ** 53)
+
+
+def sampling_rates(counts: pd.Series) -> tuple[dict, pd.DataFrame]:
+    """M2: small codes and LWS/NIK whole; one common rate for the rest so the expected total is SAMPLE_TARGET."""
+    whole = counts.index.isin(sorted(KEEP_WHOLE)) | (counts <= WHOLE_MAX)
+    rest_rate = (SAMPLE_TARGET - counts[whole].sum()) / counts[~whole].sum()
+    assert 0 < rest_rate < 1, rest_rate
+    rates = {c: (1.0 if w else round(float(rest_rate), 6)) for c, w in zip(counts.index, whole)}
+    return rates, pd.DataFrame({"before": counts})
 
 
 def maude_chunks(zip_name: str, rows_read: dict, names=None, usecols=None):
@@ -314,6 +476,26 @@ def maude() -> None:
     master = master.drop_duplicates("MDR_REPORT_KEY").set_index("MDR_REPORT_KEY")
     print("  master", flush=True)
 
+    # M6: drop summary reports; also drop candidates without a master row (no date, no labels)
+    n_candidates = len(keys)
+    no_master = ~pd.Index(keys).isin(master.index)
+    summary = yflag(master["SUMMARY_REPORT"]).reindex(keys, fill_value=False).to_numpy()
+    keys = keys[~no_master & ~summary]
+    # M2: one fixed sampling rate per product code, the same in every year
+    code = dev["DEVICE_REPORT_PRODUCT_CODE"].reindex(keys).to_numpy()
+    rates, per_code = sampling_rates(pd.Series(code).value_counts())
+    u = unit_hash(keys, SAMPLE_SEED)
+    sampled = u < pd.Series(code).map(rates).to_numpy()
+    keys = keys[sampled]
+    dev = dev.loc[keys]
+    master = master.loc[keys]
+    sample_info = {"seed": SAMPLE_SEED, "target_total": SAMPLE_TARGET, "keep_whole": sorted(KEEP_WHOLE),
+                   "keep_whole_if_at_most": WHOLE_MAX, "rates": rates, "reports_before_after": per_code.assign(
+                       after=pd.Series(code[sampled]).value_counts()).fillna(0).astype(int).to_dict("index")}
+    drop_info = {"candidates": n_candidates, "no_master_row": int(no_master.sum()),
+                 "summary_reports": int((summary & ~no_master).sum()), "after_sampling": len(keys)}
+    print(f"  sampled {len(keys)} of {n_candidates} candidate reports", flush=True)
+
     # 3. patients (first patient per report)
     p_cols = ["MDR_REPORT_KEY", "PATIENT_SEQUENCE_NUMBER", "PATIENT_AGE", "PATIENT_SEX", "SEQUENCE_NUMBER_OUTCOME",
               "SEQUENCE_NUMBER_TREATMENT"]
@@ -338,6 +520,12 @@ def maude() -> None:
                    for ch in maude_chunks("patientproblemcode_thru2025.zip", rows_read))
     pp = pp.drop_duplicates().join(pterms, on="PROBLEM_CODE")
     print("  problem codes", flush=True)
+    imdrf_terms = []
+    for sheet in "ABCDEFG":
+        a = pd.read_excel(IMDRF_XLSX, sheet, dtype=str, header=7)
+        imdrf_terms += a.filter(regex=r"^Level \d Term$").stack().tolist()
+    code_patterns = CodeStripper(list(dterms["TERM"]) + list(pterms["TERM"]) + imdrf_terms,
+                                 fda_codes=list(dterms.index) + list(pterms.index))
 
     # 5. text rows -> partitions by key
     writers: dict[int, pq.ParquetWriter] = {}
@@ -358,9 +546,11 @@ def maude() -> None:
         w.close()
 
     # 6. assemble per partition
-    rep_dir, lab_parts = proc / "reports", []
+    rep_dir = proc / "reports"
     rep_dir.mkdir()
-    n_reports = n_embedded = n_no_text = 0
+    n_reports = n_embedded = n_no_text = n_leftover = 0
+    dp_codes = dp.groupby("MDR_REPORT_KEY").agg(fda=("DEVICE_PROBLEM_CODE", set), imdrf=("IMDRF_CODE", set))
+    pp_codes = pp.groupby("MDR_REPORT_KEY").agg(fda=("PROBLEM_CODE", set), imdrf=("IMDRF_CODE", set))
     for p in range(NPART):
         pk = keys[keys % NPART == p]
         t = pq.read_table(tmp / f"text_{p:02d}.parquet").to_pandas() if (tmp / f"text_{p:02d}.parquet").exists() \
@@ -370,8 +560,7 @@ def maude() -> None:
         t = t[t["FOI_TEXT"] != ""]
         txt = t.groupby(["MDR_REPORT_KEY", "TEXT_TYPE_CODE"])["FOI_TEXT"].agg("\n\n".join).unstack()
         r = pd.DataFrame(index=pd.Index(pk, name="MDR_REPORT_KEY"))
-        r = r.join(master[["REPORT_NUMBER", "DATE_RECEIVED", "DATE_OF_EVENT", "REPORT_SOURCE_CODE", "SUMMARY_REPORT",
-                           "NOE_SUMMARIZED"]])
+        r = r.join(master[["REPORT_NUMBER", "DATE_RECEIVED", "DATE_OF_EVENT", "REPORT_SOURCE_CODE"]])
         r = r.join(dev[["DEVICE_REPORT_PRODUCT_CODE", "MANUFACTURER_D_NAME", "BRAND_NAME", "GENERIC_NAME",
                         "MODEL_NUMBER", "n_candidate_devices"]])
         r = r.join(pat[["PATIENT_AGE", "PATIENT_SEX"]])
@@ -392,11 +581,18 @@ def maude() -> None:
             "patient_sex": blank_to_na(r["PATIENT_SEX"]).to_numpy(),
             "text_event_description": r["D"].astype(STR).to_numpy(),
             "text_mfr_narrative": r["N"].astype(STR).to_numpy(),
-            "summary_report": yflag(r["SUMMARY_REPORT"].fillna("")).to_numpy(),
-            "noe_summarized": pd.to_numeric(r["NOE_SUMMARIZED"], errors="coerce").astype("Int32").to_numpy(),
+            "sample_rate": r["DEVICE_REPORT_PRODUCT_CODE"].map(rates).astype("float64").to_numpy(),
         })
-        both = out["text_event_description"].fillna("") + "\n" + out["text_mfr_narrative"].fillna("")
-        out["has_embedded_codes"] = both.str.contains(EMBEDDED).to_numpy()
+        # M5: strip embedded code blocks; the flag marks reports whose text was changed
+        flags = np.zeros(len(out), dtype=bool)
+        for col in ("text_event_description", "text_mfr_narrative"):
+            stripped, changed = strip_codes(out[col], code_patterns)
+            out[col] = stripped
+            flags |= changed
+        out["has_embedded_codes"] = flags
+        leftover = code_leftovers(out, dp_codes, pp_codes)
+        assert leftover == 0, f"M5: partition {p}: {leftover} reports still contain one of their own hidden codes"
+        n_leftover += leftover
         save(out, rep_dir / f"part-{p:02d}.parquet")
         n_reports += len(out)
         n_embedded += int(out["has_embedded_codes"].sum())
@@ -425,11 +621,13 @@ def maude() -> None:
         "hidden/device_problems.parquet": save(dp_out, hid / "device_problems.parquet"),
         "hidden/patient_problems.parquet": save(pp_out, hid / "patient_problems.parquet"),
     }
+    assert n_leftover == 0, f"M5: {n_leftover} reports still contain one of their own hidden codes after stripping"
     checks = {
-        "candidate_reports": int(len(keys)),
-        "reports_missing_master_row": int((~pd.Index(keys).isin(master.index)).sum()),
+        "report_selection": drop_info,
+        "sampling": sample_info,
         "reports_without_text": n_no_text,
-        "reports_with_embedded_codes": n_embedded,
+        "reports_with_embedded_codes_stripped": n_embedded,
+        "reports_with_own_code_in_text_after_strip": n_leftover,
         "event_type_counts": labels["event_type"].value_counts(dropna=False).to_dict(),
         "reports_by_product_code": dev["DEVICE_REPORT_PRODUCT_CODE"].value_counts().to_dict(),
         "unmatched_device_problem_terms": int(dp_out["term"].isna().sum()),
@@ -437,9 +635,13 @@ def maude() -> None:
         "raw_rows_parsed_vs_manifest_lines": {k: {"parsed": v, "manifest": manifest_rows.get(k)}
                                               for k, v in rows_read.items()},
     }
-    write_manifest("maude", {"M2": "not applied; all 12 candidate codes kept (column product_code)",
-                             "M5": "not applied; flag has_embedded_codes",
-                             "M6": "not applied; flags summary_report, noe_summarized",
+    write_manifest("maude", {"M2": "12 product codes (4 groups); one fixed rate per product code, the same every year "
+                                   "(seeded hash of MDR_REPORT_KEY); LWS, NIK and codes with <= 150k reports whole; "
+                                   "rate per report in column sample_rate (weight = 1 / sample_rate)",
+                             "M4": "EVENT_TYPE, problem codes and leak fields in hidden/",
+                             "M5": "embedded code blocks stripped from both text fields; has_embedded_codes marks "
+                                   "changed reports; build fails if a report's own code survives in its text",
+                             "M6": "summary reports dropped (count in checks.report_selection)",
                              "years": "received 2018-2025 (device files of those years)"}, outputs, checks)
 
 

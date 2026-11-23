@@ -1,20 +1,25 @@
 {
-  "n_nodes": 882,
-  "n_edges": 881,
+  "n_nodes": 874,
+  "n_edges": 873,
+  "n_edges_secondary": 0,
+  "n_nodes_with_several_parents": 0,
   "roots": [
     "TOP"
   ],
   "unique_node_ids": true,
   "single_top": true,
-  "tree_one_parent_each": true,
+  "no_duplicate_edges": true,
+  "one_primary_parent_each": true,
   "edges_reference_known_nodes": true,
-  "all_nodes_reach_top_no_cycles": true,
-  "child_level_is_parent_level_plus_1": true,
+  "acyclic": true,
+  "all_nodes_reach_top": true,
+  "primary_child_level_is_parent_level_plus_1": true,
+  "secondary_edges_by_child_parent_level": {},
   "max_depth": 3,
   "nodes_per_level": {
     "0": 1,
     "1": 28,
-    "2": 569,
+    "2": 561,
     "3": 284
   },
   "valid": true

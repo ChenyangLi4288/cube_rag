@@ -1,17 +1,20 @@
 """Build concept hierarchies (STUDENT_START task 4) for MAUDE and ASRS.
 
 Public outputs (committed; the method may know the taxonomy) — built only from public sources:
-  lattices/<name>/nodes.csv            node_id, label, level, source, status
-  lattices/<name>/edges.csv            child, parent   <- the (child, parent) pairs; a tree with root TOP
+  lattices/<name>/nodes.csv            node_id, label, level (depth along the primary path), source, status
+  lattices/<name>/edges.csv            child, parent, placement   <- the (child, parent) pairs of a DAG with top TOP
+                                       (decision L7: IMDRF secondary placements are edges too; placement = primary
+                                       for the one IMDRF primary parent, secondary otherwise)
   lattices/<name>/mapping.csv          value in the data -> node_id, method
   lattices/<name>/checks.json          structural checks
-  lattices/maude_patient/edges_secondary.csv   IMDRF Annex E secondary placements (poly-hierarchy); NOT in the tree
 Inputs: FDA code lists (data/maude/raw), IMDRF 2026 annexes (data/maude/docs/imdrf), the ASRS coding form (hard-coded
 below), and lattices/crosswalk_fda_imdrf.csv (manual FDA legacy code -> IMDRF; only status=approved is applied).
 
 Hidden-side outputs (not committed — per-node counts would reveal true answers); need scripts/build_tables.py first:
-  data/<ds>/hidden/lattice_<name>_support.csv    every node: n_reports_direct, n_reports_rollup (0 if unused)
-  data/<ds>/hidden/lattice_<name>_coverage.json  mapping coverage, overall and by year; preview with proposed crosswalk
+  data/<ds>/hidden/lattice_<name>_support.csv    every node: n_reports_direct, n_reports_rollup (distinct reports in
+                                                 ↓node over all parents; 0 if unused)
+  data/<ds>/hidden/lattice_<name>_coverage.json  mapping coverage by year, with and without the manual crosswalk (L8)
+  data/maude/hidden/crosswalk_trend_check.csv    reports per year and level-1 group, with and without the crosswalk
   data/asrs/hidden/anomaly_nodes.parquet         ACN -> leaf node
 
 Usage (from anywhere): python scripts/build_hierarchies.py
@@ -37,49 +40,77 @@ def norm(s: str) -> str:
     return re.sub(r"\s+", " ", str(s)).strip().lower()
 
 
+def parents_of(edges: pd.DataFrame) -> dict[str, set[str]]:
+    par: dict[str, set[str]] = {}
+    for c, p in zip(edges["child"], edges["parent"]):
+        par.setdefault(c, set()).add(p)
+    return par
+
+
+def ancestors(edges: pd.DataFrame) -> dict[str, frozenset[str]]:
+    """Node -> itself and all ancestors over every parent (raises on a cycle)."""
+    par, memo, active = parents_of(edges), {}, set()
+
+    def up(n):
+        if n in memo:
+            return memo[n]
+        if n in active:
+            raise ValueError(f"cycle through {n}")
+        active.add(n)
+        memo[n] = frozenset({n}).union(*(up(p) for p in par.get(n, ())))
+        active.discard(n)
+        return memo[n]
+
+    for n in set(edges["child"]) | set(edges["parent"]):
+        up(n)
+    return memo
+
+
 def validate(nodes: pd.DataFrame, edges: pd.DataFrame) -> dict:
     ids = set(nodes["node_id"])
-    par = dict(zip(edges["child"], edges["parent"]))
     lvl = dict(zip(nodes["node_id"], nodes["level"]))
-
-    def reaches_top(n):
-        seen = set()
-        while n != TOP:
-            if n in seen or n not in par:
-                return False
-            seen.add(n)
-            n = par[n]
-        return True
-
+    prim = edges[edges["placement"] == "primary"]
+    try:
+        anc, acyclic = ancestors(edges), True
+    except ValueError:
+        anc, acyclic = {}, False
     checks = {
         "n_nodes": len(nodes),
         "n_edges": len(edges),
+        "n_edges_secondary": int((edges["placement"] == "secondary").sum()),
+        "n_nodes_with_several_parents": int(edges["child"].value_counts().gt(1).sum()),
         "roots": sorted(ids - set(edges["child"])),
         "unique_node_ids": bool(nodes["node_id"].is_unique),
         "single_top": ids - set(edges["child"]) == {TOP},
-        "tree_one_parent_each": bool(edges["child"].is_unique),
+        "no_duplicate_edges": not edges.duplicated(["child", "parent"]).any(),
+        "one_primary_parent_each": bool(prim["child"].is_unique and set(prim["child"]) == ids - {TOP}),
         "edges_reference_known_nodes": bool(edges["child"].isin(ids).all() and edges["parent"].isin(ids).all()),
-        "all_nodes_reach_top_no_cycles": all(reaches_top(n) for n in ids),
-        "child_level_is_parent_level_plus_1": all(lvl[c] == lvl[p] + 1 for c, p in par.items()),
+        "acyclic": acyclic,
+        "all_nodes_reach_top": acyclic and all(TOP in anc.get(n, {n}) for n in ids),
+        "primary_child_level_is_parent_level_plus_1": all(lvl[c] == lvl[p] + 1
+                                                          for c, p in zip(prim["child"], prim["parent"])),
+        # info only: IMDRF also places terms under a level-2 term of another group (Headache <= Pain), so `level`
+        # is the depth along the primary path; the order itself is checked by `acyclic`
+        "secondary_edges_by_child_parent_level": {
+            f"{a}->{b}": int(n) for (a, b), n in edges.loc[edges["placement"] == "secondary"].assign(
+                a=lambda d: d["child"].map(lvl), b=lambda d: d["parent"].map(lvl)).groupby(["a", "b"]).size().items()},
         "max_depth": int(nodes["level"].max()),
         "nodes_per_level": {str(k): int(v) for k, v in nodes["level"].value_counts().sort_index().items()},
     }
-    checks["valid"] = all(checks[k] for k in ("unique_node_ids", "single_top", "tree_one_parent_each",
-                                              "edges_reference_known_nodes", "all_nodes_reach_top_no_cycles",
-                                              "child_level_is_parent_level_plus_1"))
+    checks["valid"] = all(checks[k] for k in (
+        "unique_node_ids", "single_top", "no_duplicate_edges", "one_primary_parent_each", "edges_reference_known_nodes",
+        "acyclic", "all_nodes_reach_top", "primary_child_level_is_parent_level_plus_1"))
     return checks
 
 
 def support(report_leaf: pd.DataFrame, nodes: pd.DataFrame, edges: pd.DataFrame, key: str) -> pd.DataFrame:
-    """Distinct reports per node: mapped directly to it, and anywhere in its subtree. Every node listed (0 if unused)."""
-    par = dict(zip(edges["child"], edges["parent"]))
+    """Distinct reports per node: mapped directly to it, and anywhere in ↓node (over all parents, each report once).
+    Every node listed (0 if unused)."""
+    anc = ancestors(edges)
     rl = report_leaf[[key, "node_id"]].drop_duplicates()
     direct = rl.groupby("node_id")[key].nunique()
-    frames, cur = [rl], rl
-    while len(cur):
-        cur = cur.assign(node_id=cur["node_id"].map(par)).dropna(subset=["node_id"])
-        frames.append(cur)
-    rollup = pd.concat(frames).drop_duplicates().groupby("node_id")[key].nunique()
+    up = rl.assign(node_id=rl["node_id"].map(lambda n: sorted(anc.get(n, {n})))).explode("node_id")
+    rollup = up.drop_duplicates().groupby("node_id")[key].nunique()
     out = nodes[["node_id"]].copy()
     out["n_reports_direct"] = out["node_id"].map(direct).fillna(0).astype(int)
     out["n_reports_rollup"] = out["node_id"].map(rollup).fillna(0).astype(int)
@@ -135,14 +166,19 @@ def maude_public(name: str, sheet: str, codes_zip: str, legacy_prefix: str, no_e
     nodes = [{"node_id": TOP, "label": root, "level": 0, "source": "root", "status": ""}]
     nodes += [{"node_id": r.Code, "label": r.label, "level": int(r.level), "source": f"IMDRF Annex {sheet} 2026",
                "status": r.status} for r in prim.itertuples()]
-    edges = [{"child": r.Code, "parent": r.parent} for r in prim.itertuples()]
+    edges = [{"child": r.Code, "parent": r.parent, "placement": "primary"} for r in prim.itertuples()]
+    # L7 (DAG): IMDRF secondary placements are edges too; a level-3 term under a multi-placed level-2 term repeats its
+    # primary edge in the secondary chain, so drop pairs that are already primary
+    have = {(e["child"], e["parent"]) for e in edges}
+    edges += [{"child": c, "parent": p, "placement": "secondary"}
+              for c, p in sec[["child", "parent"]].drop_duplicates().itertuples(index=False) if (c, p) not in have]
     nodes.append({"node_id": "UNMAPPED", "label": "FDA legacy code without IMDRF equivalent", "level": 1,
                   "source": "added", "status": ""})
-    edges.append({"child": "UNMAPPED", "parent": TOP})
+    edges.append({"child": "UNMAPPED", "parent": TOP, "placement": "primary"})
     if no_effect:  # FDA legacy "no impact / no patient" codes sit with IMDRF's own E24 group
         nodes.append({"node_id": "NO_EFFECT", "label": "No health effect or no patient involved (FDA legacy codes)",
                       "level": 2, "source": "added", "status": ""})
-        edges.append({"child": "NO_EFFECT", "parent": "E24"})
+        edges.append({"child": "NO_EFFECT", "parent": "E24", "placement": "primary"})
 
     known = {n["node_id"] for n in nodes}
     by_name = {norm(lbl): code for code, lbl in zip(prim["Code"], prim["label"])}
@@ -166,14 +202,14 @@ def maude_public(name: str, sheet: str, codes_zip: str, legacy_prefix: str, no_e
         else:  # keep the legacy FDA term as its own leaf under UNMAPPED
             nid = f"{legacy_prefix}:{code}"
             nodes.append({"node_id": nid, "label": term, "level": 2, "source": "FDA legacy code", "status": ""})
-            edges.append({"child": nid, "parent": "UNMAPPED"})
+            edges.append({"child": nid, "parent": "UNMAPPED", "placement": "primary"})
             mapping.append((code, term, nid, "unmapped_fda_leaf"))
     mapping = pd.DataFrame(mapping, columns=["fda_code", "fda_term", "node_id", "method"])
     mapping["proposed_node"] = mapping["fda_code"].map(proposed)  # preview only; applied once approved
-    return pd.DataFrame(nodes), pd.DataFrame(edges), mapping, sec
+    return pd.DataFrame(nodes), pd.DataFrame(edges), mapping
 
 
-def maude_hidden(name: str, hidden_file: str, nodes, edges, mapping) -> None:
+def maude_hidden(name: str, hidden_file: str, nodes, edges, mapping) -> pd.DataFrame:
     h = pd.read_parquet(DATA / "maude/hidden" / hidden_file, columns=["MDR_REPORT_KEY", "code"])
     h = h.merge(mapping[["fda_code", "node_id", "method", "proposed_node"]], left_on="code", right_on="fda_code",
                 how="left")
@@ -181,23 +217,42 @@ def maude_hidden(name: str, hidden_file: str, nodes, edges, mapping) -> None:
     h["year"] = h["MDR_REPORT_KEY"].map(rec.set_index("MDR_REPORT_KEY")["date_received"]).map(
         lambda d: d.year if pd.notna(d) else None)
     in_tree = ~h["method"].isin(["unmapped_fda_leaf"]) & h["method"].notna()
-    in_tree_prop = in_tree | h["proposed_node"].notna()
+    in_tree_wo = in_tree & (h["method"] != "manual_crosswalk")      # L8: without the manual crosswalk
+    in_tree_prop = in_tree | h["proposed_node"].notna()             # remaining (medium-confidence) proposals applied
+
+    def by_year(mask):
+        return {str(int(y)): round(float(1 - g.mean()), 4) for y, g in mask.groupby(h["year"]) if pd.notna(y)}
+
     cov = {
         "rows": len(h),
         "rows_unknown_code": int(h["node_id"].isna().sum()),
         "rows_by_method": {str(k): int(v) for k, v in h["method"].value_counts(dropna=False).items()},
         "share_rows_in_imdrf_tree": round(float(in_tree.mean()), 4),
-        "share_rows_in_imdrf_tree_if_proposed_crosswalk_applied": round(float(in_tree_prop.mean()), 4),
-        "unmapped_share_by_year": {str(int(y)): round(float(1 - g.mean()), 4)
-                                   for y, g in in_tree.groupby(h["year"]) if pd.notna(y)},
-        "unmapped_share_by_year_if_proposed_applied": {str(int(y)): round(float(1 - g.mean()), 4)
-                                                       for y, g in in_tree_prop.groupby(h["year"]) if pd.notna(y)},
+        "share_rows_in_imdrf_tree_without_crosswalk": round(float(in_tree_wo.mean()), 4),
+        "share_rows_in_imdrf_tree_if_remaining_proposed_applied": round(float(in_tree_prop.mean()), 4),
+        "unmapped_share_by_year": by_year(in_tree),
+        "unmapped_share_by_year_without_crosswalk": by_year(in_tree_wo),
+        "unmapped_share_by_year_if_remaining_proposed_applied": by_year(in_tree_prop),
     }
     (DATA / "maude/hidden" / f"lattice_{name}_coverage.json").write_text(json.dumps(cov, indent=2))
-    support(h.dropna(subset=["node_id"]), nodes, edges, "MDR_REPORT_KEY").to_csv(
-        DATA / "maude/hidden" / f"lattice_{name}_support.csv", index=False)
+    h = h.dropna(subset=["node_id"])
+    support(h, nodes, edges, "MDR_REPORT_KEY").to_csv(DATA / "maude/hidden" / f"lattice_{name}_support.csv",
+                                                      index=False)
+    # L8 trend check: distinct reports per year and level-1 group (over all parents), with and without the crosswalk
+    anc = ancestors(edges)
+    level1 = set(nodes.loc[nodes["level"] == 1, "node_id"])
+    groups = {n: sorted(a & level1) for n, a in anc.items()}
+    h["node_without"] = h["node_id"].where(h["method"] != "manual_crosswalk", "UNMAPPED")
+    counts = {}
+    for col, tag in (("node_id", "n_with_crosswalk"), ("node_without", "n_without_crosswalk")):
+        g = h[["MDR_REPORT_KEY", "year", col]].assign(group=h[col].map(groups)).explode("group")
+        counts[tag] = g.drop_duplicates(["MDR_REPORT_KEY", "group"]).groupby(["year", "group"])["MDR_REPORT_KEY"].size()
+    trend = pd.DataFrame(counts).fillna(0).astype(int).reset_index()
+    trend.insert(0, "lattice", name)
+    trend["diff"] = trend["n_with_crosswalk"] - trend["n_without_crosswalk"]
     print(f"  [{name}] in IMDRF tree {cov['share_rows_in_imdrf_tree']:.2%} "
-          f"(with proposed crosswalk {cov['share_rows_in_imdrf_tree_if_proposed_crosswalk_applied']:.2%})")
+          f"(without crosswalk {cov['share_rows_in_imdrf_tree_without_crosswalk']:.2%})")
+    return trend
 
 
 # ====================================================================== ASRS
@@ -262,7 +317,7 @@ def asrs_public():
                 for sev in GROUND_CONFLICT_SEVERITIES]
     mapping.append({"raw_value": "Other <free-text write-in>", "node_id": asrs_leaf("Other", "Write-in"),
                     "method": "any value starting with 'Other '"})
-    return nodes, pd.DataFrame(edges), pd.DataFrame(mapping)
+    return nodes, pd.DataFrame(edges).assign(placement="primary"), pd.DataFrame(mapping)
 
 
 def asrs_parse(values: list[str]) -> list[str]:
@@ -306,28 +361,29 @@ def main() -> None:
     built = {
         "maude_device": maude_public("maude_device", "A", "deviceproblemcodes2025.zip", "FDA-DEV", False, xw),
         "maude_patient": maude_public("maude_patient", "E", "patientproblemdata.zip", "FDA-PAT", True, xw),
-        "asrs_anomaly": (*asrs_public(), None),
+        "asrs_anomaly": asrs_public(),
     }
     # validate everything before writing anything
     checks = {}
-    for name, (nodes, edges, mapping, sec) in built.items():
+    for name, (nodes, edges, mapping) in built.items():
         checks[name] = validate(nodes, edges)
         if not checks[name]["valid"]:
             raise SystemExit(f"{name}: structural check failed: {checks[name]}")
-    for name, (nodes, edges, mapping, sec) in built.items():
+    for name, (nodes, edges, mapping) in built.items():
         d = OUT / name
         d.mkdir(parents=True, exist_ok=True)
         nodes.sort_values(["level", "node_id"]).to_csv(d / "nodes.csv", index=False)
         edges.sort_values(["parent", "child"]).to_csv(d / "edges.csv", index=False)
         mapping.to_csv(d / "mapping.csv", index=False)
-        if sec is not None and len(sec):
-            sec.sort_values(["parent", "child"]).to_csv(d / "edges_secondary.csv", index=False)
+        (d / "edges_secondary.csv").unlink(missing_ok=True)  # merged into edges.csv (L7)
         (d / "checks.json").write_text(json.dumps(checks[name], indent=2))
-        print(f"[{name}] {checks[name]['n_nodes']} nodes, depth {checks[name]['max_depth']}, valid")
+        print(f"[{name}] {checks[name]['n_nodes']} nodes, {checks[name]['n_edges']} edges "
+              f"({checks[name]['n_edges_secondary']} secondary), depth {checks[name]['max_depth']}, valid")
 
     # hidden side (needs scripts/build_tables.py outputs)
-    maude_hidden("maude_device", "device_problems.parquet", *built["maude_device"][:3])
-    maude_hidden("maude_patient", "patient_problems.parquet", *built["maude_patient"][:3])
+    trend = pd.concat([maude_hidden("maude_device", "device_problems.parquet", *built["maude_device"]),
+                       maude_hidden("maude_patient", "patient_problems.parquet", *built["maude_patient"])])
+    trend.to_csv(DATA / "maude/hidden/crosswalk_trend_check.csv", index=False)
     asrs_hidden(*built["asrs_anomaly"][:2])
 
 

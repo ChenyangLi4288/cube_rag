@@ -13,13 +13,17 @@ All raw data is under `data/` (gitignored). Each dataset has a `MANIFEST.json` w
 | VAERS | `data/vaers/raw/` (4 zips) | 2019, 2021, 2022, 2023 | Manual, vaers.hhs.gov/data/datasets.html (CAPTCHA) | `data/vaers/MANIFEST.json` (`scripts/make_manifest.py`) |
 | ASRS | `data/asrs/raw/` (6 CSVs, `ASRS_YYYY.csv`) | 2018–2023 incident date | Manual CSV export, ASRS Database Online, one per year (cap 10,000/export) | `data/asrs/MANIFEST.json` (`make_manifest.py --header-rows 2`) |
 
-**Processed tables (v0-draft, 2026-11-19):** `scripts/build_tables.py` reads the raw files (never modifies them) and
-writes `data/<ds>/processed/` (key + text + filters, what the method may read) and `data/<ds>/hidden/` (ground truth,
-separate folder). Open decisions are flag columns, not applied; only VAERS V1 is applied. Layout and table list in
-`data/README.md`. Becomes v1 when the open decisions are signed off and the data is frozen.
-Build checks (in each `PROCESSED_MANIFEST.json`): MAUDE 6,829,664 reports, raw rows parsed = manifest line counts
-except `device2023` (2 lines skipped as malformed); 1 report has no master row, 184 have no text. VAERS 1,154,318
-reports, 6 without MedDRA terms. ASRS 31,680 reports.
+**Processed tables v1 (2026-11-23, issue #2):** `scripts/build_tables.py` reads the raw files (never modifies them) and
+writes `data/<ds>/processed/` (key + text + filters, what the method may read) and `data/<ds>/hidden/` (ground truth).
+All 2026-11-20 decisions are applied; rules, counts and checks are in each `PROCESSED_MANIFEST.json` (version `v1`).
+- MAUDE 1,000,054 reports: 6,829,664 candidates − 496 summary reports (M6) − 1 without a master row, then sampled (M2,
+  seed 20261120): LWS 171,966, QLG 145,061, NIK 80,610, MDS 44,087 whole; the other 8 codes at rate 0.087402 each.
+  M5: 3,776 reports had code blocks stripped; 0 reports still contain one of their own hidden codes (build-time check).
+  Event types M 783,561 · IN 212,661 · D 3,771 · O 30 · missing 31. 34 reports have no text.
+- VAERS 1,154,318 primary reports; sensitivity labels `<flag>_any_order` (e.g. died 19,257 primary vs 19,534 any row).
+- ASRS 31,678 reports (2 outliers dropped; 12 moved to their incident year).
+Note: the manifests show git commit `bf776f8+uncommitted-script`; the script was committed right after the build
+without further changes.
 Cost note: 51% of MAUDE event descriptions are exact duplicates (templated manufacturer text, e.g. "signal loss over
 one hour"), so extraction should be cached by text hash — roughly halves LLM calls.
 
@@ -56,7 +60,7 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
   *decided (user), 2026-11-19.*
 - **L4. Built 2026-11-19, revised after independent review** (`scripts/build_hierarchies.py`, IMDRF release 2026 in
   `data/maude/docs/imdrf/` with MANIFEST): `maude_device` 882 nodes (99.71% rows in IMDRF tree), `maude_patient` 1,181
-  (99.75%), `asrs_anomaly` 83. All pass checks. Review fixes applied: `.gitignore` exception for `lattices/**/*.csv`
+  (99.75%), `asrs_anomaly` 83 (v0 numbers; v1: L7, L8 and `lattices/README.md`). All pass checks. Review fixes applied: `.gitignore` exception for `lattices/**/*.csv`
   (they were ignored by `*.csv`); parents from IMDRF `CodeHierarchy` (fixes `E1707` → `E23`); labels from the primary
   row; ASRS taxonomy hard-coded from the coding form (no hidden data or write-in text in public files); generic
   Other/Unknown codes mapped to `A26/A27/E2401/E2402`; support files list every node; IMDRF provenance manifest; docs
@@ -67,11 +71,18 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
   With DAG, e.g. `↓E20 Injury` would add terms like Concussion and Burns (≈30k more reports than the 15.8k in the tree).
   Decide once together with MedDRA for VAERS (also multi-axial). **Decided 2026-11-20: DAG** (secondary placements
   become lattice edges; same for MedDRA; roll-up counts each report once, ALGEBRA §10 D4). *decided (Chenyang), #2.*
+  **Implemented 2026-11-23:** `edges.csv` has a `placement` column (primary/secondary); `maude_patient` has 1,332
+  edges (166 secondary, after dropping 36 that repeat a primary edge); `maude_device` and `asrs_anomaly` stay trees.
+  `level` = depth along the primary path (IMDRF also places level-2 terms under level-2 terms, e.g. Headache ≤ Pain).
+  `tests/test_lattices.py` loads every lattice into `cuberag.Lattice`.
 - **L8. Crosswalk of FDA legacy codes → IMDRF** (`lattices/crosswalk_fda_imdrf.csv`): 7 approved (generic codes),
   35 proposed (e.g. Bent → A040609, Blood Loss → E0506, Shock, Insulin → E233602), 17 no target (e.g. Death,
   Device Inoperable). Proposed rows fix most of the 2018–2020 trend jump (2018 device unmapped 4.98% → 2.74%).
   **Decided 2026-11-20: apply high-confidence rows only** (22 of 35); medium rows and the 17 no-target codes stay under
   `UNMAPPED`; report 2018–2020 trends with and without the crosswalk. Chenyang does a first-pass review. *decided, #6.*
+  **Applied 2026-11-23:** 22 rows set to `approved`. Unmapped share 2018/2019/2020 on v1: device 3.19%/0/0 (3.98%
+  without crosswalk); patient 2.86%/2.37%/1.64% (4.70%/4.31%/6.75% without). Per-year, per-group comparison in
+  `data/maude/hidden/crosswalk_trend_check.csv`; largest effect in patient E01 Nervous System (Seizures, Syncope).
 - **L6b. Internal IMDRF nodes carry their own reports** (91 device, 65 patient), so reconciliation needs the
   parent's own term (ALGEBRA §5). Documented in `lattices/README.md`.
 - **L6. ASRS Ground Conflict severity** (`Critical` / `Less Severe` exported as separate values) is a third level under
@@ -142,7 +153,12 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
     hierarchy files in the repo or benchmark; ship a build script only.
   - Terms in the data span MedDRA versions 23.1–26.0; any PT→HLT→SOC mapping must handle that.
   - **Clustering method** (issue #3 fixes: embed each term, hierarchical clustering cut at two levels, ~27 top
-    groups, fixed model and seed). The repo fixes only: cluster the VAERS
+    groups, fixed model and seed).
+  - **Clusters built 2026-11-23** (`scripts/build_vaers_clusters.py`): 13,268 distinct VAERS PTs embedded with
+    `BAAI/bge-small-en-v1.5` (fastembed/ONNX, normalised), one Ward tree cut at 27 top and 300 mid groups (nested),
+    i.e. PT ≤ mid ≤ top ≤ TOP; valid. Output kept local in `data/vaers/lattice_clusters/` (+ MANIFEST with model,
+    versions and hashes) until Chenyang confirms the PT names may be committed (MedDRA terms of use). Per-node counts
+    in `data/vaers/hidden/lattice_vaers_clusters_support.csv`. *open: commit or not.* The repo fixes only: cluster the VAERS
     `SYMPTOM1–5` terms (public), output (child, parent) pairs with a top node (task 4). Proposed default: embed each
     term (optionally plus report co-occurrence), hierarchical clustering cut at two levels (term → group → top group;
     ~27 top groups to mirror the 27 MedDRA SOCs), fixed embedding model version and seed recorded in the manifest.
@@ -177,7 +193,8 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
 Open work is tracked in GitHub Issues; this list is kept for history.
 
 0. Push `shubham/data-setup` and open a PR into `main` (#1). Write access granted 2026-11-20 and accepted.
-1. ~~Chenyang decisions~~ done 2026-11-20 (summary table above). Apply them and freeze v1 (#2).
+1. ~~Chenyang decisions~~ done 2026-11-20 (summary table above). ~~Apply them and freeze v1 (#2)~~ v1 built
+   2026-11-23 (PR from `shubham/data-setup`).
 2. ~~ASRS export and manifest~~ done 2026-11-19.
 3. ~~Field tables (task 3)~~ done 2026-11-19: `data/README.md` (`.gitignore` now `data/*` + `!data/README.md`).
    Per-column profiles: `scripts/profile_fields.py` → `data/<ds>/field_profile.csv`, `leakage_checks.json`.

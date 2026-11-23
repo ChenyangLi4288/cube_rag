@@ -5,7 +5,7 @@ fda_code,fda_term,node_id,method,proposed_node
 1003,Absorption,FDA-DEV:1003,unmapped_fda_leaf,
 1005,"Measurements, inaccurate",FDA-DEV:1005,unmapped_fda_leaf,
 1006,"Adaptor, failure of",FDA-DEV:1006,unmapped_fda_leaf,
-1008,Air Leak,FDA-DEV:1008,unmapped_fda_leaf,A050402
+1008,Air Leak,A050402,manual_crosswalk,
 1010,"Alarm, audible",FDA-DEV:1010,unmapped_fda_leaf,
 1015,"Alarm, intermittent",FDA-DEV:1015,unmapped_fda_leaf,
 1021,"Alarm, no lead",FDA-DEV:1021,unmapped_fda_leaf,
@@ -14,7 +14,7 @@ fda_code,fda_term,node_id,method,proposed_node
 1026,Altitude variations,FDA-DEV:1026,unmapped_fda_leaf,
 1027,Changes In Ambient Temperature In Device Environment,FDA-DEV:1027,unmapped_fda_leaf,
 1029,"Antenna, failure of",FDA-DEV:1029,unmapped_fda_leaf,
-1031,Failure To Adhere Or Bond,FDA-DEV:1031,unmapped_fda_leaf,A040102
+1031,Failure To Adhere Or Bond,A040102,manual_crosswalk,
 1033,Unintended Arm Motion,FDA-DEV:1033,unmapped_fda_leaf,
 1041,"Aspiration, excessive",FDA-DEV:1041,unmapped_fda_leaf,
 1042,"Aspiration, incomplete",FDA-DEV:1042,unmapped_fda_leaf,
@@ -26,13 +26,13 @@ fda_code,fda_term,node_id,method,proposed_node
 1053,Balloon mushroomed,FDA-DEV:1053,unmapped_fda_leaf,
 1054,"Battery charger, defective",FDA-DEV:1054,unmapped_fda_leaf,
 1055,Battery failure,FDA-DEV:1055,unmapped_fda_leaf,
-1059,Bent,FDA-DEV:1059,unmapped_fda_leaf,A040609
+1059,Bent,A040609,manual_crosswalk,
 1060,Bicarbonate,FDA-DEV:1060,unmapped_fda_leaf,
 1063,Blank screen,FDA-DEV:1063,unmapped_fda_leaf,
 1067,Bolus mechanism failure,FDA-DEV:1067,unmapped_fda_leaf,
 1070,Bubble(s),FDA-DEV:1070,unmapped_fda_leaf,
 1076,Cable break,FDA-DEV:1076,unmapped_fda_leaf,
-1078,Calibration Error,FDA-DEV:1078,unmapped_fda_leaf,A08
+1078,Calibration Error,A08,manual_crosswalk,
 1082,Carbon absorption,FDA-DEV:1082,unmapped_fda_leaf,
 1083,Cautery,FDA-DEV:1083,unmapped_fda_leaf,
 1084,Channeling,FDA-DEV:1084,unmapped_fda_leaf,
@@ -42,7 +42,7 @@ fda_code,fda_term,node_id,method,proposed_node
 1100,Collimator design problem,FDA-DEV:1100,unmapped_fda_leaf,
 1102,Compatibility,FDA-DEV:1102,unmapped_fda_leaf,
 1103,"Component(s), broken",FDA-DEV:1103,unmapped_fda_leaf,
-1104,Detachment Of Device Component,FDA-DEV:1104,unmapped_fda_leaf,A0501
+1104,Detachment Of Device Component,A0501,manual_crosswalk,
 1105,Component Falling,FDA-DEV:1105,unmapped_fda_leaf,
 1106,"Component(s), overheating of",FDA-DEV:1106,unmapped_fda_leaf,
 1107,"Component(s), worn",FDA-DEV:1107,unmapped_fda_leaf,
@@ -231,7 +231,7 @@ fda_code,fda_term,node_id,method,proposed_node
 1592,Spring loading mechanism problem,FDA-DEV:1592,unmapped_fda_leaf,
 1594,Steering wire problem,FDA-DEV:1594,unmapped_fda_leaf,
 1595,Sterility,FDA-DEV:1595,unmapped_fda_leaf,
-1597,Sticking,FDA-DEV:1597,unmapped_fda_leaf,A0509
+1597,Sticking,A0509,manual_crosswalk,
 1599,Device Stops Intermittently,FDA-DEV:1599,unmapped_fda_leaf,
 1600,Inadequate Storage,FDA-DEV:1600,unmapped_fda_leaf,
 1602,Strut fracture,FDA-DEV:1602,unmapped_fda_leaf,
@@ -312,7 +312,7 @@ fda_code,fda_term,node_id,method,proposed_node
 2413,Leaflet fracture,FDA-DEV:2413,unmapped_fda_leaf,
 2425,"pH, low",FDA-DEV:2425,unmapped_fda_leaf,
 2454,Cut In Material,FDA-DEV:2454,unmapped_fda_leaf,
-2456,Incorrect Or Inadequate Test Results,FDA-DEV:2456,unmapped_fda_leaf,A0908
+2456,Incorrect Or Inadequate Test Results,A0908,manual_crosswalk,
 2504,Deterioration of prosthesis,FDA-DEV:2504,unmapped_fda_leaf,
 2531,"Labeling, missing",FDA-DEV:2531,unmapped_fda_leaf,
 2537,Split,FDA-DEV:2537,unmapped_fda_leaf,
@@ -320,7 +320,7 @@ fda_code,fda_term,node_id,method,proposed_node
 2540,"Leaflet disruption, cause unknown",FDA-DEV:2540,unmapped_fda_leaf,
 2567,Fibrosis,FDA-DEV:2567,unmapped_fda_leaf,
 2576,"Clips, scissored",FDA-DEV:2576,unmapped_fda_leaf,
-2578,Physical Resistance,FDA-DEV:2578,unmapped_fda_leaf,A0509
+2578,Physical Resistance,A0509,manual_crosswalk,
 2581,Year 2000 (Y2K) related problem,FDA-DEV:2581,unmapped_fda_leaf,
 2584,Low Battery,FDA-DEV:2584,unmapped_fda_leaf,A0705
 2585,"Pipette, failure to aspirate",FDA-DEV:2585,unmapped_fda_leaf,
