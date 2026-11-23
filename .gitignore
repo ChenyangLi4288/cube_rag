@@ -4,6 +4,7 @@ data/*
 *.parquet
 *.jsonl.gz
 *.csv
+!lattices/**/*.csv
 
 # Python
 __pycache__/

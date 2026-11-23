@@ -1,0 +1,21 @@
+{
+  "n_nodes": 83,
+  "n_edges": 82,
+  "roots": [
+    "TOP"
+  ],
+  "unique_node_ids": true,
+  "single_top": true,
+  "tree_one_parent_each": true,
+  "edges_reference_known_nodes": true,
+  "all_nodes_reach_top_no_cycles": true,
+  "child_level_is_parent_level_plus_1": true,
+  "max_depth": 3,
+  "nodes_per_level": {
+    "0": 1,
+    "1": 15,
+    "2": 65,
+    "3": 2
+  },
+  "valid": true
+}

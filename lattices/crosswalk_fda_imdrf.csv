@@ -1,0 +1,60 @@
+lattice,fda_code,fda_term,target_node,target_label,status,confidence,rationale
+maude_device,2203,Other (for use when an appropriate device code cannot be identified),A27,Appropriate Device Problem Term/Code not Available,approved,high,same meaning (generic 'other')
+maude_device,2204,Unknown (for use when the device problem is not known),A26,Insufficient Device Problem Information,approved,high,same meaning (problem not known)
+maude_patient,3190,No Information,E2401,Insufficient Information,approved,high,same meaning
+maude_patient,3191,No Code Available,E2402,"Appropriate Clinical Signs, Symptoms and Conditions Term/Code not Available",approved,high,same meaning
+maude_patient,2200,Other (for use when an appropriate patient code cannot be identified),E2402,"Appropriate Clinical Signs, Symptoms and Conditions Term/Code not Available",approved,high,same meaning (generic 'other')
+maude_patient,2202,Unknown (for use when the patient's condition is not known),E2401,Insufficient Information,approved,high,same meaning (condition not known)
+maude_patient,3189,Not Applicable,NO_EFFECT,"No health effect, no patient involved (FDA legacy codes)",approved,medium,no patient effect applies
+maude_device,1059,Bent,A040609,Material Twisted/Bent,proposed,high,IMDRF term includes 'Bent'
+maude_device,1104,Detachment Of Device Component,A0501,Detachment of Device or Device Component,proposed,high,near-identical wording
+maude_device,2584,Low Battery,A0705,Battery Problem,proposed,medium,no 'low battery' leaf; map to the parent Battery Problem
+maude_device,1423,Occlusion Within Device,A1409,Obstruction of Flow,proposed,medium,occlusion = obstruction of flow (Infusion or Flow group)
+maude_device,2456,Incorrect Or Inadequate Test Results,A0908,"Incorrect, Inadequate or Imprecise Result or Readings",proposed,high,near-identical wording
+maude_device,1008,Air Leak,A050402,Gas/Air Leak,proposed,high,IMDRF term includes 'Air Leak'
+maude_device,2293,Invalid Sensing,A0709,Device Sensing Problem,proposed,medium,sensing problem; no exact 'invalid' leaf
+maude_device,1597,Sticking,A0509,Physical Resistance/Sticking,proposed,high,IMDRF term includes 'Sticking'
+maude_device,2578,Physical Resistance,A0509,Physical Resistance/Sticking,proposed,high,IMDRF term includes 'Physical Resistance'
+maude_device,1031,Failure To Adhere Or Bond,A040102,Loss of or Failure to Bond,proposed,high,same meaning
+maude_device,1138,Application Interface Becomes Non-Functional Or Program Exits Abnormally,A1102,Application Program Problem,proposed,medium,application program failure; parent rather than 'Freezes or Fails to Launch'
+maude_device,1078,Calibration Error,A08,Calibration Problem,proposed,high,maps to the level-1 group
+maude_device,2913,Device Operates Differently Than Expected,,,no_target,,too vague for one IMDRF term
+maude_device,1663,Device Inoperable,,,no_target,,no IMDRF 'inoperable' term; A0907 No Device Output is narrower
+maude_device,1105,Component Falling,,,no_target,,could be detachment (A0501) or device fell; unclear
+maude_device,2379,Device Issue,,,no_target,,generic
+maude_device,3008,Physical Property Issue,,,no_target,,generic
+maude_device,1228,False Reading From Device Non-Compliance,,,no_target,,unclear meaning
+maude_patient,2597,Blood Loss,E0506,Hemorrhage/Blood Loss/Bleeding,proposed,high,IMDRF term includes 'Blood Loss'
+maude_patient,2076,Skin Irritation,E1720,Skin Inflammation/ Irritation,proposed,high,IMDRF term includes 'Irritation'
+maude_patient,2443,Skin Inflammation,E1720,Skin Inflammation/ Irritation,proposed,high,IMDRF term includes 'Skin Inflammation'
+maude_patient,2063,Seizures,E0109,Convulsion/Seizure,proposed,high,same meaning
+maude_patient,1610,Syncope,E011903,Syncope/Fainting,proposed,high,same meaning
+maude_patient,1847,Fainting,E011903,Syncope/Fainting,proposed,high,same meaning
+maude_patient,2091,Swelling,E2338,Swelling/ Edema,proposed,high,same meaning
+maude_patient,1820,Edema,E2338,Swelling/ Edema,proposed,high,same meaning
+maude_patient,2206,Heart Failure,E0611,Heart Failure/Congestive Heart Failure,proposed,high,same meaning
+maude_patient,1783,Congestive Heart Failure,E0611,Heart Failure/Congestive Heart Failure,proposed,high,same meaning
+maude_patient,1984,Occlusion,E2328,Obstruction/Occlusion,proposed,high,same meaning
+maude_patient,2100,Thrombosis,E0514,Thrombosis/Thrombus,proposed,high,same meaning
+maude_patient,2442,"Reaction, Injection Site",E2111,Administration Site Reaction,proposed,high,injection site is an administration site
+maude_patient,2264,"Shock, Insulin",E233602,Hypoglycemic Shock,proposed,high,insulin shock = hypoglycemic shock
+maude_patient,2132,Ventricular Tachycardia,E060109,Tachycardia,proposed,medium,no ventricular-specific leaf; broader term
+maude_patient,1731,Atrial Tachycardia,E060109,Tachycardia,proposed,medium,no atrial-specific leaf; broader term
+maude_patient,1765,Cardiopulmonary Arrest,E0602,Cardiac Arrest,proposed,medium,cardiopulmonary arrest includes cardiac arrest
+maude_patient,2061,Scarring,E171501,Abnormal Scarring,proposed,medium,FDA term does not say 'abnormal'
+maude_patient,2225,Discharge,E2315,Fluid Discharge,proposed,medium,generic discharge
+maude_patient,2463,Chest Tightness/Pressure,E233001,Chest Pain,proposed,medium,tightness/pressure close to chest pain
+maude_patient,1941,Irritation,E2350,Tissue Irritation,proposed,medium,site not specified
+maude_patient,2058,Staphylococcus Aureus,E1901,Bacterial Infection,proposed,medium,organism implies bacterial infection
+maude_patient,2045,Respiratory Distress,E0717,Dyspnea,proposed,medium,ARDS (E0701) is narrower; dyspnea is the symptom
+maude_patient,1802,Death,,,no_target,,"Annex E has no death term (death is a health impact, IMDRF Annex F); keep UNMAPPED and treat as an outcome"
+maude_patient,2145,Weakness,,,no_target,,general weakness; E1621 is muscle-specific
+maude_patient,1988,Overdose,,,no_target,,no overdose term; consequence (e.g. hypoglycemia) not stated
+maude_patient,2542,Underdose,,,no_target,,no underdose term
+maude_patient,2444,Sweating,,,no_target,,no sweating/hyperhidrosis term
+maude_patient,2099,"Therapeutic Effects, Unexpected",,,no_target,,generic
+maude_patient,2414,Reaction,,,no_target,,generic
+maude_patient,2331,"Complaint, Ill-Defined",,,no_target,,generic
+maude_patient,1412,Muscle Stimulation,,,no_target,,E0138 Undesired Nerve Stimulation is retired and not the same
+maude_patient,2416,Collapse,,,no_target,,unclear (syncope vs structural collapse)
+maude_patient,3193,Pregnancy,,,no_target,,not an adverse effect by itself
