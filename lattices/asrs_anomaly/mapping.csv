@@ -1,0 +1,68 @@
+raw_value,node_id,method
+Aircraft Equipment Problem Critical,aircraft_equipment_problem/critical,category + subcategory
+Aircraft Equipment Problem Less Severe,aircraft_equipment_problem/less_severe,category + subcategory
+Airspace Violation All Types,airspace_violation/all_types,category + subcategory
+ATC Issue All Types,atc_issue/all_types,category + subcategory
+Flight Deck / Cabin / Aircraft Event Illness / Injury,flight_deck_cabin_aircraft_event/illness_injury,category + subcategory
+Flight Deck / Cabin / Aircraft Event Passenger Electronic Device,flight_deck_cabin_aircraft_event/passenger_electronic_device,category + subcategory
+Flight Deck / Cabin / Aircraft Event Passenger Misconduct,flight_deck_cabin_aircraft_event/passenger_misconduct,category + subcategory
+Flight Deck / Cabin / Aircraft Event Smoke / Fire / Fumes / Odor,flight_deck_cabin_aircraft_event/smoke_fire_fumes_odor,category + subcategory
+Flight Deck / Cabin / Aircraft Event Other / Unknown,flight_deck_cabin_aircraft_event/other_unknown,category + subcategory
+Conflict NMAC,conflict/nmac,category + subcategory
+Conflict Airborne Conflict,conflict/airborne_conflict,category + subcategory
+Conflict Ground Conflict,conflict/ground_conflict,category + subcategory
+Deviation - Altitude Crossing Restriction Not Met,deviation_altitude/crossing_restriction_not_met,category + subcategory
+Deviation - Altitude Excursion From Assigned Altitude,deviation_altitude/excursion_from_assigned_altitude,category + subcategory
+Deviation - Altitude Overshoot,deviation_altitude/overshoot,category + subcategory
+Deviation - Altitude Undershoot,deviation_altitude/undershoot,category + subcategory
+Deviation - Speed All Types,deviation_speed/all_types,category + subcategory
+Deviation - Track / Heading All Types,deviation_track_heading/all_types,category + subcategory
+Deviation / Discrepancy - Procedural Clearance,deviation_discrepancy_procedural/clearance,category + subcategory
+Deviation / Discrepancy - Procedural FAR,deviation_discrepancy_procedural/far,category + subcategory
+Deviation / Discrepancy - Procedural Hazardous Material Violation,deviation_discrepancy_procedural/hazardous_material_violation,category + subcategory
+Deviation / Discrepancy - Procedural Landing Without Clearance,deviation_discrepancy_procedural/landing_without_clearance,category + subcategory
+Deviation / Discrepancy - Procedural Maintenance,deviation_discrepancy_procedural/maintenance,category + subcategory
+Deviation / Discrepancy - Procedural MEL / CDL,deviation_discrepancy_procedural/mel_cdl,category + subcategory
+Deviation / Discrepancy - Procedural Published Material / Policy,deviation_discrepancy_procedural/published_material_policy,category + subcategory
+Deviation / Discrepancy - Procedural Security,deviation_discrepancy_procedural/security,category + subcategory
+Deviation / Discrepancy - Procedural Unauthorized Flight Operations (UAS),deviation_discrepancy_procedural/unauthorized_flight_operations_uas,category + subcategory
+Deviation / Discrepancy - Procedural Weight And Balance,deviation_discrepancy_procedural/weight_and_balance,category + subcategory
+Deviation / Discrepancy - Procedural Other / Unknown,deviation_discrepancy_procedural/other_unknown,category + subcategory
+Ground Excursion Ramp,ground_excursion/ramp,category + subcategory
+Ground Excursion Runway,ground_excursion/runway,category + subcategory
+Ground Excursion Taxiway,ground_excursion/taxiway,category + subcategory
+Ground Incursion Ramp,ground_incursion/ramp,category + subcategory
+Ground Incursion Runway,ground_incursion/runway,category + subcategory
+Ground Incursion Taxiway,ground_incursion/taxiway,category + subcategory
+Ground Event / Encounter Aircraft,ground_event_encounter/aircraft,category + subcategory
+Ground Event / Encounter FOD,ground_event_encounter/fod,category + subcategory
+Ground Event / Encounter Fuel Issue,ground_event_encounter/fuel_issue,category + subcategory
+Ground Event / Encounter Gear Up Landing,ground_event_encounter/gear_up_landing,category + subcategory
+Ground Event / Encounter Ground Equipment Issue,ground_event_encounter/ground_equipment_issue,category + subcategory
+Ground Event / Encounter Ground Strike - Aircraft,ground_event_encounter/ground_strike_aircraft,category + subcategory
+Ground Event / Encounter Jet Blast,ground_event_encounter/jet_blast,category + subcategory
+Ground Event / Encounter Loss Of Aircraft Control,ground_event_encounter/loss_of_aircraft_control,category + subcategory
+Ground Event / Encounter Loss Of VLOS (UAS),ground_event_encounter/loss_of_vlos_uas,category + subcategory
+Ground Event / Encounter Object,ground_event_encounter/object,category + subcategory
+Ground Event / Encounter Person / Animal / Bird,ground_event_encounter/person_animal_bird,category + subcategory
+Ground Event / Encounter Vehicle,ground_event_encounter/vehicle,category + subcategory
+Ground Event / Encounter Weather / Turbulence,ground_event_encounter/weather_turbulence,category + subcategory
+Ground Event / Encounter Other / Unknown,ground_event_encounter/other_unknown,category + subcategory
+Inflight Event / Encounter Aircraft,inflight_event_encounter/aircraft,category + subcategory
+Inflight Event / Encounter CFTT / CFIT,inflight_event_encounter/cftt_cfit,category + subcategory
+Inflight Event / Encounter Fly Away (UAS),inflight_event_encounter/fly_away_uas,category + subcategory
+Inflight Event / Encounter Fuel Issue,inflight_event_encounter/fuel_issue,category + subcategory
+Inflight Event / Encounter Laser,inflight_event_encounter/laser,category + subcategory
+Inflight Event / Encounter Loss Of Aircraft Control,inflight_event_encounter/loss_of_aircraft_control,category + subcategory
+Inflight Event / Encounter Object,inflight_event_encounter/object,category + subcategory
+Inflight Event / Encounter Bird / Animal,inflight_event_encounter/bird_animal,category + subcategory
+Inflight Event / Encounter Unstabilized Approach,inflight_event_encounter/unstabilized_approach,category + subcategory
+Inflight Event / Encounter VFR In IMC,inflight_event_encounter/vfr_in_imc,category + subcategory
+Inflight Event / Encounter Wake Vortex Encounter,inflight_event_encounter/wake_vortex_encounter,category + subcategory
+Inflight Event / Encounter Weather / Turbulence,inflight_event_encounter/weather_turbulence,category + subcategory
+Inflight Event / Encounter Other / Unknown,inflight_event_encounter/other_unknown,category + subcategory
+No Specific Anomaly Occurred All Types,no_specific_anomaly_occurred/all_types,category + subcategory
+No Specific Anomaly Occurred Unwanted Situation,no_specific_anomaly_occurred/unwanted_situation,category + subcategory
+Critical,conflict/ground_conflict/critical,severity token; refines the preceding 'Conflict Ground Conflict'
+Less Severe,conflict/ground_conflict/less_severe,severity token; refines the preceding 'Conflict Ground Conflict'
+Other <free-text write-in>,other/write_in,any value starting with 'Other '

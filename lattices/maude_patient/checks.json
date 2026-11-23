@@ -1,0 +1,31 @@
+{
+  "n_nodes": 1167,
+  "n_edges": 1332,
+  "n_edges_secondary": 166,
+  "n_nodes_with_several_parents": 166,
+  "roots": [
+    "TOP"
+  ],
+  "unique_node_ids": true,
+  "single_top": true,
+  "no_duplicate_edges": true,
+  "one_primary_parent_each": true,
+  "edges_reference_known_nodes": true,
+  "acyclic": true,
+  "all_nodes_reach_top": true,
+  "primary_child_level_is_parent_level_plus_1": true,
+  "secondary_edges_by_child_parent_level": {
+    "2->1": 121,
+    "2->2": 32,
+    "3->1": 9,
+    "3->2": 4
+  },
+  "max_depth": 3,
+  "nodes_per_level": {
+    "0": 1,
+    "1": 25,
+    "2": 956,
+    "3": 185
+  },
+  "valid": true
+}
