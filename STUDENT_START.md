@@ -30,6 +30,10 @@ This document tells you what to do first. Read it before the other files.
 
 ## 4. First two weeks (Oct 20 – Nov 2, 2026)
 
+> **Update 2026-11-20.** Tasks 1–4 are done (VAERS lattice still open) and task 7 is done (ALGEBRA §9).
+> Task 6 is replaced by a review of ALGEBRA §10–11. **From now on, all work is in [GitHub Issues](https://github.com/ChenyangLi4288/cube_rag/issues)**;
+> this table is kept as history.
+
 Do these tasks in this order. Each task has a "done when" condition.
 
 | # | Task | Done when |
@@ -59,6 +63,10 @@ Do these tasks in this order. Each task has a "done when" condition.
 - Decisions that need Chenyang: changes to scope, dataset, or baselines; any new data source; GPU job requests.
 
 ## 7. Open decisions (default answers)
+
+> **Update 2026-11-20.** These were the starting defaults. The data decisions made on 2026-11-20 (MAUDE scope,
+> VAERS primary reports, leak fields, embedded codes, summary reports, ASRS year, DAG lattices, crosswalk) are in
+> [issue #2](https://github.com/ChenyangLi4288/cube_rag/issues/2), [#3](https://github.com/ChenyangLi4288/cube_rag/issues/3) and [#6](https://github.com/ChenyangLi4288/cube_rag/issues/6).
 
 Use these default answers. If you find a problem with a default, tell Chenyang.
 

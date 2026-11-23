@@ -1,0 +1,36 @@
+W1119 17:14:06.492000 44444 site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+C:\Users\cl4288\AppData\Local\Programs\Python\Python313\Lib\site-packages\requests\__init__.py:113: RequestsDependencyWarning: urllib3 (2.6.3) or chardet (7.4.3)/charset_normalizer (3.4.4) doesn't match a supported version!
+  warnings.warn(
+Could not reach the Hub (Cannot reach https://huggingface.co/api/models/BAAI/bge-small-en-v1.5: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'BAAI/bge-small-en-v1.5'.
+[11s] eval=3000 facts=11409 count/bool columns=379 slope columns=45
+[14s] library vs vectorized PPI: max |diff| = 2.27e-13
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|##########| 199/199 [00:00<00:00, 2757.70it/s]
+
+extractor tfidf+LR stand-in (Section 8): mean Se 0.19, mean PPV 0.55 (flagged leaves only 0.83), micro Se 0.35, never flagged 13; facts 11409
+raw Σπ: median rel err 0.426, median Σπ/truth 0.58; bands 3–19 0.75, 20–49 0.42, 50–149 0.22, ≥150 0.22
+
+PPI designs (n=300, 300 replicate audits each; design basis: isotonic calibration of cross-fitted train scores)
+design        size  relerr meanAud  cover  trueSE            3–19           20–49          50–149            ≥150  slope cov/sign1
+uniform      300.0   0.369   0.017  0.785   0.477  0.78/0.59/0.99  0.37/0.88/0.47  0.20/0.93/0.24  0.08/0.94/0.09  0.90/0.88
+cell         300.0   0.372   0.016  0.787   0.472  0.78/0.59/0.98  0.37/0.88/0.47  0.19/0.93/0.24  0.07/0.95/0.09  0.90/0.87
+score        300.0   0.342   0.015  0.802   0.429  0.73/0.63/0.93  0.34/0.88/0.42  0.17/0.93/0.22  0.07/0.94/0.09  0.91/0.88
+score_rare   300.0   0.363   0.012  0.799   0.456  0.76/0.63/0.95  0.36/0.88/0.45  0.19/0.93/0.24  0.07/0.95/0.09  0.91/0.88
+oracle_diag  300.0   0.281   0.012  0.901   0.348  0.40/0.88/0.51  0.28/0.89/0.36  0.18/0.92/0.22  0.10/0.94/0.12  0.93/0.91
+poisson      301.8   0.372   0.015  0.798   0.455  0.74/0.62/0.94  0.37/0.88/0.45  0.19/0.93/0.24  0.07/0.94/0.09  0.91/0.88
+  (band cells: relerr / coverage / exact design rel. SE)
+
+retrieval baselines (median rel err; bands; slope sign acc)
+  thr_dense_f1_countall         1.182   2.61  1.83  1.96  0.52  sign 0.38
+  thr_dense_f1_oracle           0.600   0.71  0.73  0.49  0.53  sign 0.69
+  thr_dense_count_countall      0.432   0.71  0.46  0.31  0.09  sign 0.41
+  thr_dense_count_oracle        0.857   0.95  0.93  0.82  0.62  sign 0.64
+  topk_dense@10_oracle          0.976   0.92  0.96  0.97  0.99  sign 0.62
+  topk_dense@50_oracle          0.842   0.67  0.85  0.87  0.95  sign 0.87
+  thr_bm25_f1_countall          1.364   2.27  2.46  1.93  0.86  sign 0.49
+  thr_bm25_f1_oracle            0.588   0.67  0.57  0.41  0.59  sign 0.82
+  thr_bm25_count_countall       0.776   0.92  0.62  0.93  0.34  sign 0.41
+  thr_bm25_count_oracle         0.786   0.91  0.89  0.67  0.59  sign 0.72
+  topk_bm25@10_oracle           0.978   0.97  0.96  0.97  0.98  sign 0.67
+  topk_bm25@50_oracle           0.891   0.75  0.89  0.92  0.93  sign 0.72
+threshold τ_F1 quality: {'dense': {'train_f1_mean': 0.2201775823946495, 'eval_f1_mean': 0.1887447681179985}, 'bm25': {'train_f1_mean': 0.23797842297659094, 'eval_f1_mean': 0.1959159009291154}}
+wrote C:\Users\cl4288\Downloads\project_repo\cube_rag\results\audit_eval_tfidf_n300.json in 22s

@@ -1,7 +1,22 @@
 # CubeRAG: an annotated fact cube for counting and trend questions
 
-Status: proposal, 2026-10-20. Target: ICML 2027 (deadline Jan 16–22, 2027, AoE).
-New to the project? Read [STUDENT_START.md](STUDENT_START.md) first.
+Target: ICML 2027 (deadline Jan 16–22, 2027, AoE). New to the project? Read [STUDENT_START.md](STUDENT_START.md) first.
+
+## Status (2026-11-20)
+
+| Part | State |
+|---|---|
+| Algebra | Specified and frozen as v1.0: ALGEBRA.md §10 (objects, operations, laws L1–L11, query evaluation) and §11 (audit designs, L12–L13). |
+| Reference code | `cuberag/` implements §10–11. 39 tests pass (`python -m pytest tests`). |
+| Pilot | Two rounds on a 5,000-report openFDA MAUDE subset with a hand-made lattice: EXPERIMENTS.md §8–9. To be rerun on the v1 data. |
+| Data | MAUDE, VAERS and ASRS downloaded, field tables and v0 processed tables built; MAUDE and ASRS lattices built (branch `shubham/data-setup`, to be merged). Decisions of 2026-11-20 to apply before the v1 freeze. |
+| Next | v1 data freeze → adapter → pilot rerun on v1 → LLM extraction on a 10⁵ subset. |
+
+## Where the work is tracked
+
+**All open work is in [GitHub Issues](https://github.com/ChenyangLi4288/cube_rag/issues).** Pick an issue, comment that you are on it, and link your PR to it
+(`Closes #N`). Labels: `data`, `method`, `experiment`, and `decision` (records a decision or needs one).
+The docs describe the design and the results; they do not hold to-do lists.
 
 ## The problem
 
@@ -47,7 +62,22 @@ We hide these fields from the method. We use them only as the correct answers (g
 | [PROPOSAL.md](PROPOSAL.md) | Motivation, research questions, method, contributions, timeline, risks |
 | [ALGEBRA.md](ALGEBRA.md) | Formal definitions, operators, propositions to prove, examples |
 | [RELATED_WORK.md](RELATED_WORK.md) | Literature table (2024–2026) and how CubeRAG is different |
-| [EXPERIMENTS.md](EXPERIMENTS.md) | Benchmark, baselines, metrics, ablations, compute |
+| [EXPERIMENTS.md](EXPERIMENTS.md) | Benchmark, baselines, metrics, ablations, compute. Sections 8–9: pilot results |
+| `cuberag/` | Reference implementation of ALGEBRA.md Section 10 (pure Python) |
+| `tests/` | Toy cube (ALGEBRA.md Section 9) and property-based tests of the laws L1–L13. Run `python -m pytest tests` |
+| `scripts/` | `fetch_maude.py` (public openFDA sample), `run_small_eval.py` (pilot against BM25 and dense baselines), `extract_llm.py`, `run_audit_eval.py` (see below) |
 
 This project is separate from `mcic_rag_test`. That project studies sampling estimators for one query at a time.
 This project studies a data structure that we build one time and use again for many queries.
+
+### More files (round 2 of the pilot)
+
+| File | Contents |
+|---|---|
+| `cuberag/audit.py` | Audit designs for PPI: score/rarity strata, Neyman allocation, Poisson (IPW) sampling, exact design covariances (ALGEBRA.md Section 11) |
+| `cuberag/extract/` | Pluggable LLM extractor: output contract (`base.py`), prompt and strict JSON schema (`prompt.py`), OpenAI backend (`openai_backend.py`, key from the file named by `CUBERAG_KEY_FILE`), local Hugging Face backend (`hf_backend.py`) |
+| `scripts/extract_llm.py` | Runs an extractor over the pilot split with per-report cache, run manifest, `--dry-run` and `--limit N` |
+| `scripts/run_audit_eval.py` | Audit-design comparison (replicate audits), score-threshold retrieval baselines, LLM facts input (`--facts`) |
+| `tests/test_audit_design.py`, `tests/test_extract.py` | Laws L12–L13 (stratified and Poisson PPI: unbiasedness and exact covariance) and extractor contract tests |
+
+Results: EXPERIMENTS.md Section 9.
