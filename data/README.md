@@ -21,7 +21,7 @@ each `PROCESSED_MANIFEST.json`). Parquet, zstd.
 
 | Dataset | processed/ | hidden/ |
 |---|---|---|
-| VAERS | `reports.parquet` (1 row per primary report; `vax_types` list), `vaccines.parquet` (1 row per vaccine) | `labels.parquet` (outcome flags from the primary row, plus `<flag>_any_order` sensitivity labels), `symptoms.parquet` (MedDRA PTs, long), `lattice_vaers_clusters_support.csv` |
+| VAERS | `reports.parquet` (1 row per primary report; `vax_types` list), `vaccines.parquet` (1 row per vaccine) | `labels.parquet` (outcome flags from the primary row, plus `<flag>_any_order` sensitivity labels), `symptoms.parquet` (MedDRA PTs, long), `lattice_vaers_clusters_support.csv`, `lattice_vaers_meddra_support.csv` |
 | ASRS | `reports.parquet` (1 row per ACN, 2018–2023 by incident month; `narrative_1`, `narrative_2`, filters; `outside_query_year` = moved to its incident year) | `labels.parquet` (anomaly list, primary problem, synopsis, analyst-coded fields), `anomaly_nodes.parquet` |
 | MAUDE | `reports/part-00..15.parquet` (1 row per report; `text_event_description`, `text_mfr_narrative` with embedded code blocks stripped; filters; `sample_rate`; `has_embedded_codes`) | `labels.parquet` (event type, flags, patient outcome), `device_problems.parquet`, `patient_problems.parquet` (code + term, long), lattice support/coverage files, `crosswalk_trend_check.csv` |
 
@@ -30,6 +30,8 @@ Rules applied in v1 (STATE.md):
 - **MAUDE M2:** 12 product codes, received 2018–2025, sampled with one fixed rate per product code, the same every
   year (seeded hash of `MDR_REPORT_KEY`). LWS, NIK, MDS and QLG are kept whole; the other 8 codes share one rate,
   chosen so the expected total is 10⁶. `sample_rate` is stored per report: weight = 1 / `sample_rate`.
+  **Any count pooled across product codes must use this weight** (an unweighted pooled count over-represents the
+  whole-kept codes LWS, NIK, QLG, MDS about 11×). Counts within one product code need no weight: its rate is constant.
 - **MAUDE M5:** embedded code blocks (IMDRF codes with terms, `ANNEX A: …` lists, `PROBLEM CODE - 3191`,
   `TYPE OF REPORTABLE EVENT: …`, FDA codes in brackets) are removed from both text fields; `has_embedded_codes`
   marks changed reports, so "drop these reports" is one filter. The build fails if any report still contains one of
@@ -37,6 +39,11 @@ Rules applied in v1 (STATE.md):
 - **MAUDE M6:** the 496 summary reports are dropped; candidates without a master row are dropped too.
 - **VAERS V1:** `ORDER = 1` only; `<flag>_any_order` = true if any row of the VAERS_ID (in the four year files) says so.
 - **ASRS A3:** year = incident month; the 2 reports dated 2002 and 2012 are dropped.
+
+VAERS lattices (local, never committed — MSSO terms; STATE.md V4/V5): `data/vaers/MedDRA_29_1_English_v2/` is the
+licensed MedDRA 29.1 release (frozen like `raw/`). `scripts/build_vaers_meddra.py` builds the main VAERS lattice in
+`data/vaers/lattice_meddra/` (SOC ≤ … ≤ PT DAG, mapping, unmapped terms); `build_vaers_clusters.py` and
+`build_vaers_anchored.py` build the alternative lattices in `lattice_clusters/` and `lattice_clusters_anchored/`.
 
 ## Roles
 
