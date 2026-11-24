@@ -207,7 +207,7 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
     IMDRF-anchored groups NMI 0.27, purity 42% / 56%; plain 300 mid vs HLGT NMI 0.58, purity 38% / 72%. So the
     anchored variant is not better than the plain clusters at SOC level; keep the plain clusters as the X5 alternative.
   - Local only (MSSO terms): `data/vaers/lattice_meddra/`, `data/vaers/hidden/lattice_vaers_meddra_support.csv`.
-    Using MedDRA names in an LLM prompt still waits on the AI-use answer (V4).
+    MedDRA names never go into an LLM prompt (V4, decided 2026-11-23); the lattice is used offline only.
 
 ### ASRS
 
