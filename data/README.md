@@ -21,7 +21,7 @@ each `PROCESSED_MANIFEST.json`). Parquet, zstd.
 
 | Dataset | processed/ | hidden/ |
 |---|---|---|
-| VAERS | `reports.parquet` (1 row per primary report; `vax_types` list), `vaccines.parquet` (1 row per vaccine) | `labels.parquet` (outcome flags from the primary row, plus `<flag>_any_order` sensitivity labels), `symptoms.parquet` (MedDRA PTs, long), `lattice_vaers_clusters_support.csv` |
+| VAERS | `reports.parquet` (1 row per primary report; `vax_types` list), `vaccines.parquet` (1 row per vaccine) | `labels.parquet` (outcome flags from the primary row, plus `<flag>_any_order` sensitivity labels), `symptoms.parquet` (MedDRA PTs, long), `lattice_vaers_clusters_support.csv`, `lattice_vaers_meddra_support.csv` |
 | ASRS | `reports.parquet` (1 row per ACN, 2018–2023 by incident month; `narrative_1`, `narrative_2`, filters; `outside_query_year` = moved to its incident year) | `labels.parquet` (anomaly list, primary problem, synopsis, analyst-coded fields), `anomaly_nodes.parquet` |
 | MAUDE | `reports/part-00..15.parquet` (1 row per report; `text_event_description`, `text_mfr_narrative` with embedded code blocks stripped; filters; `sample_rate`; `has_embedded_codes`) | `labels.parquet` (event type, flags, patient outcome), `device_problems.parquet`, `patient_problems.parquet` (code + term, long), lattice support/coverage files, `crosswalk_trend_check.csv` |
 
@@ -37,6 +37,11 @@ Rules applied in v1 (STATE.md):
 - **MAUDE M6:** the 496 summary reports are dropped; candidates without a master row are dropped too.
 - **VAERS V1:** `ORDER = 1` only; `<flag>_any_order` = true if any row of the VAERS_ID (in the four year files) says so.
 - **ASRS A3:** year = incident month; the 2 reports dated 2002 and 2012 are dropped.
+
+VAERS lattices (local, never committed — MSSO terms; STATE.md V4/V5): `data/vaers/MedDRA_29_1_English_v2/` is the
+licensed MedDRA 29.1 release (frozen like `raw/`). `scripts/build_vaers_meddra.py` builds the main VAERS lattice in
+`data/vaers/lattice_meddra/` (SOC ≤ … ≤ PT DAG, mapping, unmapped terms); `build_vaers_clusters.py` and
+`build_vaers_anchored.py` build the alternative lattices in `lattice_clusters/` and `lattice_clusters_anchored/`.
 
 ## Roles
 

@@ -87,7 +87,7 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
   parent's own term (ALGEBRA §5). Documented in `lattices/README.md`.
 - **L6. ASRS Ground Conflict severity** (`Critical` / `Less Severe` exported as separate values) is a third level under
   Ground Conflict; checked on all 1,902 reports. *decided (data check).*
-- **Open:** IMDRF reuse terms not verified (needed before public release). VAERS lattice waits for V4.
+- **Open:** IMDRF reuse terms not verified (needed before public release). VAERS lattice: MedDRA 29.1 built (V5).
   For V4: IMDRF Annex E lists a MedDRA code for many terms — a possible public partial grouping for VAERS PTs.
 
 ### MAUDE
@@ -158,12 +158,35 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
     `BAAI/bge-small-en-v1.5` (fastembed/ONNX, normalised), one Ward tree cut at 27 top and 300 mid groups (nested),
     i.e. PT ≤ mid ≤ top ≤ TOP; valid. Output kept local in `data/vaers/lattice_clusters/` (+ MANIFEST with model,
     versions and hashes) until Chenyang confirms the PT names may be committed (MedDRA terms of use). Per-node counts
-    in `data/vaers/hidden/lattice_vaers_clusters_support.csv`. *open: commit or not.* The repo fixes only: cluster the VAERS
-    `SYMPTOM1–5` terms (public), output (child, parent) pairs with a top node (task 4). Proposed default: embed each
-    term (optionally plus report co-occurrence), hierarchical clustering cut at two levels (term → group → top group;
-    ~27 top groups to mirror the 27 MedDRA SOCs), fixed embedding model version and seed recorded in the manifest.
+    in `data/vaers/hidden/lattice_vaers_clusters_support.csv`. *open: commit or not.*
+  - **IMDRF-anchored variant built 2026-11-23** (`scripts/build_vaers_anchored.py`, issue #3 optional item; fallback
+    main VAERS lattice only if MedDRA is not available; the plain clusters stay unchanged as the X5 alternative).
+    482 VAERS PTs match an IMDRF Annex E MedDRA name (3.6% of terms, but 36% of term mentions, 58% of reports).
+    PT ≤ plain mid cluster ≤ IMDRF level-1 group (E01–E24) ≤ TOP; 65 mid clusters placed by anchor majority, 235 by
+    nearest anchor centroid; anchors keep their IMDRF groups as secondary parents (285 edges). Valid.
+    5-fold validation (hidden anchors): 51.5% under their IMDRF primary group (57.3% any of their groups). Placing
+    terms one by one (10 nearest anchors) reaches 60% / 65% but splits mid clusters; keeping clusters intact caps at
+    ~52%. Weak spots: E22 Investigations has only 3 anchors (lab terms cannot be pulled there), E24 none.
+    Co-occurrence not used (my suggestion, not required; would use hidden labels or need the non-domestic file).
+    *built; superseded by MedDRA (V5) — at SOC level it is no better than the plain clusters, so it is not used.*
   - Caveat: EXPERIMENTS X5 uses "clusters from embeddings" as the *alternative* lattice. If clusters become the main
     VAERS lattice, X5 has no contrast for VAERS (still valid for MAUDE/ASRS, or VAERS once MedDRA arrives).
+    *Resolved 2026-11-23: MedDRA is in hand (V5), so VAERS has both lattices for X5.*
+- **V5. MedDRA 29.1 lattice built (main VAERS lattice).** *built 2026-11-23; rules below proposed — Chenyang to
+  confirm.* `scripts/build_vaers_meddra.py` reads `data/vaers/MedDRA_29_1_English_v2/MedAscii/` (Columbia
+  subscription, unzipped by the user); Claude did not read the MedDRA files, the script prints counts only.
+  - One version (29.1, latest) for all years. VAERS terms (coded in 23.1–26.x) map by exact PT name (13,001), PT name
+    ignoring case (1), else LLT name → its PT (263, 5 of them non-current LLTs). 3 terms unmapped (20 report mentions;
+    e.g. "Parainfluenzae virus infection"); every report keeps at least one mapped term.
+  - TOP ≤ SOC (27) ≤ HLGT (337) ≤ HLT (1,739) ≤ PT (13,104 used by VAERS) = 15,208 nodes, 20,195 edges, valid DAG.
+    All MedDRA links kept (4,988 secondary). Primary parent: PT → HLT on its primary-SOC path; HLT → HLGT and
+    HLGT → SOC = the parent most primary PT paths use (ties: lowest code). Roll-up over all parents (as maude_patient);
+    the support file also has a primary-path-only count (`n_reports_rollup_primary_path`).
+  - Stand-ins vs MedDRA (term → primary SOC): plain 27 clusters NMI 0.33, purity 49% of terms / 55% of reports;
+    IMDRF-anchored groups NMI 0.27, purity 42% / 56%; plain 300 mid vs HLGT NMI 0.58, purity 38% / 72%. So the
+    anchored variant is not better than the plain clusters at SOC level; keep the plain clusters as the X5 alternative.
+  - Local only (MSSO terms): `data/vaers/lattice_meddra/`, `data/vaers/hidden/lattice_vaers_meddra_support.csv`.
+    Using MedDRA names in an LLM prompt still waits on the AI-use answer (V4).
 
 ### ASRS
 
