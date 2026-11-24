@@ -30,6 +30,8 @@ Rules applied in v1 (STATE.md):
 - **MAUDE M2:** 12 product codes, received 2018–2025, sampled with one fixed rate per product code, the same every
   year (seeded hash of `MDR_REPORT_KEY`). LWS, NIK, MDS and QLG are kept whole; the other 8 codes share one rate,
   chosen so the expected total is 10⁶. `sample_rate` is stored per report: weight = 1 / `sample_rate`.
+  **Any count pooled across product codes must use this weight** (an unweighted pooled count over-represents the
+  whole-kept codes LWS, NIK, QLG, MDS about 11×). Counts within one product code need no weight: its rate is constant.
 - **MAUDE M5:** embedded code blocks (IMDRF codes with terms, `ANNEX A: …` lists, `PROBLEM CODE - 3191`,
   `TYPE OF REPORTABLE EVENT: …`, FDA codes in brackets) are removed from both text fields; `has_embedded_codes`
   marks changed reports, so "drop these reports" is one filter. The build fails if any report still contains one of

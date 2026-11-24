@@ -22,8 +22,10 @@ All 2026-11-20 decisions are applied; rules, counts and checks are in each `PROC
   Event types M 783,561 · IN 212,661 · D 3,771 · O 30 · missing 31. 34 reports have no text.
 - VAERS 1,154,318 primary reports; sensitivity labels `<flag>_any_order` (e.g. died 19,257 primary vs 19,534 any row).
 - ASRS 31,678 reports (2 outliers dropped; 12 moved to their incident year).
-Note: the manifests show git commit `bf776f8+uncommitted-script`; the script was committed right after the build
-without further changes.
+Rebuilt on `main` 2026-11-24 (as Chenyang asked): all three manifests record the clean merge commit `ee7d538`; counts
+identical to the first v1 build; `build_hierarchies.py` reproduced the committed `lattices/` files byte for byte;
+VAERS clusters reproduced (same embedding hash). MedDRA and anchored VAERS lattices rebuilt on `shubham/vaers-lattices`
+(`ba3968f`), identical numbers.
 Cost note: 51% of MAUDE event descriptions are exact duplicates (templated manufacturer text, e.g. "signal loss over
 one hour"), so extraction should be cached by text hash — roughly halves LLM calls.
 
@@ -83,6 +85,9 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
   **Applied 2026-11-23:** 22 rows set to `approved`. Unmapped share 2018/2019/2020 on v1: device 3.19%/0/0 (3.98%
   without crosswalk); patient 2.86%/2.37%/1.64% (4.70%/4.31%/6.75% without). Per-year, per-group comparison in
   `data/maude/hidden/crosswalk_trend_check.csv`; largest effect in patient E01 Nervous System (Seizures, Syncope).
+  **Reviewed 2026-11-23 (Chenyang, PR #15):** all 22 rows approved; 13 medium + 17 no-target stay `UNMAPPED`.
+  Checked: `3189 Not Applicable → NO_EFFECT` sits under E24 only (NO_EFFECT ≤ E24 ≤ TOP, no other parent), so it never
+  rolls up into an E01–E23 health-effect count.
 - **L6b. Internal IMDRF nodes carry their own reports** (91 device, 65 patient), so reconciliation needs the
   parent's own term (ALGEBRA §5). Documented in `lattices/README.md`.
 - **L6. ASRS Ground Conflict severity** (`Critical` / `Less Severe` exported as separate values) is a third level under
@@ -101,6 +106,10 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
   **Decided 2026-11-20:** keep all 4 groups (all 12 codes), 2018–2025; downsample with one fixed rate per product code,
   the same in every year, to ~10⁶ reports in total; keep LWS and NIK whole; no per-year cap (it would flatten real
   spikes such as FRN 2022); record rates and seed in the manifest. *decided (Chenyang), #2.*
+  **Applied in v1:** besides LWS and NIK, any code with ≤ 150k candidate reports is kept whole (`keep_whole_if_at_most`
+  in the manifest): QLG (145,061) and MDS (44,087). Sampling them would leave too few reports per year for their own
+  trends, and it is still one fixed rate per code, the same every year. The other 8 codes share rate 0.087402.
+  Pooled counts across codes must weight each report by 1 / `sample_rate` (OK'd by Chenyang 2026-11-23).
 - **M3. No external exposure for MAUDE.** *decided (STUDENT_START §7.3).* Second measure = share of all reports for the same product code.
 - **M4. Field roles:** see `data/README.md`. Hidden: `EVENT_TYPE`, device and patient problem codes, plus leak fields
   `ADVERSE_EVENT_FLAG`, `PRODUCT_PROBLEM_FLAG` (≈ copies of `EVENT_TYPE`: AEF=Y ⇒ IN/D in 96.3%), patient outcome and
@@ -109,6 +118,13 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
   coded fields (Device Problem Code, Health Effect, IMDRF), almost all in manufacturer narratives. Proposed: strip those
   blocks before extraction, or drop those reports from evaluation. **Decided 2026-11-20: strip**, keep the
   `has_embedded_codes` flag (drop-run = one filter), add a test that no code terms survive. *decided, #2.*
+  **v1 vs v0 count (asked by Chenyang 2026-11-23):** 3,776 of the 1M sample are stripped, vs 59,955 of 6.83M flagged in
+  v0. Two causes: (1) sample composition — code blocks sit mostly in FRN (1.03% of its reports) and QBJ (0.37%), which
+  are sampled at 8.7%; weighting by 1 / `sample_rate` gives ≈ 26.5k stripped-type reports in the full 6.83M
+  (FRN 15.3k, QBJ 6.7k, OZP 1.4k, LWS 1.3k, rest < 1k each); (2) definition — v0 flagged any mention of "Health Effect",
+  "IMDRF", "Device Problem Code", etc., even in plain prose; v1 flags only reports whose text was actually changed.
+  The v0 rule applied to the v1 sample flags 8,440 (4,664 keyword-only, nothing to strip), ≈ 72k weighted, which matches
+  v0's 59,955 in scale. No report keeps its own hidden code (build check).
 - **M6. Summary reports.** 496 reports have `SUMMARY_REPORT = Y` and bundle several events (`NOE_SUMMARIZED`). Drop, or
   count with weight. **Decided 2026-11-20: drop**, record the count. *decided, #2.*
 - **Not done:** recall / safety-notice dates for the chosen codes (change-points, STUDENT_START §7.2).
@@ -147,6 +163,10 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
     (including Claude Code) unless Columbia confirms such a tool is authorised; (2) an extractor that sees MedDRA terms in
     its prompt must run on a Columbia-controlled model (e.g. local GPU); (3) validate any AI-produced MedDRA term against
     the licensed files. *open — ask Chenyang / Columbia DBMI.*
+    **Decided 2026-11-23 (Chenyang, PR #15):** no MedDRA terms or hierarchy in any LLM prompt. The VAERS extractor gets
+    only the public `SYMPTOM_TEXT` and outputs free-text symptoms; those are mapped to PTs locally (exact PT/LLT name
+    match, then local embedding nearest neighbour) and rolled up offline with the MedDRA or cluster lattice. Still open:
+    whether Columbia's approved enterprise endpoint counts as "controlled by Columbia" (Chenyang to confirm).
   - MedDRA is free for educational institutions ("Non-Profit / Non-Commercial" subscription, form at
     meddra.org/subscription/subscription-form; needs a link or signed statement proving non-profit status).
   - Terms: the subscriber "shall not … publish, or otherwise distribute MedDRA Terminology to a third party" → never put
@@ -158,7 +178,8 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
     `BAAI/bge-small-en-v1.5` (fastembed/ONNX, normalised), one Ward tree cut at 27 top and 300 mid groups (nested),
     i.e. PT ≤ mid ≤ top ≤ TOP; valid. Output kept local in `data/vaers/lattice_clusters/` (+ MANIFEST with model,
     versions and hashes) until Chenyang confirms the PT names may be committed (MedDRA terms of use). Per-node counts
-    in `data/vaers/hidden/lattice_vaers_clusters_support.csv`. *open: commit or not.*
+    in `data/vaers/hidden/lattice_vaers_clusters_support.csv`. **Decided 2026-11-23 (Chenyang, PR #15): commit the
+    build script only**; cluster files carry MedDRA PT names, so they stay local like MedDRA and are regenerated.
   - **IMDRF-anchored variant built 2026-11-23** (`scripts/build_vaers_anchored.py`, issue #3 optional item; fallback
     main VAERS lattice only if MedDRA is not available; the plain clusters stay unchanged as the X5 alternative).
     482 VAERS PTs match an IMDRF Annex E MedDRA name (3.6% of terms, but 36% of term mentions, 58% of reports).
