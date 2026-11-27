@@ -1,0 +1,23 @@
+dataset,series,first,last,months,months_in_window,gaps_inside,source
+vaers,covid19_doses,2020-12,2023-04,29,60,,data.cdc.gov/d/rh2h-3yt2
+vaers,covid19_doses_age_12_17,2021-06,2023-04,23,60,,data.cdc.gov/d/unsk-b7fc
+vaers,covid19_doses_age_18_64,2021-04,2023-04,25,60,,data.cdc.gov/d/unsk-b7fc
+vaers,covid19_doses_age_5_11,2021-12,2023-04,17,60,,data.cdc.gov/d/unsk-b7fc
+vaers,covid19_doses_age_65plus,2021-04,2023-04,25,60,,data.cdc.gov/d/unsk-b7fc
+vaers,covid19_doses_iqvia_adults,2023-09,2023-12,4,60,,data.cdc.gov/d/ewpg-rz7g
+vaers,flu_doses_distributed,2019-01,2023-12,40,60,2019-03;2019-04;2019-05;2019-06;2020-03;2020-04;2020-05;2020-06;2021-03;2021-04;2021-05;2021-06;2022-03;2022-04;2022-05;2022-06;2023-03;2023-04;2023-05;2023-06,data.cdc.gov/d/ph8r-wzxn
+vaers,flu_doses_iqvia_adults,2019-08,2023-12,44,60,2020-05;2020-06;2020-07;2021-06;2021-07;2022-06;2022-07;2023-06;2023-07,data.cdc.gov/d/ysd3-txwj
+vaers,flu_doses_iqvia_age_18_49,2019-08,2023-12,44,60,2020-05;2020-06;2020-07;2021-06;2021-07;2022-06;2022-07;2023-06;2023-07,data.cdc.gov/d/ysd3-txwj
+vaers,flu_doses_iqvia_age_50_64,2019-08,2023-12,44,60,2020-05;2020-06;2020-07;2021-06;2021-07;2022-06;2022-07;2023-06;2023-07,data.cdc.gov/d/ysd3-txwj
+vaers,flu_doses_iqvia_age_65plus,2019-08,2023-12,44,60,2020-05;2020-06;2020-07;2021-06;2021-07;2022-06;2022-07;2023-06;2023-07,data.cdc.gov/d/ysd3-txwj
+asrs,opsnet_itinerant,2018-01,2023-12,72,72,,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+asrs,opsnet_itinerant_air_carrier,2018-01,2023-12,72,72,,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+asrs,opsnet_itinerant_air_taxi,2018-01,2023-12,72,72,,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+asrs,opsnet_itinerant_general_aviation,2018-01,2023-12,72,72,,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+asrs,opsnet_itinerant_military,2018-01,2023-12,72,72,,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+asrs,opsnet_local_civil,2018-01,2023-12,72,72,,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+asrs,opsnet_local_military,2018-01,2023-12,72,72,,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+asrs,opsnet_total,2018-01,2023-12,72,72,,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+asrs,t100_departures,2018-01,2023-12,72,72,,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+asrs,t100_departures_domestic,2018-01,2023-12,72,72,,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+asrs,t100_departures_us_carriers,2018-01,2023-12,72,72,,"BTS T-100 Segment (All Carriers), transtats.bts.gov"

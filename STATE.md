@@ -22,10 +22,16 @@ All 2026-11-20 decisions are applied; rules, counts and checks are in each `PROC
   Event types M 783,561 · IN 212,661 · D 3,771 · O 30 · missing 31. 34 reports have no text.
 - VAERS 1,154,318 primary reports; sensitivity labels `<flag>_any_order` (e.g. died 19,257 primary vs 19,534 any row).
 - ASRS 31,678 reports (2 outliers dropped; 12 moved to their incident year).
-Note: the manifests show git commit `bf776f8+uncommitted-script`; the script was committed right after the build
-without further changes.
+Rebuilt on `main` 2026-11-24 (as Chenyang asked): all three manifests record the clean merge commit `ee7d538`; counts
+identical to the first v1 build; `build_hierarchies.py` reproduced the committed `lattices/` files byte for byte;
+VAERS clusters reproduced (same embedding hash). MedDRA and anchored VAERS lattices rebuilt on `shubham/vaers-lattices`
+(`ba3968f`), identical numbers.
 Cost note: 51% of MAUDE event descriptions are exact duplicates (templated manufacturer text, e.g. "signal loss over
 one hour"), so extraction should be cached by text hash — roughly halves LLM calls.
+
+**Exposure (2026-11-27, issue #4):** CDC dose files in `data/vaers/exposure/raw/` (6 files, data.cdc.gov API) and
+FAA OPSNET + BTS T-100 (2018–2023) in `data/asrs/exposure/raw/` (7 files, browser), each with `MANIFEST.json`;
+derived monthly series in `exposure/` (committed). See the Exposure section below.
 
 Reference docs: `data/asrs/docs/` (ASRS coding taxonomy, abbreviations), `data/vaers/docs/` (VAERS Data Use Guide, March 2025),
 `data/maude/product_code_counts.tsv` (openFDA counts per product code and year, 2026-11-19).
@@ -49,6 +55,17 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
 | L7 | Hierarchies are DAGs: IMDRF secondary placements join the lattice; same for MedDRA | #2 |
 | L8 | Apply high-confidence crosswalk rows only; run 2018–2020 trends with and without them | #6 |
 | Tasks 6–7 | Toy cube done (ALGEBRA §9); task 6 replaced by a review of ALGEBRA §10–11 (#7) | — |
+
+### PR #15 review 2026-11-23 (Chenyang) — summary
+
+| ID | Decision / answer | Where |
+|---|---|---|
+| L8 | All 22 high-confidence crosswalk rows approved; `3189 → NO_EFFECT` checked to sit under E24 only | #6 |
+| V4 | VAERS clusters: commit the build script only (nodes are MedDRA PT names) | #3 |
+| V4 | No MedDRA in LLM prompts; extractor outputs free-text symptoms, mapped to PTs locally | #3 |
+| M2, M5 | Notes added (QLG/MDS whole by the ≤ 150k rule; weight pooled counts; M5 count gap explained) | PR #16 |
+| — | v1 rebuilt on `main` for a clean commit stamp (`ee7d538`) | done 2026-11-24 |
+| V5 | MedDRA 29.1 lattice rules — proposed, waiting for Chenyang | PR #16 |
 
 ### Lattices (task 4)
 
@@ -83,11 +100,14 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
   **Applied 2026-11-23:** 22 rows set to `approved`. Unmapped share 2018/2019/2020 on v1: device 3.19%/0/0 (3.98%
   without crosswalk); patient 2.86%/2.37%/1.64% (4.70%/4.31%/6.75% without). Per-year, per-group comparison in
   `data/maude/hidden/crosswalk_trend_check.csv`; largest effect in patient E01 Nervous System (Seizures, Syncope).
+  **Reviewed 2026-11-23 (Chenyang, PR #15):** all 22 rows approved; 13 medium + 17 no-target stay `UNMAPPED`.
+  Checked: `3189 Not Applicable → NO_EFFECT` sits under E24 only (NO_EFFECT ≤ E24 ≤ TOP, no other parent), so it never
+  rolls up into an E01–E23 health-effect count.
 - **L6b. Internal IMDRF nodes carry their own reports** (91 device, 65 patient), so reconciliation needs the
   parent's own term (ALGEBRA §5). Documented in `lattices/README.md`.
 - **L6. ASRS Ground Conflict severity** (`Critical` / `Less Severe` exported as separate values) is a third level under
   Ground Conflict; checked on all 1,902 reports. *decided (data check).*
-- **Open:** IMDRF reuse terms not verified (needed before public release). VAERS lattice waits for V4.
+- **Open:** IMDRF reuse terms not verified (needed before public release). VAERS lattice: MedDRA 29.1 built (V5).
   For V4: IMDRF Annex E lists a MedDRA code for many terms — a possible public partial grouping for VAERS PTs.
 
 ### MAUDE
@@ -101,6 +121,10 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
   **Decided 2026-11-20:** keep all 4 groups (all 12 codes), 2018–2025; downsample with one fixed rate per product code,
   the same in every year, to ~10⁶ reports in total; keep LWS and NIK whole; no per-year cap (it would flatten real
   spikes such as FRN 2022); record rates and seed in the manifest. *decided (Chenyang), #2.*
+  **Applied in v1:** besides LWS and NIK, any code with ≤ 150k candidate reports is kept whole (`keep_whole_if_at_most`
+  in the manifest): QLG (145,061) and MDS (44,087). Sampling them would leave too few reports per year for their own
+  trends, and it is still one fixed rate per code, the same every year. The other 8 codes share rate 0.087402.
+  Pooled counts across codes must weight each report by 1 / `sample_rate` (OK'd by Chenyang 2026-11-23).
 - **M3. No external exposure for MAUDE.** *decided (STUDENT_START §7.3).* Second measure = share of all reports for the same product code.
 - **M4. Field roles:** see `data/README.md`. Hidden: `EVENT_TYPE`, device and patient problem codes, plus leak fields
   `ADVERSE_EVENT_FLAG`, `PRODUCT_PROBLEM_FLAG` (≈ copies of `EVENT_TYPE`: AEF=Y ⇒ IN/D in 96.3%), patient outcome and
@@ -109,6 +133,13 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
   coded fields (Device Problem Code, Health Effect, IMDRF), almost all in manufacturer narratives. Proposed: strip those
   blocks before extraction, or drop those reports from evaluation. **Decided 2026-11-20: strip**, keep the
   `has_embedded_codes` flag (drop-run = one filter), add a test that no code terms survive. *decided, #2.*
+  **v1 vs v0 count (asked by Chenyang 2026-11-23):** 3,776 of the 1M sample are stripped, vs 59,955 of 6.83M flagged in
+  v0. Two causes: (1) sample composition — code blocks sit mostly in FRN (1.03% of its reports) and QBJ (0.37%), which
+  are sampled at 8.7%; weighting by 1 / `sample_rate` gives ≈ 26.5k stripped-type reports in the full 6.83M
+  (FRN 15.3k, QBJ 6.7k, OZP 1.4k, LWS 1.3k, rest < 1k each); (2) definition — v0 flagged any mention of "Health Effect",
+  "IMDRF", "Device Problem Code", etc., even in plain prose; v1 flags only reports whose text was actually changed.
+  The v0 rule applied to the v1 sample flags 8,440 (4,664 keyword-only, nothing to strip), ≈ 72k weighted, which matches
+  v0's 59,955 in scale. No report keeps its own hidden code (build check).
 - **M6. Summary reports.** 496 reports have `SUMMARY_REPORT = Y` and bundle several events (`NOE_SUMMARIZED`). Drop, or
   count with weight. **Decided 2026-11-20: drop**, record the count. *decided, #2.*
 - **Not done:** recall / safety-notice dates for the chosen codes (change-points, STUDENT_START §7.2).
@@ -147,6 +178,10 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
     (including Claude Code) unless Columbia confirms such a tool is authorised; (2) an extractor that sees MedDRA terms in
     its prompt must run on a Columbia-controlled model (e.g. local GPU); (3) validate any AI-produced MedDRA term against
     the licensed files. *open — ask Chenyang / Columbia DBMI.*
+    **Decided 2026-11-23 (Chenyang, PR #15):** no MedDRA terms or hierarchy in any LLM prompt. The VAERS extractor gets
+    only the public `SYMPTOM_TEXT` and outputs free-text symptoms; those are mapped to PTs locally (exact PT/LLT name
+    match, then local embedding nearest neighbour) and rolled up offline with the MedDRA or cluster lattice. Still open:
+    whether Columbia's approved enterprise endpoint counts as "controlled by Columbia" (Chenyang to confirm).
   - MedDRA is free for educational institutions ("Non-Profit / Non-Commercial" subscription, form at
     meddra.org/subscription/subscription-form; needs a link or signed statement proving non-profit status).
   - Terms: the subscriber "shall not … publish, or otherwise distribute MedDRA Terminology to a third party" → never put
@@ -158,12 +193,36 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
     `BAAI/bge-small-en-v1.5` (fastembed/ONNX, normalised), one Ward tree cut at 27 top and 300 mid groups (nested),
     i.e. PT ≤ mid ≤ top ≤ TOP; valid. Output kept local in `data/vaers/lattice_clusters/` (+ MANIFEST with model,
     versions and hashes) until Chenyang confirms the PT names may be committed (MedDRA terms of use). Per-node counts
-    in `data/vaers/hidden/lattice_vaers_clusters_support.csv`. *open: commit or not.* The repo fixes only: cluster the VAERS
-    `SYMPTOM1–5` terms (public), output (child, parent) pairs with a top node (task 4). Proposed default: embed each
-    term (optionally plus report co-occurrence), hierarchical clustering cut at two levels (term → group → top group;
-    ~27 top groups to mirror the 27 MedDRA SOCs), fixed embedding model version and seed recorded in the manifest.
+    in `data/vaers/hidden/lattice_vaers_clusters_support.csv`. **Decided 2026-11-23 (Chenyang, PR #15): commit the
+    build script only**; cluster files carry MedDRA PT names, so they stay local like MedDRA and are regenerated.
+  - **IMDRF-anchored variant built 2026-11-23** (`scripts/build_vaers_anchored.py`, issue #3 optional item; fallback
+    main VAERS lattice only if MedDRA is not available; the plain clusters stay unchanged as the X5 alternative).
+    482 VAERS PTs match an IMDRF Annex E MedDRA name (3.6% of terms, but 36% of term mentions, 58% of reports).
+    PT ≤ plain mid cluster ≤ IMDRF level-1 group (E01–E24) ≤ TOP; 65 mid clusters placed by anchor majority, 235 by
+    nearest anchor centroid; anchors keep their IMDRF groups as secondary parents (285 edges). Valid.
+    5-fold validation (hidden anchors): 51.5% under their IMDRF primary group (57.3% any of their groups). Placing
+    terms one by one (10 nearest anchors) reaches 60% / 65% but splits mid clusters; keeping clusters intact caps at
+    ~52%. Weak spots: E22 Investigations has only 3 anchors (lab terms cannot be pulled there), E24 none.
+    Co-occurrence not used (my suggestion, not required; would use hidden labels or need the non-domestic file).
+    *built; superseded by MedDRA (V5) — at SOC level it is no better than the plain clusters, so it is not used.*
   - Caveat: EXPERIMENTS X5 uses "clusters from embeddings" as the *alternative* lattice. If clusters become the main
     VAERS lattice, X5 has no contrast for VAERS (still valid for MAUDE/ASRS, or VAERS once MedDRA arrives).
+    *Resolved 2026-11-23: MedDRA is in hand (V5), so VAERS has both lattices for X5.*
+- **V5. MedDRA 29.1 lattice built (main VAERS lattice).** *built 2026-11-23; rules below proposed — Chenyang to
+  confirm.* `scripts/build_vaers_meddra.py` reads `data/vaers/MedDRA_29_1_English_v2/MedAscii/` (Columbia
+  subscription, unzipped by the user); Claude did not read the MedDRA files, the script prints counts only.
+  - One version (29.1, latest) for all years. VAERS terms (coded in 23.1–26.x) map by exact PT name (13,001), PT name
+    ignoring case (1), else LLT name → its PT (263, 5 of them non-current LLTs). 3 terms unmapped (20 report mentions;
+    e.g. "Parainfluenzae virus infection"); every report keeps at least one mapped term.
+  - TOP ≤ SOC (27) ≤ HLGT (337) ≤ HLT (1,739) ≤ PT (13,104 used by VAERS) = 15,208 nodes, 20,195 edges, valid DAG.
+    All MedDRA links kept (4,988 secondary). Primary parent: PT → HLT on its primary-SOC path; HLT → HLGT and
+    HLGT → SOC = the parent most primary PT paths use (ties: lowest code). Roll-up over all parents (as maude_patient);
+    the support file also has a primary-path-only count (`n_reports_rollup_primary_path`).
+  - Stand-ins vs MedDRA (term → primary SOC): plain 27 clusters NMI 0.33, purity 49% of terms / 55% of reports;
+    IMDRF-anchored groups NMI 0.27, purity 42% / 56%; plain 300 mid vs HLGT NMI 0.58, purity 38% / 72%. So the
+    anchored variant is not better than the plain clusters at SOC level; keep the plain clusters as the X5 alternative.
+  - Local only (MSSO terms): `data/vaers/lattice_meddra/`, `data/vaers/hidden/lattice_vaers_meddra_support.csv`.
+    MedDRA names never go into an LLM prompt (V4, decided 2026-11-23); the lattice is used offline only.
 
 ### ASRS
 
@@ -183,6 +242,36 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
   `Assessments|…`, `Human Factors`, `Component|…` fields hidden too. Details in `data/README.md`.
   *decided (Chenyang) 2026-11-20, #2.*
 
+### Exposure (task 5, issue #4)
+
+Built 2026-11-27: `scripts/download_exposure.py` (CDC, API), browser downloads for FAA/BTS, `scripts/build_exposure.py`
+→ `exposure/vaers.csv` (11 series, 339 rows), `exposure/asrs.csv` (11 series, 792 rows), `coverage.csv`, `BUILD.json`.
+Details and gap note: `exposure/README.md`. Tests: `tests/test_exposure.py` (rebuild matches the committed files).
+
+- **E1. Storage and format.** Raw downloads in `data/vaers/exposure/raw/` and `data/asrs/exposure/raw/` (frozen,
+  `MANIFEST.json` with sha256). Derived monthly CSVs committed in `exposure/` (public aggregates, like `lattices/`, L1).
+  Columns `period, series, value, source`: one column more than issue #4 asks for, because one file per dataset
+  holds several measures. *decided (user), 2026-11-27.*
+- **E2. Month rules.** Complete calendar months only; uncovered months are absent, never 0. Weekly data spread evenly
+  over days; cumulative data differenced. First month of a reporting period counts as complete (earlier doses are in
+  the first cumulative value, or zero before the vaccine existed); last month only if fully covered. *proposed.*
+- **E3. VAERS series (CDC).** Main COVID series = all doses by administration date (`rh2h-3yt2`), 2020-12 … 2023-04.
+  Age bands from `unsk-b7fc` (report date). Flu = IQVIA pharmacy + physician-office doses, adults (`ysd3-txwj`, the
+  current release; `83ng-twza` is an older release, 2–3% lower). Flu doses distributed (`ph8r-wzxn`) as a supply
+  measure. COVID IQVIA adults from Sep 2023 (`ewpg-rz7g`) as a separate series, never joined to the main one.
+  Checks: COVID monthly sum = CDC total exactly (676,107,562 for 2020-12 … 2023-04); flu season sums within 0.02% of
+  CDC's cumulative values. *proposed.*
+- **E4. ASRS series.** Main = FAA OPSNET total airport operations (all user classes, matches the ASRS mix: 62% air
+  carrier, 28% Part 91 reports); OPSNET itinerant classes for slices; BTS T-100 departures (all, domestic, U.S.
+  carriers) for air-carrier slices and as a check. Unit: OPSNET counts takeoffs and landings at towered airports.
+  Checks: OPSNET classes add up to the totals; months add up to FAA's total row; April 2020 = 0.32–0.35 of April 2019
+  in both sources. *proposed.*
+- **E5. VAERS coverage gaps → X6.** No public monthly doses for any vaccine except COVID-19 and flu; 2019 is mostly
+  zoster (37%), pneumococcal (12%), MMR, Tdap, HPV. Flu doses administered start Aug 2019; COVID doses administered
+  stop 9 May 2023. So "VAERS 2019 against 2021–2023" as rates works only for flu from Aug 2019. Options: narrow VAERS
+  X6 to COVID-19 (2021-01 … 2023-04) and flu, or apply PROPOSAL scope cut 4 (ASRS only for the exposure case study).
+  *open — Chenyang.*
+
 ### Method (from STUDENT_START §7.4)
 
 - **Boolean predicates:** exact formulas from ALGEBRA.md §2 (facts independent, no independence between predicates),
@@ -199,6 +288,7 @@ Open work is tracked in GitHub Issues; this list is kept for history.
 3. ~~Field tables (task 3)~~ done 2026-11-19: `data/README.md` (`.gitignore` now `data/*` + `!data/README.md`).
    Per-column profiles: `scripts/profile_fields.py` → `data/<ds>/field_profile.csv`, `leakage_checks.json`.
    Chenyang to confirm the leak-field roles (M4–M6, V3, A4).
-4. Exposure data (task 5): CDC doses (VAERS), FAA/BTS flight operations (ASRS).
+4. ~~Exposure data (task 5): CDC doses (VAERS), FAA/BTS flight operations (ASRS).~~ done 2026-11-27 (`exposure/`,
+   E1–E5); E5 (VAERS X6 scope) needs Chenyang.
 5. Concept hierarchies (task 4): MAUDE and ASRS done 2026-11-19 (`lattices/`); switch to DAG (#2); VAERS (#3);
    crosswalk high-confidence rows (#6).

@@ -5,6 +5,7 @@ data/*
 *.jsonl.gz
 *.csv
 !lattices/**/*.csv
+!exposure/*.csv
 
 # Python
 __pycache__/

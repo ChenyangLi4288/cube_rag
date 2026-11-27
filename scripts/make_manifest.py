@@ -68,7 +68,7 @@ def main() -> None:
     if args.note:
         manifest["note"] = args.note
     for path in sorted((root / "raw").iterdir()):
-        if path.name.startswith(".") or path.suffix.lower() not in {".zip", ".csv"}:
+        if path.name.startswith(".") or path.suffix.lower() not in {".zip", ".csv", ".xls"}:
             continue
         print(f"-> {path.name}", flush=True)
         entry = {
@@ -83,6 +83,12 @@ def main() -> None:
                     if m.lower().endswith(".csv"):
                         with z.open(m) as fh:
                             entry["members"].append(describe_csv(fh, m, args.date_col, args.id_col, args.header_rows))
+        elif path.suffix.lower() == ".xls":  # web report saved as an HTML table (e.g. FAA OPSNET export)
+            for i, t in enumerate(pd.read_html(path)):
+                cols = ["|".join(p for p in (c if isinstance(c, tuple) else (c,)) if not str(p).startswith("Unnamed"))
+                        for c in t.columns]
+                entry["members"].append({"name": f"{path.name}#table{i}", "format": "html table",
+                                         "rows": len(t), "columns": [c for c in cols if c]})
         else:
             with path.open("rb") as fh:
                 entry["members"].append(describe_csv(fh, path.name, args.date_col, args.id_col, args.header_rows))
