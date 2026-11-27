@@ -14,6 +14,9 @@ data/<ds>/
   MANIFEST.json            raw files: source, date, sha256, row counts
   PROCESSED_MANIFEST.json  processed tables: version, rules applied, git commit, row counts, checks
   field_profile.csv, leakage_checks.json   per-column profile (scripts/profile_fields.py)
+  exposure/raw/, exposure/MANIFEST.json    VAERS and ASRS only: public exposure downloads (CDC doses; FAA OPSNET,
+                                           BTS T-100), frozen like raw/; monthly series built from them are in
+                                           the committed exposure/ folder (scripts/build_exposure.py)
 ```
 
 Built by `scripts/build_tables.py`, version **v1** (decisions of 2026-11-20 applied, issue #2; rules and counts in

@@ -29,6 +29,10 @@ VAERS clusters reproduced (same embedding hash). MedDRA and anchored VAERS latti
 Cost note: 51% of MAUDE event descriptions are exact duplicates (templated manufacturer text, e.g. "signal loss over
 one hour"), so extraction should be cached by text hash — roughly halves LLM calls.
 
+**Exposure (2026-11-27, issue #4):** CDC dose files in `data/vaers/exposure/raw/` (6 files, data.cdc.gov API) and
+FAA OPSNET + BTS T-100 (2018–2023) in `data/asrs/exposure/raw/` (7 files, browser), each with `MANIFEST.json`;
+derived monthly series in `exposure/` (committed). See the Exposure section below.
+
 Reference docs: `data/asrs/docs/` (ASRS coding taxonomy, abbreviations), `data/vaers/docs/` (VAERS Data Use Guide, March 2025),
 `data/maude/product_code_counts.tsv` (openFDA counts per product code and year, 2026-11-19).
 
@@ -238,6 +242,36 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
   `Assessments|…`, `Human Factors`, `Component|…` fields hidden too. Details in `data/README.md`.
   *decided (Chenyang) 2026-11-20, #2.*
 
+### Exposure (task 5, issue #4)
+
+Built 2026-11-27: `scripts/download_exposure.py` (CDC, API), browser downloads for FAA/BTS, `scripts/build_exposure.py`
+→ `exposure/vaers.csv` (11 series, 339 rows), `exposure/asrs.csv` (11 series, 792 rows), `coverage.csv`, `BUILD.json`.
+Details and gap note: `exposure/README.md`. Tests: `tests/test_exposure.py` (rebuild matches the committed files).
+
+- **E1. Storage and format.** Raw downloads in `data/vaers/exposure/raw/` and `data/asrs/exposure/raw/` (frozen,
+  `MANIFEST.json` with sha256). Derived monthly CSVs committed in `exposure/` (public aggregates, like `lattices/`, L1).
+  Columns `period, series, value, source`: one column more than issue #4 asks for, because one file per dataset
+  holds several measures. *decided (user), 2026-11-27.*
+- **E2. Month rules.** Complete calendar months only; uncovered months are absent, never 0. Weekly data spread evenly
+  over days; cumulative data differenced. First month of a reporting period counts as complete (earlier doses are in
+  the first cumulative value, or zero before the vaccine existed); last month only if fully covered. *proposed.*
+- **E3. VAERS series (CDC).** Main COVID series = all doses by administration date (`rh2h-3yt2`), 2020-12 … 2023-04.
+  Age bands from `unsk-b7fc` (report date). Flu = IQVIA pharmacy + physician-office doses, adults (`ysd3-txwj`, the
+  current release; `83ng-twza` is an older release, 2–3% lower). Flu doses distributed (`ph8r-wzxn`) as a supply
+  measure. COVID IQVIA adults from Sep 2023 (`ewpg-rz7g`) as a separate series, never joined to the main one.
+  Checks: COVID monthly sum = CDC total exactly (676,107,562 for 2020-12 … 2023-04); flu season sums within 0.02% of
+  CDC's cumulative values. *proposed.*
+- **E4. ASRS series.** Main = FAA OPSNET total airport operations (all user classes, matches the ASRS mix: 62% air
+  carrier, 28% Part 91 reports); OPSNET itinerant classes for slices; BTS T-100 departures (all, domestic, U.S.
+  carriers) for air-carrier slices and as a check. Unit: OPSNET counts takeoffs and landings at towered airports.
+  Checks: OPSNET classes add up to the totals; months add up to FAA's total row; April 2020 = 0.32–0.35 of April 2019
+  in both sources. *proposed.*
+- **E5. VAERS coverage gaps → X6.** No public monthly doses for any vaccine except COVID-19 and flu; 2019 is mostly
+  zoster (37%), pneumococcal (12%), MMR, Tdap, HPV. Flu doses administered start Aug 2019; COVID doses administered
+  stop 9 May 2023. So "VAERS 2019 against 2021–2023" as rates works only for flu from Aug 2019. Options: narrow VAERS
+  X6 to COVID-19 (2021-01 … 2023-04) and flu, or apply PROPOSAL scope cut 4 (ASRS only for the exposure case study).
+  *open — Chenyang.*
+
 ### Method (from STUDENT_START §7.4)
 
 - **Boolean predicates:** exact formulas from ALGEBRA.md §2 (facts independent, no independence between predicates),
@@ -254,6 +288,7 @@ Open work is tracked in GitHub Issues; this list is kept for history.
 3. ~~Field tables (task 3)~~ done 2026-11-19: `data/README.md` (`.gitignore` now `data/*` + `!data/README.md`).
    Per-column profiles: `scripts/profile_fields.py` → `data/<ds>/field_profile.csv`, `leakage_checks.json`.
    Chenyang to confirm the leak-field roles (M4–M6, V3, A4).
-4. Exposure data (task 5): CDC doses (VAERS), FAA/BTS flight operations (ASRS).
+4. ~~Exposure data (task 5): CDC doses (VAERS), FAA/BTS flight operations (ASRS).~~ done 2026-11-27 (`exposure/`,
+   E1–E5); E5 (VAERS X6 scope) needs Chenyang.
 5. Concept hierarchies (task 4): MAUDE and ASRS done 2026-11-19 (`lattices/`); switch to DAG (#2); VAERS (#3);
    crosswalk high-confidence rows (#6).
