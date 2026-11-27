@@ -1,0 +1,793 @@
+period,series,value,source
+2018-01,opsnet_itinerant,2901939,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-02,opsnet_itinerant,2735798,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-03,opsnet_itinerant,3226978,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-04,opsnet_itinerant,3201857,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-05,opsnet_itinerant,3332037,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-06,opsnet_itinerant,3415448,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-07,opsnet_itinerant,3512084,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-08,opsnet_itinerant,3497352,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-09,opsnet_itinerant,3201610,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-10,opsnet_itinerant,3323339,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-11,opsnet_itinerant,3043129,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-12,opsnet_itinerant,2967816,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-01,opsnet_itinerant,2976470,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-02,opsnet_itinerant,2718935,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-03,opsnet_itinerant,3349492,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-04,opsnet_itinerant,3275481,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-05,opsnet_itinerant,3418937,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-06,opsnet_itinerant,3431618,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-07,opsnet_itinerant,3621246,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-08,opsnet_itinerant,3592338,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-09,opsnet_itinerant,3320521,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-10,opsnet_itinerant,3418974,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-11,opsnet_itinerant,3161033,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-12,opsnet_itinerant,3069049,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-01,opsnet_itinerant,3044767,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-02,opsnet_itinerant,3005858,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-03,opsnet_itinerant,2664074,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-04,opsnet_itinerant,1359300,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-05,opsnet_itinerant,1702254,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-06,opsnet_itinerant,2102782,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-07,opsnet_itinerant,2499515,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-08,opsnet_itinerant,2568432,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-09,opsnet_itinerant,2412960,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-10,opsnet_itinerant,2536667,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-11,opsnet_itinerant,2382828,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-12,opsnet_itinerant,2367060,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-01,opsnet_itinerant,2269638,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-02,opsnet_itinerant,2070800,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-03,opsnet_itinerant,2813785,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-04,opsnet_itinerant,2851824,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-05,opsnet_itinerant,3001410,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-06,opsnet_itinerant,3160344,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-07,opsnet_itinerant,3311943,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-08,opsnet_itinerant,3226751,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-09,opsnet_itinerant,3170628,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-10,opsnet_itinerant,3192942,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-11,opsnet_itinerant,3111732,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-12,opsnet_itinerant,2882461,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-01,opsnet_itinerant,2793242,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-02,opsnet_itinerant,2713904,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-03,opsnet_itinerant,3199087,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-04,opsnet_itinerant,3140930,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-05,opsnet_itinerant,3240331,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-06,opsnet_itinerant,3318861,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-07,opsnet_itinerant,3358232,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-08,opsnet_itinerant,3371806,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-09,opsnet_itinerant,3251822,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-10,opsnet_itinerant,3328888,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-11,opsnet_itinerant,2982431,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-12,opsnet_itinerant,2795081,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-01,opsnet_itinerant,2894910,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-02,opsnet_itinerant,2826555,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-03,opsnet_itinerant,3253800,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-04,opsnet_itinerant,3215756,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-05,opsnet_itinerant,3440571,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-06,opsnet_itinerant,3355519,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-07,opsnet_itinerant,3472767,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-08,opsnet_itinerant,3502309,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-09,opsnet_itinerant,3320995,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-10,opsnet_itinerant,3460401,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-11,opsnet_itinerant,3228514,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-12,opsnet_itinerant,3031595,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-01,opsnet_itinerant_air_carrier,1237995,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-02,opsnet_itinerant_air_carrier,1141101,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-03,opsnet_itinerant_air_carrier,1325893,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-04,opsnet_itinerant_air_carrier,1308027,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-05,opsnet_itinerant_air_carrier,1358320,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-06,opsnet_itinerant_air_carrier,1370136,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-07,opsnet_itinerant_air_carrier,1410878,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-08,opsnet_itinerant_air_carrier,1411472,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-09,opsnet_itinerant_air_carrier,1286497,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-10,opsnet_itinerant_air_carrier,1360308,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-11,opsnet_itinerant_air_carrier,1302097,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-12,opsnet_itinerant_air_carrier,1339055,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-01,opsnet_itinerant_air_carrier,1284622,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-02,opsnet_itinerant_air_carrier,1169156,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-03,opsnet_itinerant_air_carrier,1381895,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-04,opsnet_itinerant_air_carrier,1344224,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-05,opsnet_itinerant_air_carrier,1398123,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-06,opsnet_itinerant_air_carrier,1396869,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-07,opsnet_itinerant_air_carrier,1447212,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-08,opsnet_itinerant_air_carrier,1445928,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-09,opsnet_itinerant_air_carrier,1322874,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-10,opsnet_itinerant_air_carrier,1403735,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-11,opsnet_itinerant_air_carrier,1330929,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-12,opsnet_itinerant_air_carrier,1405563,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-01,opsnet_itinerant_air_carrier,1341258,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-02,opsnet_itinerant_air_carrier,1260383,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-03,opsnet_itinerant_air_carrier,1182273,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-04,opsnet_itinerant_air_carrier,442998,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-05,opsnet_itinerant_air_carrier,427670,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-06,opsnet_itinerant_air_carrier,546942,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-07,opsnet_itinerant_air_carrier,800404,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-08,opsnet_itinerant_air_carrier,844982,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-09,opsnet_itinerant_air_carrier,749604,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-10,opsnet_itinerant_air_carrier,822663,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-11,opsnet_itinerant_air_carrier,849167,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-12,opsnet_itinerant_air_carrier,899420,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-01,opsnet_itinerant_air_carrier,833226,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-02,opsnet_itinerant_air_carrier,736842,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-03,opsnet_itinerant_air_carrier,1002497,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-04,opsnet_itinerant_air_carrier,1017891,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-05,opsnet_itinerant_air_carrier,1110244,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-06,opsnet_itinerant_air_carrier,1197835,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-07,opsnet_itinerant_air_carrier,1281520,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-08,opsnet_itinerant_air_carrier,1264633,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-09,opsnet_itinerant_air_carrier,1198533,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-10,opsnet_itinerant_air_carrier,1252391,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-11,opsnet_itinerant_air_carrier,1239568,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-12,opsnet_itinerant_air_carrier,1268633,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-01,opsnet_itinerant_air_carrier,1167429,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-02,opsnet_itinerant_air_carrier,1091950,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-03,opsnet_itinerant_air_carrier,1283903,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-04,opsnet_itinerant_air_carrier,1256848,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-05,opsnet_itinerant_air_carrier,1311073,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-06,opsnet_itinerant_air_carrier,1303581,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-07,opsnet_itinerant_air_carrier,1355088,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-08,opsnet_itinerant_air_carrier,1343693,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-09,opsnet_itinerant_air_carrier,1275757,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-10,opsnet_itinerant_air_carrier,1321426,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-11,opsnet_itinerant_air_carrier,1278094,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-12,opsnet_itinerant_air_carrier,1282509,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-01,opsnet_itinerant_air_carrier,1286929,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-02,opsnet_itinerant_air_carrier,1198453,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-03,opsnet_itinerant_air_carrier,1393963,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-04,opsnet_itinerant_air_carrier,1343666,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-05,opsnet_itinerant_air_carrier,1403515,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-06,opsnet_itinerant_air_carrier,1385661,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-07,opsnet_itinerant_air_carrier,1437498,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-08,opsnet_itinerant_air_carrier,1458134,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-09,opsnet_itinerant_air_carrier,1367933,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-10,opsnet_itinerant_air_carrier,1446539,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-11,opsnet_itinerant_air_carrier,1379186,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-12,opsnet_itinerant_air_carrier,1416314,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-01,opsnet_itinerant_air_taxi,543005,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-02,opsnet_itinerant_air_taxi,521364,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-03,opsnet_itinerant_air_taxi,590630,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-04,opsnet_itinerant_air_taxi,590078,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-05,opsnet_itinerant_air_taxi,622026,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-06,opsnet_itinerant_air_taxi,630566,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-07,opsnet_itinerant_air_taxi,654237,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-08,opsnet_itinerant_air_taxi,657171,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-09,opsnet_itinerant_air_taxi,602047,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-10,opsnet_itinerant_air_taxi,611044,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-11,opsnet_itinerant_air_taxi,559112,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-12,opsnet_itinerant_air_taxi,546344,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-01,opsnet_itinerant_air_taxi,545965,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-02,opsnet_itinerant_air_taxi,515176,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-03,opsnet_itinerant_air_taxi,613855,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-04,opsnet_itinerant_air_taxi,604384,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-05,opsnet_itinerant_air_taxi,635035,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-06,opsnet_itinerant_air_taxi,637506,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-07,opsnet_itinerant_air_taxi,676923,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-08,opsnet_itinerant_air_taxi,673159,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-09,opsnet_itinerant_air_taxi,617393,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-10,opsnet_itinerant_air_taxi,638050,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-11,opsnet_itinerant_air_taxi,572681,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-12,opsnet_itinerant_air_taxi,568383,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-01,opsnet_itinerant_air_taxi,557621,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-02,opsnet_itinerant_air_taxi,549195,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-03,opsnet_itinerant_air_taxi,481676,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-04,opsnet_itinerant_air_taxi,216052,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-05,opsnet_itinerant_air_taxi,270108,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-06,opsnet_itinerant_air_taxi,351356,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-07,opsnet_itinerant_air_taxi,413272,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-08,opsnet_itinerant_air_taxi,421761,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-09,opsnet_itinerant_air_taxi,431517,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-10,opsnet_itinerant_air_taxi,442060,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-11,opsnet_itinerant_air_taxi,406783,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-12,opsnet_itinerant_air_taxi,407357,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-01,opsnet_itinerant_air_taxi,390607,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-02,opsnet_itinerant_air_taxi,385836,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-03,opsnet_itinerant_air_taxi,499940,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-04,opsnet_itinerant_air_taxi,507810,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-05,opsnet_itinerant_air_taxi,526698,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-06,opsnet_itinerant_air_taxi,566476,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-07,opsnet_itinerant_air_taxi,599525,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-08,opsnet_itinerant_air_taxi,581576,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-09,opsnet_itinerant_air_taxi,570070,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-10,opsnet_itinerant_air_taxi,570336,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-11,opsnet_itinerant_air_taxi,547639,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-12,opsnet_itinerant_air_taxi,509447,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-01,opsnet_itinerant_air_taxi,471541,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-02,opsnet_itinerant_air_taxi,472039,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-03,opsnet_itinerant_air_taxi,555602,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-04,opsnet_itinerant_air_taxi,550603,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-05,opsnet_itinerant_air_taxi,563410,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-06,opsnet_itinerant_air_taxi,576068,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-07,opsnet_itinerant_air_taxi,568010,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-08,opsnet_itinerant_air_taxi,574924,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-09,opsnet_itinerant_air_taxi,562619,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-10,opsnet_itinerant_air_taxi,563520,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-11,opsnet_itinerant_air_taxi,497009,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-12,opsnet_itinerant_air_taxi,463539,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-01,opsnet_itinerant_air_taxi,461462,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-02,opsnet_itinerant_air_taxi,468679,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-03,opsnet_itinerant_air_taxi,546889,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-04,opsnet_itinerant_air_taxi,550771,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-05,opsnet_itinerant_air_taxi,586262,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-06,opsnet_itinerant_air_taxi,578656,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-07,opsnet_itinerant_air_taxi,583412,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-08,opsnet_itinerant_air_taxi,588042,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-09,opsnet_itinerant_air_taxi,567629,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-10,opsnet_itinerant_air_taxi,580862,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-11,opsnet_itinerant_air_taxi,534972,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-12,opsnet_itinerant_air_taxi,493214,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-01,opsnet_itinerant_general_aviation,1014632,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-02,opsnet_itinerant_general_aviation,981123,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-03,opsnet_itinerant_general_aviation,1188390,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-04,opsnet_itinerant_general_aviation,1183641,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-05,opsnet_itinerant_general_aviation,1236427,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-06,opsnet_itinerant_general_aviation,1298068,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-07,opsnet_itinerant_general_aviation,1332550,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-08,opsnet_itinerant_general_aviation,1305689,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-09,opsnet_itinerant_general_aviation,1208904,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-10,opsnet_itinerant_general_aviation,1233766,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-11,opsnet_itinerant_general_aviation,1080823,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-12,opsnet_itinerant_general_aviation,1003148,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-01,opsnet_itinerant_general_aviation,1036495,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-02,opsnet_itinerant_general_aviation,933606,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-03,opsnet_itinerant_general_aviation,1228795,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-04,opsnet_itinerant_general_aviation,1203076,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-05,opsnet_itinerant_general_aviation,1264418,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-06,opsnet_itinerant_general_aviation,1282514,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-07,opsnet_itinerant_general_aviation,1380102,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-08,opsnet_itinerant_general_aviation,1352273,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-09,opsnet_itinerant_general_aviation,1263034,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-10,opsnet_itinerant_general_aviation,1264240,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-11,opsnet_itinerant_general_aviation,1158896,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-12,opsnet_itinerant_general_aviation,1017583,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-01,opsnet_itinerant_general_aviation,1041245,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-02,opsnet_itinerant_general_aviation,1096935,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-03,opsnet_itinerant_general_aviation,905028,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-04,opsnet_itinerant_general_aviation,621558,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-05,opsnet_itinerant_general_aviation,914208,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-06,opsnet_itinerant_general_aviation,1095763,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-07,opsnet_itinerant_general_aviation,1183081,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-08,opsnet_itinerant_general_aviation,1188302,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-09,opsnet_itinerant_general_aviation,1121406,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-10,opsnet_itinerant_general_aviation,1159974,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-11,opsnet_itinerant_general_aviation,1030020,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-12,opsnet_itinerant_general_aviation,975922,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-01,opsnet_itinerant_general_aviation,949212,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-02,opsnet_itinerant_general_aviation,858659,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-03,opsnet_itinerant_general_aviation,1187611,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-04,opsnet_itinerant_general_aviation,1205226,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-05,opsnet_itinerant_general_aviation,1255853,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-06,opsnet_itinerant_general_aviation,1278619,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-07,opsnet_itinerant_general_aviation,1316309,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-08,opsnet_itinerant_general_aviation,1261337,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-09,opsnet_itinerant_general_aviation,1296119,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-10,opsnet_itinerant_general_aviation,1263724,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-11,opsnet_itinerant_general_aviation,1218488,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-12,opsnet_itinerant_general_aviation,1017275,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-01,opsnet_itinerant_general_aviation,1055013,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-02,opsnet_itinerant_general_aviation,1054093,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-03,opsnet_itinerant_general_aviation,1239046,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-04,opsnet_itinerant_general_aviation,1224495,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-05,opsnet_itinerant_general_aviation,1262064,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-06,opsnet_itinerant_general_aviation,1325539,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-07,opsnet_itinerant_general_aviation,1330713,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-08,opsnet_itinerant_general_aviation,1336493,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-09,opsnet_itinerant_general_aviation,1307868,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-10,opsnet_itinerant_general_aviation,1340257,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-11,opsnet_itinerant_general_aviation,1112710,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-12,opsnet_itinerant_general_aviation,973393,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-01,opsnet_itinerant_general_aviation,1051660,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-02,opsnet_itinerant_general_aviation,1064586,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-03,opsnet_itinerant_general_aviation,1200740,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-04,opsnet_itinerant_general_aviation,1221297,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-05,opsnet_itinerant_general_aviation,1346654,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-06,opsnet_itinerant_general_aviation,1286088,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-07,opsnet_itinerant_general_aviation,1354396,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-08,opsnet_itinerant_general_aviation,1341885,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-09,opsnet_itinerant_general_aviation,1288116,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-10,opsnet_itinerant_general_aviation,1330455,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-11,opsnet_itinerant_general_aviation,1218515,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-12,opsnet_itinerant_general_aviation,1046200,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-01,opsnet_itinerant_military,106307,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-02,opsnet_itinerant_military,92210,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-03,opsnet_itinerant_military,122065,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-04,opsnet_itinerant_military,120111,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-05,opsnet_itinerant_military,115264,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-06,opsnet_itinerant_military,116678,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-07,opsnet_itinerant_military,114419,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-08,opsnet_itinerant_military,123020,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-09,opsnet_itinerant_military,104162,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-10,opsnet_itinerant_military,118221,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-11,opsnet_itinerant_military,101097,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-12,opsnet_itinerant_military,79269,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-01,opsnet_itinerant_military,109388,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-02,opsnet_itinerant_military,100997,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-03,opsnet_itinerant_military,124947,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-04,opsnet_itinerant_military,123797,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-05,opsnet_itinerant_military,121361,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-06,opsnet_itinerant_military,114729,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-07,opsnet_itinerant_military,117009,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-08,opsnet_itinerant_military,120978,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-09,opsnet_itinerant_military,117220,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-10,opsnet_itinerant_military,112949,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-11,opsnet_itinerant_military,98527,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-12,opsnet_itinerant_military,77520,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-01,opsnet_itinerant_military,104643,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-02,opsnet_itinerant_military,99345,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-03,opsnet_itinerant_military,95097,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-04,opsnet_itinerant_military,78692,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-05,opsnet_itinerant_military,90268,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-06,opsnet_itinerant_military,108721,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-07,opsnet_itinerant_military,102758,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-08,opsnet_itinerant_military,113387,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-09,opsnet_itinerant_military,110433,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-10,opsnet_itinerant_military,111970,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-11,opsnet_itinerant_military,96858,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-12,opsnet_itinerant_military,84361,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-01,opsnet_itinerant_military,96593,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-02,opsnet_itinerant_military,89463,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-03,opsnet_itinerant_military,123737,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-04,opsnet_itinerant_military,120897,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-05,opsnet_itinerant_military,108615,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-06,opsnet_itinerant_military,117414,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-07,opsnet_itinerant_military,114589,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-08,opsnet_itinerant_military,119205,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-09,opsnet_itinerant_military,105906,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-10,opsnet_itinerant_military,106491,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-11,opsnet_itinerant_military,106037,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-12,opsnet_itinerant_military,87106,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-01,opsnet_itinerant_military,99259,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-02,opsnet_itinerant_military,95822,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-03,opsnet_itinerant_military,120536,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-04,opsnet_itinerant_military,108984,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-05,opsnet_itinerant_military,103784,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-06,opsnet_itinerant_military,113673,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-07,opsnet_itinerant_military,104421,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-08,opsnet_itinerant_military,116696,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-09,opsnet_itinerant_military,105578,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-10,opsnet_itinerant_military,103685,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-11,opsnet_itinerant_military,94618,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-12,opsnet_itinerant_military,75640,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-01,opsnet_itinerant_military,94859,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-02,opsnet_itinerant_military,94837,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-03,opsnet_itinerant_military,112208,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-04,opsnet_itinerant_military,100022,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-05,opsnet_itinerant_military,104140,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-06,opsnet_itinerant_military,105114,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-07,opsnet_itinerant_military,97461,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-08,opsnet_itinerant_military,114248,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-09,opsnet_itinerant_military,97317,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-10,opsnet_itinerant_military,102545,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-11,opsnet_itinerant_military,95841,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-12,opsnet_itinerant_military,75867,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-01,opsnet_local_civil,867955,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-02,opsnet_local_civil,869928,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-03,opsnet_local_civil,1055761,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-04,opsnet_local_civil,1067032,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-05,opsnet_local_civil,1133480,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-06,opsnet_local_civil,1150822,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-07,opsnet_local_civil,1153692,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-08,opsnet_local_civil,1159186,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-09,opsnet_local_civil,1065898,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-10,opsnet_local_civil,1107785,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-11,opsnet_local_civil,982134,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-12,opsnet_local_civil,897069,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-01,opsnet_local_civil,944719,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-02,opsnet_local_civil,877987,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-03,opsnet_local_civil,1144863,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-04,opsnet_local_civil,1134726,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-05,opsnet_local_civil,1213028,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-06,opsnet_local_civil,1201939,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-07,opsnet_local_civil,1254731,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-08,opsnet_local_civil,1213216,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-09,opsnet_local_civil,1138561,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-10,opsnet_local_civil,1169022,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-11,opsnet_local_civil,1081215,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-12,opsnet_local_civil,921223,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-01,opsnet_local_civil,1011311,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-02,opsnet_local_civil,1055816,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-03,opsnet_local_civil,969988,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-04,opsnet_local_civil,616921,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-05,opsnet_local_civil,910025,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-06,opsnet_local_civil,1101646,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-07,opsnet_local_civil,1213124,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-08,opsnet_local_civil,1174249,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-09,opsnet_local_civil,1108603,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-10,opsnet_local_civil,1174952,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-11,opsnet_local_civil,1046887,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-12,opsnet_local_civil,982777,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-01,opsnet_local_civil,954995,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-02,opsnet_local_civil,879604,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-03,opsnet_local_civil,1183245,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-04,opsnet_local_civil,1191979,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-05,opsnet_local_civil,1223701,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-06,opsnet_local_civil,1231733,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-07,opsnet_local_civil,1218606,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-08,opsnet_local_civil,1196631,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-09,opsnet_local_civil,1193977,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-10,opsnet_local_civil,1154851,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-11,opsnet_local_civil,1120693,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-12,opsnet_local_civil,902459,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-01,opsnet_local_civil,988919,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-02,opsnet_local_civil,990716,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-03,opsnet_local_civil,1204592,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-04,opsnet_local_civil,1187122,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-05,opsnet_local_civil,1217675,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-06,opsnet_local_civil,1303548,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-07,opsnet_local_civil,1284661,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-08,opsnet_local_civil,1368073,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-09,opsnet_local_civil,1306103,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-10,opsnet_local_civil,1354946,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-11,opsnet_local_civil,1119577,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-12,opsnet_local_civil,970034,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-01,opsnet_local_civil,1096637,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-02,opsnet_local_civil,1090711,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-03,opsnet_local_civil,1266810,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-04,opsnet_local_civil,1298886,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-05,opsnet_local_civil,1452098,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-06,opsnet_local_civil,1380102,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-07,opsnet_local_civil,1428437,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-08,opsnet_local_civil,1418309,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-09,opsnet_local_civil,1393511,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-10,opsnet_local_civil,1413955,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-11,opsnet_local_civil,1299066,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-12,opsnet_local_civil,1073911,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-01,opsnet_local_military,99801,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-02,opsnet_local_military,85891,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-03,opsnet_local_military,112103,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-04,opsnet_local_military,98475,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-05,opsnet_local_military,99763,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-06,opsnet_local_military,94499,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-07,opsnet_local_military,98149,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-08,opsnet_local_military,107954,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-09,opsnet_local_military,83663,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-10,opsnet_local_military,95551,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-11,opsnet_local_military,81153,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-12,opsnet_local_military,67575,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-01,opsnet_local_military,97049,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-02,opsnet_local_military,86289,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-03,opsnet_local_military,110741,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-04,opsnet_local_military,106265,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-05,opsnet_local_military,97427,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-06,opsnet_local_military,93607,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-07,opsnet_local_military,107484,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-08,opsnet_local_military,101681,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-09,opsnet_local_military,89523,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-10,opsnet_local_military,92215,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-11,opsnet_local_military,81611,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-12,opsnet_local_military,65615,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-01,opsnet_local_military,100426,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-02,opsnet_local_military,88593,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-03,opsnet_local_military,90807,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-04,opsnet_local_military,78863,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-05,opsnet_local_military,74894,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-06,opsnet_local_military,89361,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-07,opsnet_local_military,83048,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-08,opsnet_local_military,88347,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-09,opsnet_local_military,86364,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-10,opsnet_local_military,92442,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-11,opsnet_local_military,78738,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-12,opsnet_local_military,71351,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-01,opsnet_local_military,82850,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-02,opsnet_local_military,78929,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-03,opsnet_local_military,107648,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-04,opsnet_local_military,101024,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-05,opsnet_local_military,86077,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-06,opsnet_local_military,97940,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-07,opsnet_local_military,93145,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-08,opsnet_local_military,98201,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-09,opsnet_local_military,88464,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-10,opsnet_local_military,81583,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-11,opsnet_local_military,93183,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-12,opsnet_local_military,64214,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-01,opsnet_local_military,80036,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-02,opsnet_local_military,74293,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-03,opsnet_local_military,93699,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-04,opsnet_local_military,82571,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-05,opsnet_local_military,79447,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-06,opsnet_local_military,87708,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-07,opsnet_local_military,80807,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-08,opsnet_local_military,89016,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-09,opsnet_local_military,79341,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-10,opsnet_local_military,78251,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-11,opsnet_local_military,75133,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-12,opsnet_local_military,52894,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-01,opsnet_local_military,74783,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-02,opsnet_local_military,71143,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-03,opsnet_local_military,83196,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-04,opsnet_local_military,74264,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-05,opsnet_local_military,75484,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-06,opsnet_local_military,69747,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-07,opsnet_local_military,65101,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-08,opsnet_local_military,79961,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-09,opsnet_local_military,66233,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-10,opsnet_local_military,65572,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-11,opsnet_local_military,63972,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-12,opsnet_local_military,45999,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-01,opsnet_total,3869695,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-02,opsnet_total,3691617,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-03,opsnet_total,4394842,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-04,opsnet_total,4367364,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-05,opsnet_total,4565280,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-06,opsnet_total,4660769,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-07,opsnet_total,4763925,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-08,opsnet_total,4764492,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-09,opsnet_total,4351171,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-10,opsnet_total,4526675,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-11,opsnet_total,4106416,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-12,opsnet_total,3932460,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-01,opsnet_total,4018238,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-02,opsnet_total,3683211,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-03,opsnet_total,4605096,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-04,opsnet_total,4516472,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-05,opsnet_total,4729392,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-06,opsnet_total,4727164,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-07,opsnet_total,4983461,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-08,opsnet_total,4907235,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-09,opsnet_total,4548605,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-10,opsnet_total,4680211,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-11,opsnet_total,4323859,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2019-12,opsnet_total,4055887,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-01,opsnet_total,4156504,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-02,opsnet_total,4150267,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-03,opsnet_total,3724869,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-04,opsnet_total,2055084,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-05,opsnet_total,2687173,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-06,opsnet_total,3293789,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-07,opsnet_total,3795687,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-08,opsnet_total,3831028,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-09,opsnet_total,3607927,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-10,opsnet_total,3804061,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-11,opsnet_total,3508453,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2020-12,opsnet_total,3421188,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-01,opsnet_total,3307483,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-02,opsnet_total,3029333,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-03,opsnet_total,4104678,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-04,opsnet_total,4144827,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-05,opsnet_total,4311188,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-06,opsnet_total,4490017,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-07,opsnet_total,4623694,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-08,opsnet_total,4521583,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-09,opsnet_total,4453069,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-10,opsnet_total,4429376,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-11,opsnet_total,4325608,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2021-12,opsnet_total,3849134,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-01,opsnet_total,3862197,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-02,opsnet_total,3778913,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-03,opsnet_total,4497378,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-04,opsnet_total,4410623,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-05,opsnet_total,4537453,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-06,opsnet_total,4710117,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-07,opsnet_total,4723700,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-08,opsnet_total,4828895,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-09,opsnet_total,4637266,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-10,opsnet_total,4762085,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-11,opsnet_total,4177141,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2022-12,opsnet_total,3818009,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-01,opsnet_total,4066330,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-02,opsnet_total,3988409,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-03,opsnet_total,4603806,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-04,opsnet_total,4588906,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-05,opsnet_total,4968153,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-06,opsnet_total,4805368,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-07,opsnet_total,4966305,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-08,opsnet_total,5000579,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-09,opsnet_total,4780739,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-10,opsnet_total,4939928,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-11,opsnet_total,4591552,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2023-12,opsnet_total,4151505,FAA OPSNET Airport Operations (aspm.faa.gov/opsnet)
+2018-01,t100_departures,850924,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-02,t100_departures,780193,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-03,t100_departures,907581,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-04,t100_departures,896519,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-05,t100_departures,936947,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-06,t100_departures,949411,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-07,t100_departures,982775,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-08,t100_departures,978899,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-09,t100_departures,885264,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-10,t100_departures,928644,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-11,t100_departures,876463,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-12,t100_departures,904275,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-01,t100_departures,877857,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-02,t100_departures,794557,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-03,t100_departures,947076,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-04,t100_departures,926371,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-05,t100_departures,958453,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-06,t100_departures,961145,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-07,t100_departures,996986,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-08,t100_departures,995974,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-09,t100_departures,901667,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-10,t100_departures,947152,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-11,t100_departures,892168,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-12,t100_departures,933911,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-01,t100_departures,903187,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-02,t100_departures,844114,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-03,t100_departures,774070,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-04,t100_departures,294263,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-05,t100_departures,333333,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-06,t100_departures,360887,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-07,t100_departures,516697,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-08,t100_departures,548341,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-09,t100_departures,487983,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-10,t100_departures,528615,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-11,t100_departures,541809,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-12,t100_departures,576367,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-01,t100_departures,545116,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-02,t100_departures,478017,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-03,t100_departures,638406,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-04,t100_departures,655354,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-05,t100_departures,713021,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-06,t100_departures,776350,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-07,t100_departures,831017,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-08,t100_departures,828566,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-09,t100_departures,766382,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-10,t100_departures,798427,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-11,t100_departures,787857,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-12,t100_departures,802731,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-01,t100_departures,742557,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-02,t100_departures,689150,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-03,t100_departures,818603,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-04,t100_departures,804450,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-05,t100_departures,837981,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-06,t100_departures,842140,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-07,t100_departures,874227,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-08,t100_departures,866509,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-09,t100_departures,811800,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-10,t100_departures,830247,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-11,t100_departures,795788,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-12,t100_departures,805694,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-01,t100_departures,798531,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-02,t100_departures,743401,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-03,t100_departures,861968,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-04,t100_departures,833719,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-05,t100_departures,874359,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-06,t100_departures,874519,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-07,t100_departures,903113,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-08,t100_departures,914295,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-09,t100_departures,848404,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-10,t100_departures,886461,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-11,t100_departures,846366,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-12,t100_departures,871876,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-01,t100_departures_domestic,707269,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-02,t100_departures_domestic,650803,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-03,t100_departures_domestic,756866,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-04,t100_departures_domestic,748777,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-05,t100_departures_domestic,784059,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-06,t100_departures_domestic,791481,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-07,t100_departures_domestic,817960,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-08,t100_departures_domestic,819273,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-09,t100_departures_domestic,743566,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-10,t100_departures_domestic,782271,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-11,t100_departures_domestic,737887,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-12,t100_departures_domestic,753458,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-01,t100_departures_domestic,726248,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-02,t100_departures_domestic,660698,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-03,t100_departures_domestic,788899,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-04,t100_departures_domestic,766942,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-05,t100_departures_domestic,802513,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-06,t100_departures_domestic,800872,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-07,t100_departures_domestic,831817,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-08,t100_departures_domestic,834320,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-09,t100_departures_domestic,763687,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-10,t100_departures_domestic,805549,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-11,t100_departures_domestic,754930,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-12,t100_departures_domestic,789439,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-01,t100_departures_domestic,760879,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-02,t100_departures_domestic,716315,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-03,t100_departures_domestic,671857,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-04,t100_departures_domestic,269970,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-05,t100_departures_domestic,307579,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-06,t100_departures_domestic,331875,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-07,t100_departures_domestic,474398,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-08,t100_departures_domestic,503447,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-09,t100_departures_domestic,442098,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-10,t100_departures_domestic,474967,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-11,t100_departures_domestic,480443,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-12,t100_departures_domestic,503146,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-01,t100_departures_domestic,470376,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-02,t100_departures_domestic,415742,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-03,t100_departures_domestic,565441,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-04,t100_departures_domestic,580677,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-05,t100_departures_domestic,632041,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-06,t100_departures_domestic,687062,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-07,t100_departures_domestic,734257,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-08,t100_departures_domestic,731221,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-09,t100_departures_domestic,676121,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-10,t100_departures_domestic,700468,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-11,t100_departures_domestic,684833,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-12,t100_departures_domestic,685818,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-01,t100_departures_domestic,631425,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-02,t100_departures_domestic,591200,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-03,t100_departures_domestic,699934,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-04,t100_departures_domestic,681558,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-05,t100_departures_domestic,709056,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-06,t100_departures_domestic,708362,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-07,t100_departures_domestic,734531,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-08,t100_departures_domestic,728955,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-09,t100_departures_domestic,689452,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-10,t100_departures_domestic,706585,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-11,t100_departures_domestic,671553,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-12,t100_departures_domestic,670982,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-01,t100_departures_domestic,666083,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-02,t100_departures_domestic,624715,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-03,t100_departures_domestic,722742,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-04,t100_departures_domestic,695907,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-05,t100_departures_domestic,731906,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-06,t100_departures_domestic,727693,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-07,t100_departures_domestic,747364,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-08,t100_departures_domestic,761551,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-09,t100_departures_domestic,713151,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-10,t100_departures_domestic,748229,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-11,t100_departures_domestic,709685,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-12,t100_departures_domestic,718756,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-01,t100_departures_us_carriers,783276,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-02,t100_departures_us_carriers,720026,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-03,t100_departures_us_carriers,837647,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-04,t100_departures_us_carriers,827115,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-05,t100_departures_us_carriers,863942,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-06,t100_departures_us_carriers,875143,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-07,t100_departures_us_carriers,905798,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-08,t100_departures_us_carriers,901655,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-09,t100_departures_us_carriers,813561,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-10,t100_departures_us_carriers,853623,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-11,t100_departures_us_carriers,808828,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2018-12,t100_departures_us_carriers,831975,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-01,t100_departures_us_carriers,803572,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-02,t100_departures_us_carriers,730386,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-03,t100_departures_us_carriers,870753,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-04,t100_departures_us_carriers,844735,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-05,t100_departures_us_carriers,881526,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-06,t100_departures_us_carriers,884499,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-07,t100_departures_us_carriers,919069,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-08,t100_departures_us_carriers,918013,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-09,t100_departures_us_carriers,832500,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-10,t100_departures_us_carriers,875999,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-11,t100_departures_us_carriers,824787,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2019-12,t100_departures_us_carriers,867146,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-01,t100_departures_us_carriers,837368,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-02,t100_departures_us_carriers,786959,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-03,t100_departures_us_carriers,729398,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-04,t100_departures_us_carriers,281116,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-05,t100_departures_us_carriers,319936,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-06,t100_departures_us_carriers,346262,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-07,t100_departures_us_carriers,498690,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-08,t100_departures_us_carriers,528967,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-09,t100_departures_us_carriers,467827,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-10,t100_departures_us_carriers,506382,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-11,t100_departures_us_carriers,518306,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2020-12,t100_departures_us_carriers,550670,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-01,t100_departures_us_carriers,518809,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-02,t100_departures_us_carriers,457909,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-03,t100_departures_us_carriers,616869,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-04,t100_departures_us_carriers,629813,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-05,t100_departures_us_carriers,684408,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-06,t100_departures_us_carriers,743399,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-07,t100_departures_us_carriers,794092,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-08,t100_departures_us_carriers,788903,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-09,t100_departures_us_carriers,726819,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-10,t100_departures_us_carriers,754568,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-11,t100_departures_us_carriers,743366,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2021-12,t100_departures_us_carriers,753537,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-01,t100_departures_us_carriers,698097,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-02,t100_departures_us_carriers,651213,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-03,t100_departures_us_carriers,770754,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-04,t100_departures_us_carriers,752983,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-05,t100_departures_us_carriers,782409,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-06,t100_departures_us_carriers,783633,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-07,t100_departures_us_carriers,813603,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-08,t100_departures_us_carriers,805220,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-09,t100_departures_us_carriers,753458,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-10,t100_departures_us_carriers,771674,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-11,t100_departures_us_carriers,738997,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2022-12,t100_departures_us_carriers,746203,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-01,t100_departures_us_carriers,739691,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-02,t100_departures_us_carriers,691827,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-03,t100_departures_us_carriers,801537,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-04,t100_departures_us_carriers,773197,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-05,t100_departures_us_carriers,811170,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-06,t100_departures_us_carriers,810407,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-07,t100_departures_us_carriers,834831,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-08,t100_departures_us_carriers,846091,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-09,t100_departures_us_carriers,784565,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-10,t100_departures_us_carriers,821312,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-11,t100_departures_us_carriers,784717,"BTS T-100 Segment (All Carriers), transtats.bts.gov"
+2023-12,t100_departures_us_carriers,804528,"BTS T-100 Segment (All Carriers), transtats.bts.gov"

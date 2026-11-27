@@ -1,0 +1,33 @@
+{
+  "built_utc": "2026-11-27T17:31:38+00:00",
+  "git_commit": "f44eecb",
+  "datasets": [
+    "vaers",
+    "asrs"
+  ],
+  "windows": {
+    "vaers": [
+      "2019-01",
+      "2023-12"
+    ],
+    "asrs": [
+      "2018-01",
+      "2023-12"
+    ]
+  },
+  "inputs_sha256": {
+    "vaers/cdc_covid19_iqvia_pharmacy_office__ewpg-rz7g.csv": "ecca9ac0638ea134b5e3ab4fca4bf29a649150552ef22ad5c8900e8291307c0a",
+    "vaers/cdc_covid19_vaccination_trends__rh2h-3yt2.csv": "53c53a8be827de7ef43d881edb1644c87a2db1eb06405c8a536348b752940d5d",
+    "vaers/cdc_covid19_vaccinations_jurisdiction__unsk-b7fc.csv": "6d4877311808cc992755a2a09085e13d38156ae5c41c94270a6b78af3ea71f5c",
+    "vaers/cdc_flu_doses_distributed__ph8r-wzxn.csv": "6c2c0c0782b773db6b7ec8958483fc36eefbba76fd980f26bb40249e938d41b4",
+    "vaers/cdc_flu_iqvia_pharmacy_office__83ng-twza.csv": "f7a75c6f4b1af888533644bfd54a1698572f169796e7290358eb3ad9073d00c5",
+    "vaers/cdc_flu_iqvia_pharmacy_office_by_age__ysd3-txwj.csv": "80f36bc9ac82123869bc0c6be1da503a1fa527f712cb843f502e10aefff90e65",
+    "asrs/bts_t100_segment_all_carriers_2018.zip": "39670b78732ad299f2a2be154580cdd16af47438b7ad17197ee803df5dac7985",
+    "asrs/bts_t100_segment_all_carriers_2019.zip": "b8402395f53b8a521631e593b87976a50f3cfa14ba44b1112fc813c468e173b7",
+    "asrs/bts_t100_segment_all_carriers_2020.zip": "30529c75451dd54a7bb1f0486e7daa8ae346796ce13e9c972ce85cfdf31ac5bb",
+    "asrs/bts_t100_segment_all_carriers_2021.zip": "7d5c08a1126c96432210ce17426d63fb0f11af40fba5834d5794b0ef5ccee669",
+    "asrs/bts_t100_segment_all_carriers_2022.zip": "347f73b1d184ba822786f69c72232118e9fa7014dae83304370a28be1d55480f",
+    "asrs/bts_t100_segment_all_carriers_2023.zip": "9bf7eb35e516508e99584a2d2f431f63b29c88b5138a900aeb0212ebb4d5ad7e",
+    "asrs/faa_opsnet_airport_operations_monthly_2018-2023.xls": "3cc2a45c992a430ab6c68de483c07b71296d45c8c187de03724b7b701f72e1c5"
+  }
+}
