@@ -1,9 +1,10 @@
 # Concept lattices
 
 Concept hierarchies for STUDENT_START task 4, built by `scripts/build_hierarchies.py` (last built 2026-11-23 on the v1
-data). VAERS: the symptom-cluster lattice is built by `scripts/build_vaers_clusters.py` but kept local
-(`data/vaers/lattice_clusters/`) until it is confirmed that MedDRA term names may be committed; MedDRA itself is never
-committed (STATE.md V4, issue #3).
+data). VAERS lattices are not here: their nodes are MedDRA terms, which may not be redistributed, so only the build
+scripts are committed and the files stay local (STATE.md V4/V5, issue #3). Main lattice: MedDRA 29.1,
+`scripts/build_vaers_meddra.py` → `data/vaers/lattice_meddra/` (SOC ≤ HLGT ≤ HLT ≤ PT, DAG). X5 alternative: symptom
+clusters, `scripts/build_vaers_clusters.py` → `data/vaers/lattice_clusters/`.
 
 Each hierarchy is a finite partial order (a DAG of (child, parent) pairs) with one top node `TOP` (decision L7,
 2026-11-20). A concept can have several parents when the source taxonomy places it in several groups (IMDRF Annex E:

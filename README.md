@@ -2,15 +2,15 @@
 
 Target: ICML 2027 (deadline Jan 16–22, 2027, AoE). New to the project? Read [STUDENT_START.md](STUDENT_START.md) first.
 
-## Status (2026-11-20)
+## Status (2026-11-24)
 
 | Part | State |
 |---|---|
 | Algebra | Specified and frozen as v1.0: ALGEBRA.md §10 (objects, operations, laws L1–L11, query evaluation) and §11 (audit designs, L12–L13). |
 | Reference code | `cuberag/` implements §10–11. 39 tests pass (`python -m pytest tests`). |
 | Pilot | Two rounds on a 5,000-report openFDA MAUDE subset with a hand-made lattice: EXPERIMENTS.md §8–9. To be rerun on the v1 data. |
-| Data | MAUDE, VAERS and ASRS downloaded, field tables and v0 processed tables built; MAUDE and ASRS lattices built (branch `shubham/data-setup`, to be merged). Decisions of 2026-11-20 to apply before the v1 freeze. |
-| Next | v1 data freeze → adapter → pilot rerun on v1 → LLM extraction on a 10⁵ subset. |
+| Data | v1 frozen (PR #15): MAUDE 1,000,054 sampled reports, VAERS 1,154,318, ASRS 31,678; field roles in `data/README.md`. Lattices: MAUDE and ASRS in `lattices/`; VAERS from MedDRA 29.1 (built locally from a script, licence; PR #16). |
+| Next | Adapter (#8) → pilot rerun on v1 (#9) → LLM extraction on a 10⁵ subset (#10); VAERS extractor with local MedDRA mapping (#3); exposure data (#4). |
 
 ## Where the work is tracked
 

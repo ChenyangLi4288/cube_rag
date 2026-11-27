@@ -52,6 +52,17 @@ merge), #2 (apply decisions and freeze v1), #3 (VAERS lattice) and #6 (crosswalk
 | L8 | Apply high-confidence crosswalk rows only; run 2018–2020 trends with and without them | #6 |
 | Tasks 6–7 | Toy cube done (ALGEBRA §9); task 6 replaced by a review of ALGEBRA §10–11 (#7) | — |
 
+### PR #15 review 2026-11-23 (Chenyang) — summary
+
+| ID | Decision / answer | Where |
+|---|---|---|
+| L8 | All 22 high-confidence crosswalk rows approved; `3189 → NO_EFFECT` checked to sit under E24 only | #6 |
+| V4 | VAERS clusters: commit the build script only (nodes are MedDRA PT names) | #3 |
+| V4 | No MedDRA in LLM prompts; extractor outputs free-text symptoms, mapped to PTs locally | #3 |
+| M2, M5 | Notes added (QLG/MDS whole by the ≤ 150k rule; weight pooled counts; M5 count gap explained) | PR #16 |
+| — | v1 rebuilt on `main` for a clean commit stamp (`ee7d538`) | done 2026-11-24 |
+| V5 | MedDRA 29.1 lattice rules — proposed, waiting for Chenyang | PR #16 |
+
 ### Lattices (task 4)
 
 - **L1. Storage:** `lattices/<name>/` at repo root, committed (small, public, part of the benchmark). Per-node report
