@@ -17,6 +17,8 @@ data/<ds>/
   exposure/raw/, exposure/MANIFEST.json    VAERS and ASRS only: public exposure downloads (CDC doses; FAA OPSNET,
                                            BTS T-100), frozen like raw/; monthly series built from them are in
                                            the committed exposure/ folder (scripts/build_exposure.py)
+  exposure/unzipped/<zip name>/            ASRS only: the BTS T-100 zips unpacked for inspection (one folder per
+                                           zip, like MedDRA_29_1_English_v2/); the build reads the zips in raw/
 ```
 
 Built by `scripts/build_tables.py`, version **v1** (decisions of 2026-11-20 applied, issue #2; rules and counts in
